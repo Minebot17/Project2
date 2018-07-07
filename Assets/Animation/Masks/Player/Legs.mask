@@ -1,0 +1,148 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Legs
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: NA_WEAPON_belt
+    m_Weight: 0
+  - m_Path: NA_WEAPON_spine_RIG
+    m_Weight: 0
+  - m_Path: NA_WEAPON_spine_RIG/NA_WEAPON_spine
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/BODY"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/BODY/BODY_armor"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/HEAD_RIG"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/HEAD_RIG/HEAD"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/HEAD_RIG/HEAD/EAELIDS"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/HEAD_RIG/HEAD/HEADDRESS"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_1_ARM_armor"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM/L_2__RM_armor"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM/L_WEAPON_RIG"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM/L_WEAPON_RIG/LARMOR_1"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM/L_WEAPON_RIG/LARMOR_1/Hummer1"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM/L_WEAPON_RIG/LARMOR_1/Hummer1/LARMOR_1_2"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM/L_WEAPON_RIG/LARMOR_2"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM/L_WEAPON_RIG/LARMOR_3"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM/L_WEAPON_RIG/LARMOR_3/STAFF"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM/L_WEAPON_RIG/LARMOR_3/STAFF/LARMOR_3_2"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/L_ARM_RIG/L_1_ARM/L_2_ARM_RIG/L_2_ARM/L_WEAPON_RIG/LARMOR_3/STAFF/\u0414\u043B\u044F_\u0441\u043F\u0438\u043D\u044B"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/NA_WEAPON_spine_RIG_2"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_1_ARM_armor"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_2_ARM_armor"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_1"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_2"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_2/Bow1"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_2/Bow1/0"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_2/Bow1/2"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_2/Bow1/2/1"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_2/Bow1/2/1/5"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_2/Bow1/3"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_2/Bow1/3/4"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_2/Bow1/3/4/6"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_2/Bow1/RARMOR_2_2"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_2_ARM_RIG/R_2_ARM/R_WEAPON_RIG_2/RARMOR_3"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/BODY_MixYX/BODY_MixB/R_ARM_RIG/R_1_ARM/R_WEAPON_RIG"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/L_LEG_RIG"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/L_LEG_RIG/L_1_LEG"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/L_LEG_RIG/L_1_LEG/L_1_LEG_armor"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/L_LEG_RIG/L_1_LEG/L_2_LEG_RIG"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/L_LEG_RIG/L_1_LEG/L_2_LEG_RIG/L_2_LEG"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/L_LEG_RIG/L_1_LEG/L_2_LEG_RIG/L_2_LEG/L_2_LEG_armor"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/L_LEG_RIG/L_1_LEG/L_2_LEG_RIG/L_2_LEG/L_3_LEG_RIG"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/L_LEG_RIG/L_1_LEG/L_2_LEG_RIG/L_2_LEG/L_3_LEG_RIG/L_3_LEG"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/NA_WEAPON_belt_RIG"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/NA_WEAPON_belt_RIG/Bow1_quiver"
+    m_Weight: 0
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/R_LEG_RIG"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/R_LEG_RIG/R_1_LEG_top"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/R_LEG_RIG/R_1_LEG_top/R_1_LEG_lower"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/R_LEG_RIG/R_1_LEG_top/R_1_LEG_top_armor"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/R_LEG_RIG/R_1_LEG_top/R_2_LEG_RIG"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/R_LEG_RIG/R_1_LEG_top/R_2_LEG_RIG/R_2_LEG"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/R_LEG_RIG/R_1_LEG_top/R_2_LEG_RIG/R_2_LEG/R_2_LEG_armor"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/R_LEG_RIG/R_1_LEG_top/R_2_LEG_RIG/R_2_LEG/R_3_LEG_RIG"
+    m_Weight: 1
+  - m_Path: "\u0420\u0418\u0413/GG_RIG/R_LEG_RIG/R_1_LEG_top/R_2_LEG_RIG/R_2_LEG/R_3_LEG_RIG/R_3_LEG"
+    m_Weight: 1

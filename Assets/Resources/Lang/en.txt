@@ -1,0 +1,2 @@
+English;en;10
+test.lang=Test lang
