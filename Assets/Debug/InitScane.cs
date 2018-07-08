@@ -14,7 +14,8 @@ public class InitScane : MonoBehaviour {
 	public string LanguageCode;
 	public RoomSpawnMode RoomMode;
 	public string TestRoomName;
-	public GameObject Player;
+	public GameObject LocalPlayer;
+	public List<GameObject> Players;
 	public Mesh OnePlane;
 	public Mesh OnePlaneCenter;
 	public Material DefaultMaterial;
@@ -59,7 +60,7 @@ public class InitScane : MonoBehaviour {
 			case RoomSpawnMode.SPAWN_ONE_ROOMEDITOR:
 				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8), Vector3.zero);
 				string[] gateInfo = File.ReadAllLines(Application.streamingAssetsPath + "/gate.txt", Encoding.UTF8);
-				Player.transform.position = new Vector3(int.Parse(gateInfo[0]), int.Parse(gateInfo[1]), -0.1f);
+				LocalPlayer.transform.position = new Vector3(int.Parse(gateInfo[0]), int.Parse(gateInfo[1]), -0.1f);
 				doStartForce = bool.Parse(gateInfo[2]);
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				break;
@@ -118,7 +119,7 @@ public class InitScane : MonoBehaviour {
 
 	private void Start() {
 		if (doStartForce)
-			Player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000));
+			LocalPlayer.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000));
 	}
 
 	private void FixedUpdate() {

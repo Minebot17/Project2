@@ -18,21 +18,21 @@ public static class Utils {
 		return Physics2D.IsTouchingLayers(collider2D, InitScane.instance.RoomLayerMask);
 	}
 
-	public static bool IsFreeBetweenPlayer(Vector3 point) {
-		return Physics2D.Raycast(point, ToVector2(InitScane.instance.Player.transform.position - point),
-			Vector2.Distance(point, ToVector2(InitScane.instance.Player.transform.position)), LayerMask.GetMask("Flapper", "Room")).collider == null;
+	public static bool IsFreeBetweenPlayer(GameObject player, Vector3 point) {
+		return Physics2D.Raycast(point, ToVector2(player.transform.position - point),
+			Vector2.Distance(point, ToVector2(player.transform.position)), LayerMask.GetMask("Flapper", "Room")).collider == null;
 	}
 
-	public static bool IsRotatedToPlayer(Transform transform) {
-		return (InitScane.instance.Player.transform.position.x - transform.position.x) < 0 ? transform.localScale.x < 0 : transform.localScale.x > 0;
+	public static bool IsRotatedToPlayer(GameObject player, Transform transform) {
+		return (player.transform.position.x - transform.position.x) < 0 ? transform.localScale.x < 0 : transform.localScale.x > 0;
 	}
 
-	public static float GetDistanceBetweenPlayer(Vector3 vector) {
-		return Vector3.Distance(InitScane.instance.Player.transform.position, vector);
+	public static float GetDistanceBetweenPlayer(GameObject player, Vector3 vector) {
+		return Vector3.Distance(player.transform.position, vector);
 	}
 
-	public static bool IsOnEqualsYWithPlayer(float y, float error) {
-		float yPlayer = InitScane.instance.Player.transform.position.y;
+	public static bool IsOnEqualsYWithPlayer(GameObject player, float y, float error) {
+		float yPlayer = player.transform.position.y;
 		return yPlayer < y + error && yPlayer > y - error;
 	}
 
@@ -99,5 +99,11 @@ public static class Utils {
 		mesh.RecalculateNormals();
 		mesh.RecalculateTangents();
 		return mesh;
+	}
+
+	public static void SetLocalPlayer(GameObject player) {
+		InitScane.instance.LocalPlayer = player;
+		GameObject.Find("Main Camera").GetComponent<CameraFollower>().Target = player;
+		GameObject.Find("HpPanel")
 	}
 }
