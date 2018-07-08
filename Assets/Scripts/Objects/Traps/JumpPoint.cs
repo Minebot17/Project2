@@ -12,7 +12,7 @@ public class JumpPoint : MonoBehaviour {
 	}
 
 	private void OnTriggerStay2D(Collider2D other) {
-		if (other.gameObject.transform.parent != null && other.gameObject.transform.parent.name.Equals("Player") && InputManager.IsJumpDown(true)) {
+		if (other.gameObject.transform.parent != null && other.gameObject.transform.parent.tag.Equals("Player") && InputManager.IsJumpDown(true)) {
 			GetComponent<Animator>().SetTrigger("Jump");
 			Rigidbody2D rigidbody = other.gameObject.transform.parent.GetComponent<Rigidbody2D>();
 			rigidbody.velocity = new Vector2(rigidbody.velocity.x, 0);

@@ -75,29 +75,34 @@ public class Stair : MonoBehaviour {
 		center.AddComponent<MeshRenderer>().material = StairMaterial;
 		childs.Add(center);
 
-		InitScane.instance.Player.GetComponent<EntityGroundInfo>().GetEventSystem<EntityGroundInfo.LandingEvent>().SubcribeEvent(
-			@event => {
-				Collider2D[] result = new Collider2D[10];
-				Physics2D.OverlapCollider(InitScane.instance.Player.GetComponent<EntityGroundInfo>().GroundTrigger, new ContactFilter2D(), result);
-				if (result.ToList().Exists(x => x != null && x.gameObject == childs[0])) {
-					if (type == 1) {
-						Timer.StartNewTimer("StairDisable", 0.5f, 1, gameObject, x => {
-							foreach (GameObject child in childs)
-								child.SetActive(false);
-						});
-						Timer.StartNewTimer("StairEnable", disableTime, 1, gameObject, x => {
-							foreach (GameObject child in childs)
-								child.SetActive(true);
-						});
+		foreach (GameObject player in InitScane.instance.Players) {
+			player.GetComponent<EntityGroundInfo>().GetEventSystem<EntityGroundInfo.LandingEvent>()
+				.SubcribeEvent(
+					@event => {
+						Collider2D[] result = new Collider2D[10];
+						Physics2D.OverlapCollider(
+							player.GetComponent<EntityGroundInfo>().GroundTrigger,
+							new ContactFilter2D(), result);
+						if (result.ToList().Exists(x => x != null && x.gameObject == childs[0])) {
+							if (type == 1) {
+								Timer.StartNewTimer("StairDisable", 0.5f, 1, gameObject, x => {
+									foreach (GameObject child in childs)
+										child.SetActive(false);
+								});
+								Timer.StartNewTimer("StairEnable", disableTime, 1, gameObject, x => {
+									foreach (GameObject child in childs)
+										child.SetActive(true);
+								});
+							}
+							else if (type == 2) {
+								Timer.StartNewTimer("StairRemove", 0.5f, 1, gameObject, x => {
+									foreach (GameObject child in childs)
+										child.SetActive(false);
+								});
+							}
+						}
 					}
-					else if (type == 2) {
-						Timer.StartNewTimer("StairRemove", 0.5f, 1, gameObject, x => {
-							foreach (GameObject child in childs)
-								child.SetActive(false);
-						});
-					}
-				}
-			}
-		);
+				);
+		}
 	}
 }

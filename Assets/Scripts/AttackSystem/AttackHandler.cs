@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class AttackHandler : MonoBehaviour, IAttackable {
+public class AttackHandler : NetworkBehaviour, IAttackable {
 	
 	[SerializeField] 
 	private Transform spawnProjectileObject;
@@ -26,7 +27,7 @@ public class AttackHandler : MonoBehaviour, IAttackable {
 			gos.ForEach(x => AttackTarget(x, info) );
 		}
 		else {
-			GameObject target = Utils.FindNearestGameObject(gos, info.Point + Utils.ToVector2(InitScane.instance.Player.transform.position));
+			GameObject target = Utils.FindNearestGameObject(gos, info.Point + Utils.ToVector2(gameObject.transform.position));
 			AttackTarget(target, info);
 		}
 	}

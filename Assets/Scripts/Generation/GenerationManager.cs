@@ -78,7 +78,8 @@ public static class GenerationManager {
 				}
 			}
 
-		TeleportPlayerToStart();
+		foreach (GameObject player in InitScane.instance.Players)
+			TeleportPlayerToStart(player);
 	}
 
 	private static void SpawnRoom(RoomLoader.Room room, RoomInfo position, Transform parent) {
@@ -87,7 +88,7 @@ public static class GenerationManager {
 		List<GameObject> gates = Utils.GetComponentsRecursive<GateObject>(spawnedRoom).ConvertAll(x => x.gameObject);
 		gates.ForEach(x =>
 			x.transform.Find("trigger").GetComponent<GateTrigger>().GetEventSystem<GateTrigger.EnterGateEvent>()
-				.SubcribeEvent(y => OnGateEnter(y.Sender)));
+				.SubcribeEvent(y => OnGateEnter(y.Player, y.Sender)));
 				
 		foreach (GameObject gateObject in gates) {
 			Vector2Int localPosition = GateInfo.RoomObjectToLocalPosition(gateObject.transform.localPosition);
@@ -102,7 +103,7 @@ public static class GenerationManager {
 		spawnedRoom.SetActive(false);
 	}
 
-	private static void OnGateEnter(GameObject gateObject) {
+	private static void OnGateEnter(GameObject player, GameObject gateObject) {
 		Vector2Int localPosition = GateInfo.RoomObjectToLocalPosition(gateObject.transform.localPosition);
 		Vector2Int nextCoord = GateInfo.LocalPositionToVector(localPosition) + currentRoomCoords;
 		if (spawnedRooms != null && nextCoord.x >= 0 && nextCoord.x < spawnedRooms.GetLength(0) && nextCoord.y >= 0 &&
@@ -114,18 +115,18 @@ public static class GenerationManager {
 				localPosition.x == 1 ? new Vector3(0, 55f) :
 				localPosition.x == 2 ? new Vector3(-45f, 0) :
 				new Vector3(45f, 0);
-			InitScane.instance.Player.transform.position += toPlayerCoords;
+			player.transform.position += toPlayerCoords;
 			if (localPosition.x == 1)
-				InitScane.instance.Player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000f));
+				player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000f));
 		}
 	}
 
-	public static void TeleportPlayerToStart() {
+	public static void TeleportPlayerToStart(GameObject player) {
 		SetCurrentRoom(currentGeneration.startRoom.Position);
 		Transform objectFolder = spawnedRooms[currentRoomCoords.x, currentRoomCoords.y].transform.Find("Objects");
 		for (int i = 0; i < objectFolder.childCount; i++)
 			if (objectFolder.GetChild(i).name.Contains("playerPosition")) {
-				InitScane.instance.Player.transform.position = new Vector3(objectFolder.GetChild(i).position.x + 8, objectFolder.GetChild(i).position.y + 33, InitScane.instance.Player.transform.position.z);
+				player.transform.position = new Vector3(objectFolder.GetChild(i).position.x + 8, objectFolder.GetChild(i).position.y + 33, player.transform.position.z);
 				return;
 			}
 	}

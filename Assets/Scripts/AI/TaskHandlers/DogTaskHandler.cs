@@ -18,9 +18,9 @@ public class DogTaskHandler : AbstractTaskHandler<DogInfo> {
 	});
 
 	public override void ReceiveEvent(EventBase e) {
-		if (e is PlayerObserver.PlayerOut && currentState == AggresiveState)
+		if (e is PlayerObserver.AllTargetsEnd && currentState == AggresiveState)
 			SetState(CalmState);
-		else if (e is PlayerObserver.PlayerEnter && currentState == CalmState)
+		else if (e is PlayerObserver.FirstTarget && currentState == CalmState)
 			SetState(AggresiveState);
 	}
 

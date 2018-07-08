@@ -29,6 +29,8 @@ public class PlayerAttackHandler : AttackHandler {
 	}
 
 	private void FixedUpdate() {
+		if (!isLocalPlayer)
+			return;
 		if (InputManager.IsFire1Down(true) && info.EnableAI) {
 			AnimatorStateInfo anim = GetComponent<Animator>().GetCurrentAnimatorStateInfo(0);
 			if (currentCombo == -1 && postAttackTimer == null)

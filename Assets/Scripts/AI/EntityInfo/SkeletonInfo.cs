@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Health), typeof(Rigidbody2D))]
-public class SkeletonInfo : EntityJumpedInfo, IAttackable {
+[RequireComponent(typeof(Health), typeof(Rigidbody2D), typeof(VisibleObserver))]
+public class SkeletonInfo : EntityJumpedInfo {
 	public GameObject Head;
 	public GameObject Body;
 	public GameObject Projectile;
@@ -17,6 +17,7 @@ public class SkeletonInfo : EntityJumpedInfo, IAttackable {
 	public Collider2D ForwardCollider;
 	public Collider2D ForwarDownCollider;
 	public Collider2D BackDownCollider;
+	public VisibleObserver observer;
 
 	private Health health;
 
@@ -26,6 +27,7 @@ public class SkeletonInfo : EntityJumpedInfo, IAttackable {
 
 	protected override void Start() {
 		base.Start();
+		observer = GetComponent<VisibleObserver>();
 		health = GetComponent<Health>();
 		Animator animator = GetComponent<Animator>();
 		
@@ -54,17 +56,5 @@ public class SkeletonInfo : EntityJumpedInfo, IAttackable {
 		public ShootEvent(GameObject sender, bool begin) : base(sender, begin) {
 			Begin = begin;
 		}
-	}
-
-	public void AttackMelee(Object args) {
-		throw new System.NotImplementedException();
-	}
-
-	public void AttackProjectile(Object args) {
-		throw new System.NotImplementedException();
-	}
-
-	public void EndAttack() {
-		// TODO call AttackEvent and end the task
 	}
 }

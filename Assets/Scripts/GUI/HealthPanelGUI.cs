@@ -38,4 +38,11 @@ public class HealthPanelGUI : MonoBehaviour {
 		levelText.text = level.Levels + " LVL";
 		nickText.text = nick.Nick;
 	}
+	
+	public void SetTarget(GameObject gameObject) {
+		health = gameObject.GetComponent<Health>();
+		stamina = gameObject.GetComponent<Stamina>();
+		level = gameObject.GetComponent<Level>();
+		nick = gameObject.GetComponent<Nickname>();
+	}
 }

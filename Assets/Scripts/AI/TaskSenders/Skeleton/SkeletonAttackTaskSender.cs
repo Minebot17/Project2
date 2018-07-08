@@ -6,12 +6,13 @@ public class SkeletonAttackTaskSender : AbstractTaskSender<SkeletonTaskHandler, 
 
 	private void FixedUpdate() {
 		if (handler.GetCurrentState() == handler.AggresiveState) {
-			float playerDistance = Utils.GetDistanceBetweenPlayer(transform.position);
+			GameObject target = info.observer.NearestTarget;
+			float playerDistance = Utils.GetDistanceBetweenPlayer(target, transform.position);
 			
 			if (playerDistance < info.MaxAttackDistance)
 				handler.AddTask(new SkeletonAttackTask(gameObject));
 			else if (playerDistance > info.MaxAttackDistance && playerDistance < info.MaxShootDistance)
-				handler.AddTask(new SkeletonShootTask(gameObject, Utils.ToVector2(InitScane.instance.Player.transform.position - transform.position).normalized));
+				handler.AddTask(new SkeletonShootTask(gameObject, Utils.ToVector2(target.transform.position - transform.position).normalized));
 		}
 	}
 }

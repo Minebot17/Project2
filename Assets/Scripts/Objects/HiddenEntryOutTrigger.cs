@@ -10,7 +10,7 @@ public class HiddenEntryOutTrigger : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter2D(Collider2D other) {
-		if (other.gameObject.name.Equals("Player"))
+		if (other.gameObject.tag.Equals("Player"))
 			hiddenWall.SetActive(true);
 	}
 }

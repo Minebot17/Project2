@@ -9,10 +9,10 @@ public class GateTrigger : MonoBehaviour, IEventProvider {
 	};
 	
 	private void OnTriggerEnter2D(Collider2D other) {
-		if (other.gameObject.name.Equals("Player") && transform.parent.GetComponent<GateObject>().Enable &&
+		if (other.gameObject.tag.Equals("Player") && transform.parent.GetComponent<GateObject>().Enable &&
 		    !other.gameObject.GetComponent<EffectHandler>().Contains<InvulnerabilityEffect>()
 		    ) {
-			GetEventSystem<EnterGateEvent>().CallListners(new EnterGateEvent(gameObject));
+			GetEventSystem<EnterGateEvent>().CallListners(new EnterGateEvent(gameObject, other.gameObject));
 			other.gameObject.GetComponent<EffectHandler>().AddEffect(new InvulnerabilityEffect(2f));
 		}
 	}
@@ -22,6 +22,10 @@ public class GateTrigger : MonoBehaviour, IEventProvider {
 	}
 	
 	public class EnterGateEvent : EventBase {
-		public EnterGateEvent(GameObject sender) : base(sender, true) { } // TODO call this event
+		public GameObject Player;
+
+		public EnterGateEvent(GameObject sender, GameObject player) : base(sender, true) {
+			Player = player;
+		}
 	}
 }

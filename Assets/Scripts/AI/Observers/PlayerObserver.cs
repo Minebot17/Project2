@@ -4,32 +4,43 @@ using UnityEngine;
 
 public class PlayerObserver : Observer {
 	public int ObserveRadius;
-	protected float prevDistance;
+	public List<GameObject> Targets = new List<GameObject>();
+	public GameObject NearestTarget;
 
 	protected override void Observe() {
-		float currentDistance = Vector3.Distance(InitScane.instance.Player.transform.position, transform.position);
+		List<GameObject> currentTargets = InitScane.instance.Players.FindAll(player => Vector3.Distance(player.transform.position, transform.position) < ObserveRadius);
 
-		if (prevDistance == 0) {
-			if (currentDistance < ObserveRadius)
-				CallEvent(new PlayerEnter(gameObject));
+		foreach (GameObject newTarget in currentTargets) {
+			if (Targets.Exists(x => x == newTarget))
+				CallEvent(new TargetStay(gameObject, newTarget));
+			else
+				CallEvent(new TargetEnter(gameObject, newTarget));
+		}
+		
+		foreach (GameObject oldTarget in Targets)
+			if (oldTarget != null && !currentTargets.Exists(x => x == oldTarget))
+				CallEvent(new TargetOut(gameObject, oldTarget));
+
+		if (currentTargets.Count == 0) {
+			if (NearestTarget != null) {
+				NearestTarget = null;
+				CallEvent(new AllTargetsEnd(gameObject));
+			}
 		}
 		else {
-			if (prevDistance > ObserveRadius && currentDistance < ObserveRadius)
-				CallEvent(new PlayerEnter(gameObject));
-			else if (prevDistance < ObserveRadius && currentDistance > ObserveRadius)
-				CallEvent(new PlayerOut(gameObject));
-			else if (currentDistance < ObserveRadius)
-				CallEvent(new PlayerStay(gameObject));
+			GameObject target = Utils.FindNearestGameObject(currentTargets, transform.position);
+			if (NearestTarget == null)
+				CallEvent(new FirstTarget(gameObject, target));
+			NearestTarget = target;
 		}
-
-		prevDistance = currentDistance;
 	}
 
 	protected override object[] GetEvents() {
 		return new object[]{
-			new EventHandler<PlayerEnter>(),
-			new EventHandler<PlayerStay>(),
-			new EventHandler<PlayerOut>()
+			new EventHandler<TargetEnter>(),
+			new EventHandler<TargetStay>(),
+			new EventHandler<TargetOut>(),
+			new EventHandler<AllTargetsEnd>(), 
 		};
 	}
 
@@ -37,15 +48,31 @@ public class PlayerObserver : Observer {
 		return 50;
 	}
 
-	public class PlayerEnter : EventBase {
-		public PlayerEnter(GameObject sender) : base(sender, false) { }
+	public class TargetEvent : EventBase {
+		public GameObject Target;
+
+		public TargetEvent(GameObject sender, GameObject target) : base(sender, false) {
+			Target = target;
+		}
+	}
+
+	public class TargetEnter : TargetEvent {
+		public TargetEnter(GameObject sender, GameObject target) : base(sender, target) { }
 	}
 	
-	public class PlayerStay : EventBase {
-		public PlayerStay(GameObject sender) : base(sender, false) { }
+	public class TargetStay : TargetEvent {
+		public TargetStay(GameObject sender, GameObject target) : base(sender, target) { }
 	}
 	
-	public class PlayerOut : EventBase {
-		public PlayerOut(GameObject sender) : base(sender, false) { }
+	public class TargetOut : TargetEvent {
+		public TargetOut(GameObject sender, GameObject target) : base(sender, target) { }
+	}
+	
+	public class AllTargetsEnd : EventBase {
+		public AllTargetsEnd(GameObject sender) : base(sender, false) { }
+	}
+
+	public class FirstTarget : TargetEvent {
+		public FirstTarget(GameObject sender, GameObject target) : base(sender, target) { }
 	}
 }

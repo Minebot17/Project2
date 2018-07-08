@@ -29,15 +29,15 @@ public class SkeletonTaskHandler : AbstractTaskHandler<SkeletonInfo> {
 		if (currentState != FearState && info.Health.Healths < info.ProcentHpToFear * info.Health.MaxHealth.GetCalculated())
 			SetState(FearState);
 		else if (currentState == FearState && info.Health.Healths > info.ProcentHpToFear * info.Health.MaxHealth.GetCalculated())
-			SetState(Utils.IsFreeBetweenPlayer(transform.position)
+			SetState(Utils.IsFreeBetweenPlayer(info.observer.NearestTarget, transform.position)
 				? AggresiveState
 				: CalmState);
 	}
 
 	public override void ReceiveEvent(EventBase e) {
-		if (e is PlayerObserver.PlayerOut && currentState == AggresiveState)
+		if (e is PlayerObserver.AllTargetsEnd && currentState == AggresiveState)
 			SetState(CalmState);
-		else if (e is PlayerObserver.PlayerEnter && currentState == CalmState)
+		else if (e is PlayerObserver.FirstTarget && currentState == CalmState)
 			SetState(AggresiveState);
 	}
 

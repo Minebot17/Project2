@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Health), typeof(Rigidbody2D), typeof(VisibleObserver))]
 public class DogInfo : EntityJumpedInfo {
 	public int MaxAttackDistance;
 	public Collider2D ForwardCollider;
 	public Collider2D ForwarDownCollider;
 	public Collider2D BackDownCollider;
+	public VisibleObserver observer;
 
 	protected override void Start() {
 		base.Start();
+		observer = GetComponent<VisibleObserver>();
 		Animator animator = GetComponent<Animator>();
 		
 		addEvent(new EventHandler<AttackEvent>());

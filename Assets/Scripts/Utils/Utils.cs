@@ -104,6 +104,14 @@ public static class Utils {
 	public static void SetLocalPlayer(GameObject player) {
 		InitScane.instance.LocalPlayer = player;
 		GameObject.Find("Main Camera").GetComponent<CameraFollower>().Target = player;
-		GameObject.Find("HpPanel")
+		GameObject.Find("HpPanel").GetComponent<HealthPanelGUI>().SetTarget(player);
+	}
+
+	public static GameObject FindNearestPlayer(Vector3 point) {
+		return FindNearestGameObject(InitScane.instance.Players, point);
+	}
+
+	public static GameObject FindVisibleNearestPlayer(Vector3 point) {
+		return FindNearestGameObject(InitScane.instance.Players.FindAll(player => IsFreeBetweenPlayer(player, point)), point);
 	}
 }

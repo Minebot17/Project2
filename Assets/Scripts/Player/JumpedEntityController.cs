@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(EntityJumpedInfo))]
-public class JumpedEntityController : MonoBehaviour {
+public class JumpedEntityController : NetworkBehaviour {
 	private EntityJumpedInfo info;
 	private Rigidbody2D rigidbody2D;
 
@@ -42,9 +43,15 @@ public class JumpedEntityController : MonoBehaviour {
 				line3.SetPosition(line3.positionCount-1, transform.position + new Vector3(-16.5f, -20.5f, -0.1f));
 			});
 		}
+		
+		if (!isLocalPlayer)
+			return;
+		Utils.SetLocalPlayer(gameObject);
 	}
 
 	private void FixedUpdate() {
+		if (!isLocalPlayer)
+			return;
 		if (!info.EnableAI)
 			return;
 		

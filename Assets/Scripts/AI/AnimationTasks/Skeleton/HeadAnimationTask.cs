@@ -13,7 +13,7 @@ public class HeadAnimationTask : TemporarilyAnimationTask<SkeletonInfo> {
 
 	public override void Tick() {
 		base.Tick();
-		Vector2 playerDirection = Utils.ToVector2(InitScane.instance.Player.transform.position - gameObject.transform.position);
+		Vector2 playerDirection = Utils.ToVector2(info.observer.NearestTarget.transform.position - gameObject.transform.position);
 		float angle = Mathf.Rad2Deg * Mathf.Atan2(playerDirection.y, Mathf.Abs(playerDirection.x)) - info.Head.transform.eulerAngles.z + info.Head.transform.localEulerAngles.z;
 		if (Math.Abs(angle) < 60)
 			info.Head.transform.localRotation = Quaternion.Lerp(info.Head.transform.localRotation, Quaternion.Euler(new Vector3(0, 0, angle)), 0.25f);

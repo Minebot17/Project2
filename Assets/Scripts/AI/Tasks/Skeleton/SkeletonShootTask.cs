@@ -13,12 +13,13 @@ public class SkeletonShootTask : AbstractTask<SkeletonInfo> {
 		if (gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Attack0"))
 			return false;
 
+		GameObject target = info.observer.NearestTarget;
 		float angle = Mathf.Rad2Deg *
-		              (Mathf.Atan2(InitScane.instance.Player.transform.position.y - gameObject.transform.position.y,
-			              (InitScane.instance.Player.transform.position.x - gameObject.transform.position.x) *
+		              (Mathf.Atan2(target.transform.position.y - gameObject.transform.position.y,
+			              (target.transform.position.x - gameObject.transform.position.x) *
 			              gameObject.transform.localScale.x));
 		
-		if (!Utils.IsRotatedToPlayer(gameObject.transform))
+		if (!Utils.IsRotatedToPlayer(target, gameObject.transform))
 			gameObject.transform.localScale = new Vector3(-gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
 
 		if (angle > 45) {

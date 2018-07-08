@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class RunToPlayerTask : RunForwardTask {
 	private readonly Collider2D backDownCollider;
+	private readonly GameObject player;
 	private readonly bool toPlayer;
 	
-	public RunToPlayerTask(GameObject gameObject, Collider2D forwardCollider, Collider2D forwardDownCollider, Collider2D backDownCollider,
+	public RunToPlayerTask(GameObject gameObject, GameObject player, Collider2D forwardCollider, Collider2D forwardDownCollider, Collider2D backDownCollider,
 		float distance, bool toPlayer) : base(gameObject, forwardCollider, forwardDownCollider, distance) {
 		this.toPlayer = toPlayer;
+		this.player = player;
 		this.backDownCollider = backDownCollider;
 	}
 
@@ -16,7 +18,7 @@ public class RunToPlayerTask : RunForwardTask {
 		if (info.BlockControl)
 			return false;
 
-		bool rotated = Utils.IsRotatedToPlayer(gameObject.transform);
+		bool rotated = Utils.IsRotatedToPlayer(player, gameObject.transform);
 		bool willRotate = rotated ? !toPlayer : toPlayer;
 		bool forwardTouch = Utils.IsTouchRoom(forwardCollider);
 		bool downTouch = Utils.IsTouchRoom(willRotate ? backDownCollider : forwardDownCollider);
