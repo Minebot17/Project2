@@ -979,9 +979,12 @@ GameObject:
   - component: {fileID: 70142275063387494}
   - component: {fileID: 114559260270058136}
   - component: {fileID: 114686659333377802}
+  - component: {fileID: 114013563797305606}
+  - component: {fileID: 114954186275936196}
+  - component: {fileID: 114901018881741284}
   m_Layer: 11
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3886,6 +3889,22 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114013563797305606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1801596076533684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8a223d6f68397459e3c7b1aa78b52c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  X: 1
+  Y: 1
+  Z: 0
+  posLerpRate: 15
+  posThreshold: 0.1
 --- !u!114 &114285466279831458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4055,3 +4074,36 @@ MonoBehaviour:
   comboTimerError: 1
   numberOfCombo: 2
   weaponCount: 3
+--- !u!114 &114901018881741284
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1801596076533684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 95086061844755532}
+  m_ParameterSendBits: 63
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 
+--- !u!114 &114954186275936196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1801596076533684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2b9679834af7c438f24b4ec3a4414a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  X: 1
+  Y: 0
+  Z: 0

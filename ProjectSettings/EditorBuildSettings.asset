@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scanes/OnlineGeneration.unity
     guid: 0f66b5d557cf6c141b4cf184cfb45b69
+  - enabled: 1
+    path: Assets/Scanes/OfflineTest.unity
+    guid: cc4f6c69ef7b7604d88a8285ae8d519b
+  - enabled: 1
+    path: Assets/Scanes/RoomEditor.unity
+    guid: b170131bb6f5cf44896859b3f744cb75
   m_configObjects: {}

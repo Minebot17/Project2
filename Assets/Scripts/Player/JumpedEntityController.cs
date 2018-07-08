@@ -47,6 +47,7 @@ public class JumpedEntityController : NetworkBehaviour {
 		if (!isLocalPlayer)
 			return;
 		Utils.SetLocalPlayer(gameObject);
+		GenerationManager.TeleportPlayerToStart(gameObject);
 	}
 
 	private void FixedUpdate() {

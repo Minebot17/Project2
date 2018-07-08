@@ -7,8 +7,9 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Networking;
 
-public class InitScane : MonoBehaviour {
+public class InitScane : NetworkBehaviour {
 	public static InitScane instance;
 	public static System.Random rnd = new System.Random();
 	public string LanguageCode;
@@ -55,12 +56,13 @@ public class InitScane : MonoBehaviour {
 			case RoomSpawnMode.SPAWN_ONE:
 				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(TestRoomName)), Vector3.zero);
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
-				
 				break;
 			case RoomSpawnMode.SPAWN_ONE_ROOMEDITOR:
 				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8), Vector3.zero);
 				string[] gateInfo = File.ReadAllLines(Application.streamingAssetsPath + "/gate.txt", Encoding.UTF8);
-				LocalPlayer.transform.position = new Vector3(int.Parse(gateInfo[0]), int.Parse(gateInfo[1]), -0.1f);
+				GameObject startPos = new GameObject("startPosition");
+				startPos.transform.position = new Vector3(int.Parse(gateInfo[0]), int.Parse(gateInfo[1]), -1f);
+				startPos.AddComponent<NetworkStartPosition>();
 				doStartForce = bool.Parse(gateInfo[2]);
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				break;
@@ -119,7 +121,7 @@ public class InitScane : MonoBehaviour {
 
 	private void Start() {
 		if (doStartForce)
-			LocalPlayer.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000));
+			LocalPlayer.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
 	}
 
 	private void FixedUpdate() {
