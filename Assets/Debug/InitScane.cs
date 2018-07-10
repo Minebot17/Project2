@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Networking.NetworkSystem;
 
 public class InitScane : NetworkBehaviour {
 	public static InitScane instance;
@@ -37,6 +38,12 @@ public class InitScane : NetworkBehaviour {
 	public GameObject PlayerHead;
 	public GameObject HitObjectParticle;
 	public GameObject FireObjectParticle;
+	public int seedToSpawn;
+	
+	public static short index = 0;
+	public const int getGenIndex = 99;
+	public const int spawnGenIndex = 100;
+	public const int spawnObjIndex = 101;
 
 	private bool doStartForce;
 	public void Awake() {
@@ -50,6 +57,13 @@ public class InitScane : NetworkBehaviour {
 		RoomLayerMask = LayerMask.GetMask("Room");
 		PlayerLayerMask = LayerMask.GetMask("Player");
 		TrapLayerMask = LayerMask.GetMask("Trap");
+		
+		NetworkManager.singleton.client.RegisterHandler(getGenIndex, OnGetGen);
+		NetworkServer.RegisterHandler(getGenIndex, OnGetGen);
+		NetworkManager.singleton.client.RegisterHandler(spawnGenIndex, OnSpawnGeneration);
+		NetworkServer.RegisterHandler(spawnGenIndex, OnSpawnGeneration);
+		NetworkManager.singleton.client.RegisterHandler(spawnObjIndex, OnSpawnNetworkObjects);
+		NetworkServer.RegisterHandler(spawnObjIndex, OnSpawnNetworkObjects);
 		
 		switch (RoomMode) {
 			case RoomSpawnMode.SPAWN_ONE:
@@ -65,20 +79,10 @@ public class InitScane : NetworkBehaviour {
 				doStartForce = bool.Parse(gateInfo[2]);
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				break;
-			case RoomSpawnMode.SPAWN_GENERATION:
-				if (isServer) {
-					GenerationInfo generation = GetGeneration();
-					int seedToSpawn = rnd.Next();
-					GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, seedToSpawn, true);
-					if (VisualizeTestGeneration)
-						GenerationManager.VisualizeGeneration(generation);
-				}
-
-				break;
 		}
 	}
 
-	private GenerationInfo GetGeneration() {
+	public GenerationInfo GetGeneration(int seed) {
 		GenerationInfo generation = null;
 		while (true) {
 			generation = GenerationManager.Generate(
@@ -113,7 +117,7 @@ public class InitScane : NetworkBehaviour {
 					{new Vector2Int(4, 4), 0.05f},
 				},
 				new List<Func<GenerationInfo, List<RoomInfo>>>(), 1,
-				rnd.Next()
+				seed
 			);
 			if (generation.CellsCount >= MinGenerationCellCount)
 				break;
@@ -122,10 +126,39 @@ public class InitScane : NetworkBehaviour {
 
 		return generation;
 	}
+	
+	public void OnGetGen(NetworkMessage msg){
+		msg.conn.Send(spawnGenIndex,new StringMessage(GenerationManager.currentGeneration.Seed + "," + InitScane.instance.seedToSpawn));
+	}
+	
+	public void OnSpawnGeneration(NetworkMessage msg) {
+		Debug.Log("dawdawd");
+		string[] data = msg.ReadMessage<StringMessage>().value.Split(',');
+		GenerationInfo generation = InitScane.instance.GetGeneration(int.Parse(data[0]));
+		GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, int.Parse(data[1]), false);
+		msg.conn.Send(spawnObjIndex, new EmptyMessage());
+	}
+
+	public void OnSpawnNetworkObjects(NetworkMessage msg) {
+		GenerationManager.SendAllObjectsToClients();
+		GameObject player = Instantiate(InitScane.instance.LocalPlayer);
+		GenerationManager.TeleportPlayerToStart(player);
+		NetworkServer.AddPlayerForConnection(msg.conn, player, index);
+		index++;
+	}
 
 	private void Start() {
 		if (doStartForce)
 			LocalPlayer.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
+		if (RoomMode == RoomSpawnMode.SPAWN_GENERATION && isServer) {
+			GenerationInfo generation = InitScane.instance.GetGeneration(InitScane.rnd.Next());
+			InitScane.instance.seedToSpawn = InitScane.rnd.Next();
+			GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, InitScane.instance.seedToSpawn, true);
+			NetworkServer.SendToAll(spawnGenIndex,new StringMessage(GenerationManager.currentGeneration.Seed + "," + InitScane.instance.seedToSpawn));
+		}
+		else if (RoomMode == RoomSpawnMode.SPAWN_GENERATION && !isServer)
+			NetworkManager.singleton.client.Send(getGenIndex, new EmptyMessage());
+			
 	}
 
 	private void FixedUpdate() {
@@ -138,5 +171,5 @@ public class InitScane : NetworkBehaviour {
 	}
 	
 	[Serializable]
-	public class OnChangeLanguage : UnityEvent { }
+	public class OnChangeLanguage : UnityEvent { } // TODO
 }
