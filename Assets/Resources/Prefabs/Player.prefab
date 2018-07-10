@@ -982,6 +982,7 @@ GameObject:
   - component: {fileID: 114013563797305606}
   - component: {fileID: 114954186275936196}
   - component: {fileID: 114901018881741284}
+  - component: {fileID: 114894585742886490}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -3904,7 +3905,7 @@ MonoBehaviour:
   Y: 1
   Z: 0
   posLerpRate: 15
-  posThreshold: 0.1
+  posThreshold: 1
 --- !u!114 &114285466279831458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4074,6 +4075,22 @@ MonoBehaviour:
   comboTimerError: 1
   numberOfCombo: 2
   weaponCount: 3
+--- !u!114 &114894585742886490
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1801596076533684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe409ec5abc7c04ea524f6de88c64f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  X: 1
+  Y: 1
+  Z: 0
+  velocityLerpRate: 15
+  velocityThreshold: 10
 --- !u!114 &114901018881741284
 MonoBehaviour:
   m_ObjectHideFlags: 1

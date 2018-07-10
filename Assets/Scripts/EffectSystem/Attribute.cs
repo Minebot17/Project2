@@ -42,6 +42,8 @@ public class Attribute {
 			Calculate(value);
 		}
 	}
+	
+	public Attribute() {}
 
 	public Attribute(string name, float originalValue) {
 		this.name = name;

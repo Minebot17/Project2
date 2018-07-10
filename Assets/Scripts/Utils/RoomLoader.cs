@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public static class RoomLoader {
 	public static List<Room> loadedRooms = new List<Room>();
@@ -54,7 +55,7 @@ public static class RoomLoader {
 		return LoadRoom(fileName.Substring(0, fileName.Length - 5), JsonUtility.FromJson<RoomSerializeHelper.SaveFile>(fixJsons(new string[] { File.ReadAllText(path, encoding) })[0]));
 	}
 
-	public static GameObject SpawnRoom(Room room, Vector3 position) {
+	public static GameObject SpawnRoom(Room room, Vector3 position, bool onServer) {
 		GameObject roomObject = new GameObject("Room " + room.size.x + "x" + room.size.y) { layer = 8 };
 		roomObject.transform.position = position;
 		PolygonCollider2D collider = roomObject.AddComponent<PolygonCollider2D>();
@@ -84,12 +85,17 @@ public static class RoomLoader {
 		}
 
 		foreach (RoomObject obj in room.objects)
-			ObjectsManager.SpawnRoomObject(obj, objectParent.transform);
+			ObjectsManager.SpawnRoomObject(obj, objectParent.transform, x => x.GetComponent<NetworkIdentity>() == null || onServer);
 		
-		roomObject.AddComponent<global::Room>().Initialize(room.size);
+		roomObject.AddComponent<global::Room>().Initialize(room.fileName, room.size);
 		return roomObject;
-		// Debug
-		//GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = currentRoom;
+	}
+
+	public static void SendObjects(GameObject roomObject) {
+		Transform objectParent = roomObject.transform.Find("Objects");
+		for (int i = 0; i < objectParent.childCount; i++)
+			if (objectParent.GetChild(i).GetComponent<NetworkIdentity>() != null)
+				NetworkServer.Spawn(objectParent.GetChild(i).gameObject);
 	}
 
 	#region Generators

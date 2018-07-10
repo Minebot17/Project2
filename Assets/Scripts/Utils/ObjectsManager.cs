@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public static class ObjectsManager {
 	public static List<GameObject> loadedObjects = new List<GameObject>();
@@ -12,6 +13,10 @@ public static class ObjectsManager {
 	}
 
 	public static GameObject SpawnRoomObject(RoomObject obj, Transform parent) {
+		return SpawnRoomObject(obj, parent, x => true);
+	}
+
+	public static GameObject SpawnRoomObject(RoomObject obj, Transform parent, Predicate<GameObject> isSpawn) {
 		GameObject go = GetObjectByName(obj.prefabName + "_" + obj.type);
 		if (go == null)
 			go = GetObjectByName(obj.prefabName);
@@ -19,6 +24,8 @@ public static class ObjectsManager {
 			Debug.LogError("Try to spawn non-existent object: " + obj.prefabName);
 			return null;
 		}
+		if (!isSpawn.Invoke(go))
+			return null;
 
 		go = SpawnGameObject(go, new Vector3(), go.transform.localEulerAngles, parent, false);
 		go.name = obj.prefabName + "_" + obj.ID;
@@ -85,6 +92,9 @@ public static class ObjectsManager {
 			for (int i = 0; i < childCount; i++)
 				go.transform.GetChild(i).localScale = new Vector3(go.transform.GetChild(i).localScale.x * (obj.mirrorX ? -1 : 1), go.transform.GetChild(i).localScale.y * (obj.mirrorY ? -1 : 1), go.transform.GetChild(i).localScale.z);
 
+		if (go.GetComponent<NetworkIdentity>() != null)
+			NetworkServer.Spawn(go);
+		
 		return go;
 	}
 	

@@ -33,14 +33,23 @@ public class AttackHandler : NetworkBehaviour, IAttackable {
 	}
 
 	private void AttackTarget(GameObject target, MeleeAttackInfo info) {
+		if (!isServer)
+			return;
+		
 		if (target.GetComponent<Health>() != null) {
 			target.GetComponent<Health>().Damage(new DamageBase(gameObject, info.Damage));
-			Instantiate(InitScane.instance.HitObjectParticle).GetComponent<HitObjectParticle>().Initialize(new Vector2(info.Point.x * (int) transform.localScale.x, info.Point.y) + Utils.ToVector2(transform.position), info.Size, target);
+			RpcDamage(target, info);
 		}
 
-		if (target.GetComponent<Kickable>() != null)
+		if (target.GetComponent<Kickable>() != null) {
 			target.GetComponent<Kickable>()
 				.Kick(new Vector2((int) gameObject.transform.localScale.x * info.Kick.x, info.Kick.y));
+		}
+	}
+	
+	[ClientRpc]
+	private void RpcDamage(GameObject target, MeleeAttackInfo info) {
+		Instantiate(InitScane.instance.HitObjectParticle).GetComponent<HitObjectParticle>().Initialize(new Vector2(info.Point.x * (int) transform.localScale.x, info.Point.y) + Utils.ToVector2(transform.position), info.Size, target);
 	}
 
 	public virtual void AttackProjectile(Object args) {
@@ -65,5 +74,9 @@ public class AttackHandler : NetworkBehaviour, IAttackable {
 	
 	public class AttackEvent : EventBase {
 		public AttackEvent(GameObject sender) : base(sender, true) { }
+	}
+	
+	public override int GetNetworkChannel() {
+		return Channels.DefaultReliable;
 	}
 }

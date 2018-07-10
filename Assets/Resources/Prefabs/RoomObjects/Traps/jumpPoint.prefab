@@ -58,6 +58,8 @@ GameObject:
   - component: {fileID: 114151007829044576}
   - component: {fileID: 114530090655576520}
   - component: {fileID: 114957092531875004}
+  - component: {fileID: 114155397152760714}
+  - component: {fileID: 114985634994006340}
   m_Layer: 14
   m_Name: jumpPoint
   m_TagString: Untagged
@@ -865,6 +867,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   NotMirrorChildrensOnSpawn: 0
+--- !u!114 &114155397152760714
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1215964558651176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 19
+    i1: 217
+    i2: 235
+    i3: 63
+    i4: 52
+    i5: 113
+    i6: 51
+    i7: 68
+    i8: 217
+    i9: 114
+    i10: 221
+    i11: 155
+    i12: 250
+    i13: 202
+    i14: 253
+    i15: 112
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114530090655576520
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -891,3 +925,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpPointDynamicMaterial: {fileID: 2100000, guid: 82e825ca7db7ad94f9649d11b2ac64ec,
     type: 2}
+--- !u!114 &114985634994006340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1215964558651176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 95463521222606448}
+  m_ParameterSendBits: 0
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 

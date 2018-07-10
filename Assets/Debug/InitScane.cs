@@ -50,15 +50,14 @@ public class InitScane : NetworkBehaviour {
 		RoomLayerMask = LayerMask.GetMask("Room");
 		PlayerLayerMask = LayerMask.GetMask("Player");
 		TrapLayerMask = LayerMask.GetMask("Trap");
-		GenerationInfo generation = GetGeneration();
 		
 		switch (RoomMode) {
 			case RoomSpawnMode.SPAWN_ONE:
-				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(TestRoomName)), Vector3.zero);
+				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(TestRoomName)), Vector3.zero, true);
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				break;
 			case RoomSpawnMode.SPAWN_ONE_ROOMEDITOR:
-				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8), Vector3.zero);
+				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8), Vector3.zero, true);
 				string[] gateInfo = File.ReadAllLines(Application.streamingAssetsPath + "/gate.txt", Encoding.UTF8);
 				GameObject startPos = new GameObject("startPosition");
 				startPos.transform.position = new Vector3(int.Parse(gateInfo[0]), int.Parse(gateInfo[1]), -1f);
@@ -67,12 +66,16 @@ public class InitScane : NetworkBehaviour {
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				break;
 			case RoomSpawnMode.SPAWN_GENERATION:
-				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation);
+				if (isServer) {
+					GenerationInfo generation = GetGeneration();
+					int seedToSpawn = rnd.Next();
+					GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, seedToSpawn, true);
+					if (VisualizeTestGeneration)
+						GenerationManager.VisualizeGeneration(generation);
+				}
+
 				break;
 		}
-		
-		if (VisualizeTestGeneration)
-			GenerationManager.VisualizeGeneration(generation);
 	}
 
 	private GenerationInfo GetGeneration() {
@@ -109,7 +112,8 @@ public class InitScane : NetworkBehaviour {
 					{new Vector2Int(3, 3), 0.1f},
 					{new Vector2Int(4, 4), 0.05f},
 				},
-				new List<Func<GenerationInfo, List<RoomInfo>>>(), 1
+				new List<Func<GenerationInfo, List<RoomInfo>>>(), 1,
+				rnd.Next()
 			);
 			if (generation.CellsCount >= MinGenerationCellCount)
 				break;

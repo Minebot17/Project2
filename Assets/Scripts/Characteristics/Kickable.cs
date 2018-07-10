@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Kickable : MonoBehaviour, IEventProvider {
+public class Kickable : NetworkBehaviour, IEventProvider {
 	
 	private readonly object[] eventHandlers = {
 		new EventHandler<KickEvent>()

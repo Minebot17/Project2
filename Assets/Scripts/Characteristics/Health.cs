@@ -2,14 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Health : MonoBehaviour, IEventProvider {
+public class Health : NetworkBehaviour, IEventProvider {
 
 	private readonly object[] eventHandlers = {
 		new EventHandler<DamageEvent>(),
 		new EventHandler<HealEvent>()
 	};
 
+	[SyncVar]
 	[SerializeField]
 	private int health;
 
@@ -17,9 +19,13 @@ public class Health : MonoBehaviour, IEventProvider {
 		get { return health; }
 	}
 
+	[SyncVar]
 	public Attribute MaxHealth = new Attribute("MaxHealth", 100);
 
 	public int Heal(int heal) {
+		if (!isServer)
+			return 0;
+			
 		HealEvent e = GetEventSystem<HealEvent>().CallListners(new HealEvent(gameObject, heal));
 		if (e.IsCancel)
 			return 0;
@@ -32,6 +38,9 @@ public class Health : MonoBehaviour, IEventProvider {
 	}
 
 	public int Damage(DamageBase damage) {
+		if (!isServer)
+			return 0;
+		
 		DamageEvent e = GetEventSystem<DamageEvent>().CallListners(new DamageEvent(gameObject, damage));
 		if (e.IsCancel)
 			return 0;

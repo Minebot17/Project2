@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
+using Random = System.Random;
 
 public static class GenerationManager {
 
@@ -24,6 +26,7 @@ public static class GenerationManager {
 	/// <param name="bigRoomTypesProcents">Карта, показывающая процент спавна каждой большой комнаты комнаты</param>
 	/// <param name="reservers">Алгоритмы, которые будут резервировать обязательные комнаты (ставят true в reserved и задают имя нужной комнаты)</param>
 	/// <param name="location">Индекс генерируемой локации</param>
+	/// <param name="seed">Сид для рандома</param>
 	/// <returns>Сгенерированный уровень</returns>
 	public static GenerationInfo Generate(
 			int levelIndex,
@@ -34,14 +37,16 @@ public static class GenerationManager {
 			float bigRoomProcent,
 			Dictionary<Vector2Int, float> bigRoomTypesProcents,
 			List<Func<GenerationInfo, List<RoomInfo>>> reservers,
-			int location
+			int location,
+			int seed
 		) {
-		GenerationInfo generation = new GenerationInfo(levelIndex, size, location); // создаем сетку комнат
+		Random random = new Random(seed);
+		GenerationInfo generation = new GenerationInfo(levelIndex, size, location, seed); // создаем сетку комнат
 		remover.Invoke(generation.Rooms); // Удаляем комнаты по алгоритму
 		generation.ReserveRooms(reservers); // Резервируем некоторые комнаты по алгоритму
 		generation.ReserveStartAndEnd(startEndReserver); // Отмечаем начало и конец уровня по алгоритму
-		generation.GenerateBigRooms(bigRoomProcent, bigRoomTypesProcents); // Генерируем большие комнаты, не затрагивая зарезервированные
-		generation.GenerateAndRemoveGates(removeGatesProcent); // генерируем проходы и удаляем рандомные
+		generation.GenerateBigRooms(random, bigRoomProcent, bigRoomTypesProcents); // Генерируем большие комнаты, не затрагивая зарезервированные
+		generation.GenerateAndRemoveGates(random, removeGatesProcent); // генерируем проходы и удаляем рандомные
 		generation.CheckAllGates(); // задаем проходам room to, удаляем проходы в никуда
 		generation.RemoveSeparatedRooms(); // удаляем комнаты, к которым нельзя дойти от начала или от конца
 		generation.ClearReservation(); // убираем резервацию (кроме начала и конца), и перезервируем
@@ -53,14 +58,20 @@ public static class GenerationManager {
 		return generation;
 	}
 
-	public static void SpawnGeneration(List<RoomLoader.Room> roomsToSpawn, GenerationInfo generation) {
+	public static GenerationInfo Generate(GenerationData data) {
+		return Generate(data.levelIndex, data.size, data.startEndReserver, data.remover, data.removeGatesProcent,
+			data.bigRoomProcent, data.bigRoomTypesProcents, data.reservers, data.location, data.seed);
+	}
+
+	public static void SpawnGeneration(List<RoomLoader.Room> roomsToSpawn, GenerationInfo generation, int seed, bool onServer) {
+		Random random = new Random(seed);
 		currentGeneration = generation;
 		spawnedRooms = new GameObject[generation.size.x, generation.size.y];
 		GameObject generationObject = new GameObject("generation");
-		SpawnRoom(roomsToSpawn.Find(x => x.fileName.Contains("startRoom")), generation.startRoom, generationObject.transform);
-		SpawnRoom(roomsToSpawn.Find(x => x.fileName.Contains("endRoom")), generation.endRoom, generationObject.transform);
+		SpawnRoom(roomsToSpawn.Find(x => x.fileName.Contains("startRoom")), generation.startRoom, generationObject.transform, onServer);
+		SpawnRoom(roomsToSpawn.Find(x => x.fileName.Contains("endRoom")), generation.endRoom, generationObject.transform, onServer);
 		foreach (RoomInfo reserved in generation.reservedRooms)
-			SpawnRoom(roomsToSpawn.Find(x => x.fileName.Equals(reserved.ReservedRoomName)), reserved, generationObject.transform);
+			SpawnRoom(roomsToSpawn.Find(x => x.fileName.Equals(reserved.ReservedRoomName)), reserved, generationObject.transform, onServer);
 		for(int x = 0; x < generation.size.x; x++)
 			for (int y = 0; y < generation.size.y; y++) {
 				RoomInfo currentPosition = generation.rooms[x, y];
@@ -74,7 +85,7 @@ public static class GenerationManager {
 					).ToList();
 					
 					if (validRooms.Count != 0)
-						SpawnRoom(validRooms[InitScane.rnd.Next(validRooms.Count)], currentPosition, generationObject.transform);
+						SpawnRoom(validRooms[random.Next(validRooms.Count)], currentPosition, generationObject.transform, onServer);
 				}
 			}
 
@@ -82,8 +93,8 @@ public static class GenerationManager {
 			TeleportPlayerToStart(player);
 	}
 
-	private static void SpawnRoom(RoomLoader.Room room, RoomInfo position, Transform parent) {
-		GameObject spawnedRoom = RoomLoader.SpawnRoom(room, new Vector3(position.Position.x * 495, position.Position.y * 277, 0));
+	private static void SpawnRoom(RoomLoader.Room room, RoomInfo position, Transform parent, bool onServer) {
+		GameObject spawnedRoom = RoomLoader.SpawnRoom(room, new Vector3(position.Position.x * 495, position.Position.y * 277, 0), onServer);
 		spawnedRoom.transform.parent = parent;
 		List<GameObject> gates = Utils.GetComponentsRecursive<GateObject>(spawnedRoom).ConvertAll(x => x.gameObject);
 		gates.ForEach(x =>
@@ -101,6 +112,13 @@ public static class GenerationManager {
 			for (int y = 0; y < position.Size.y; y++)
 				spawnedRooms[x + position.Position.x, y + position.Position.y] = spawnedRoom;
 		spawnedRoom.SetActive(false);
+	}
+
+	public static void SendAllObjectsToClients() {
+		for(int x = 0; x < currentGeneration.size.x; x++)
+			for(int y = 0; y < currentGeneration.size.y; y++)
+				if (currentGeneration.rooms[x, y] != null && spawnedRooms[x, y] != null && currentGeneration.rooms[x, y].Position == new Vector2Int(x, y))
+					RoomLoader.SendObjects(spawnedRooms[x, y]);
 	}
 
 	private static void OnGateEnter(GameObject player, GameObject gateObject) {
@@ -193,5 +211,18 @@ public static class GenerationManager {
 		}
 
 		return false;
+	}
+
+	public class GenerationData {
+		public int levelIndex;
+		public Vector2Int size;
+		public Func<RoomInfo[,], RoomInfo[]> startEndReserver;
+		public Action<RoomInfo[,]> remover;
+		public float removeGatesProcent;
+		public float bigRoomProcent;
+		public Dictionary<Vector2Int, float> bigRoomTypesProcents;
+		public List<Func<GenerationInfo, List<RoomInfo>>> reservers;
+		public int location;
+		public int seed;
 	}
 }

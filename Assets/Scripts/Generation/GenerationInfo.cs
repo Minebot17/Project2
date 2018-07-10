@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using UnityEngine;
+using Random = System.Random;
 
 public class GenerationInfo {
 	public readonly int index;
@@ -20,11 +21,13 @@ public class GenerationInfo {
 	public int CellsCount;
 	public int GatesCount;
 	public Dictionary<Vector2Int, Int32> BigRoomsCount = new Dictionary<Vector2Int, int>();
+	public int Seed;
 
-	public GenerationInfo(int index, Vector2Int size, int location) {
+	public GenerationInfo(int index, Vector2Int size, int location, int seed) {
 		this.index = index;
 		this.size = size;
 		this.location = location;
+		Seed = seed;
 		
 		rooms = new RoomInfo[size.x, size.y];
 		for(int x = 0; x < size.x; x++)
@@ -72,10 +75,10 @@ public class GenerationInfo {
 		reservedRooms.Clear();
 	}
 
-	public void GenerateBigRooms(float bigRoomProcent, Dictionary<Vector2Int, float> bigRoomTypesProcents) {
+	public void GenerateBigRooms(Random random, float bigRoomProcent, Dictionary<Vector2Int, float> bigRoomTypesProcents) {
 		for(int x = 0; x < size.x; x++)
 			for (int y = 0; y < size.y; y++) {
-				if (Rooms[x, y] != null && Rooms[x, y].Size == Vector2Int.one && InitScane.rnd.NextDouble() < bigRoomProcent) {
+				if (Rooms[x, y] != null && Rooms[x, y].Size == Vector2Int.one && random.NextDouble() < bigRoomProcent) {
 					Dictionary<Vector2Int, float> currentTypesProcent = new Dictionary<Vector2Int, float>(bigRoomTypesProcents);
 
 					//Удаляем невозможные размеры комнат
@@ -113,7 +116,7 @@ public class GenerationInfo {
 						sumBuffer += values[i];
 					}
 					prosentLine[prosentLine.Length - 1] = sumBuffer;
-					Vector2Int roomSize = currentTypesProcent.Keys.ToList()[GetNumberIndexInProcentLine(prosentLine, (float) InitScane.rnd.NextDouble() * prosentLine[prosentLine.Length - 1])];
+					Vector2Int roomSize = currentTypesProcent.Keys.ToList()[GetNumberIndexInProcentLine(prosentLine, (float) random.NextDouble() * prosentLine[prosentLine.Length - 1])];
 					SetRoomSize(new Vector2Int(x, y), roomSize);
 				}
 			}
@@ -127,12 +130,12 @@ public class GenerationInfo {
 		endRoom.Reserve("end");
 	}
 
-	public void GenerateAndRemoveGates(float removeProcent) {
+	public void GenerateAndRemoveGates(Random random, float removeProcent) {
 		for(int x = 0; x < size.x; x++)
 			for (int y = 0; y < size.y; y++) {
 				if (rooms[x, y] != null && rooms[x, y].Position == new Vector2Int(x, y)) {
 					rooms[x, y].GenerateGates(rooms);
-					rooms[x, y].RemoveRandomGates(Rooms, removeProcent);
+					rooms[x, y].RemoveRandomGates(random, Rooms, removeProcent);
 				}
 			}
 	}

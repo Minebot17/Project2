@@ -43,6 +43,8 @@ GameObject:
   - component: {fileID: 114902407937296962}
   - component: {fileID: 114840889767600626}
   - component: {fileID: 114537284860073752}
+  - component: {fileID: 114242248075898426}
+  - component: {fileID: 114805756443173432}
   m_Layer: 14
   m_Name: bulava
   m_TagString: Untagged
@@ -176,6 +178,38 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &114242248075898426
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1572888172980128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 14
+    i1: 179
+    i2: 135
+    i3: 46
+    i4: 18
+    i5: 203
+    i6: 149
+    i7: 116
+    i8: 121
+    i9: 232
+    i10: 15
+    i11: 241
+    i12: 83
+    i13: 84
+    i14: 254
+    i15: 140
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114537284860073752
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -188,6 +222,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tile: {fileID: 1345216157822288, guid: 64840787cabe8bc4196f6e9d0861967c, type: 2}
+--- !u!114 &114805756443173432
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1572888172980128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8a223d6f68397459e3c7b1aa78b52c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  X: 1
+  Y: 1
+  Z: 0
+  posLerpRate: 15
+  posThreshold: 1
 --- !u!114 &114840889767600626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -225,3 +275,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  NotMirrorChildrensOnSpawn: 0

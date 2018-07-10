@@ -45,9 +45,9 @@ public class RoomInfo {
 		Gates.RemoveAll(gate => generation.Rooms[gate.RoomTo.x, gate.RoomTo.y] == null);
 	}
 
-	public void RemoveRandomGates(RoomInfo[,] rooms, float procent) {
+	public void RemoveRandomGates(System.Random random, RoomInfo[,] rooms, float procent) {
 		Gates.RemoveAll(x => {
-			bool delete = InitScane.rnd.NextDouble() < procent;
+			bool delete = random.NextDouble() < procent;
 			if (delete && rooms[x.RoomTo.x, x.RoomTo.y] != null) {
 				RoomInfo roomTo = rooms[x.RoomTo.x, x.RoomTo.y];
 				GateInfo gateToRemoveToo = roomTo.Gates.Find(y => y.RoomTo == Position);
