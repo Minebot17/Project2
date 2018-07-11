@@ -32,7 +32,7 @@ public static class GenerationManager {
 			int levelIndex,
 			Vector2Int size,
 			Func<RoomInfo[,], RoomInfo[]> startEndReserver,
-			Action<RoomInfo[,]> remover,
+			Action<System.Random, RoomInfo[,]> remover,
 			float removeGatesProcent,
 			float bigRoomProcent,
 			Dictionary<Vector2Int, float> bigRoomTypesProcents,
@@ -42,7 +42,7 @@ public static class GenerationManager {
 		) {
 		Random random = new Random(seed);
 		GenerationInfo generation = new GenerationInfo(levelIndex, size, location, seed); // создаем сетку комнат
-		remover.Invoke(generation.Rooms); // Удаляем комнаты по алгоритму
+		remover.Invoke(random, generation.Rooms); // Удаляем комнаты по алгоритму
 		generation.ReserveRooms(reservers); // Резервируем некоторые комнаты по алгоритму
 		generation.ReserveStartAndEnd(startEndReserver); // Отмечаем начало и конец уровня по алгоритму
 		generation.GenerateBigRooms(random, bigRoomProcent, bigRoomTypesProcents); // Генерируем большие комнаты, не затрагивая зарезервированные
@@ -125,7 +125,7 @@ public static class GenerationManager {
 		Vector2Int localPosition = GateInfo.RoomObjectToLocalPosition(gateObject.transform.localPosition);
 		Vector2Int nextCoord = GateInfo.LocalPositionToVector(localPosition) + currentRoomCoords;
 		if (spawnedRooms != null && nextCoord.x >= 0 && nextCoord.x < spawnedRooms.GetLength(0) && nextCoord.y >= 0 &&
-		    nextCoord.y < spawnedRooms.GetLength(1)
+		    nextCoord.y < spawnedRooms.GetLength(1) && player.GetComponent<NetworkIdentity>().isLocalPlayer
 		    ) {
 			SetCurrentRoom(nextCoord);
 			Vector3 toPlayerCoords =
@@ -217,7 +217,7 @@ public static class GenerationManager {
 		public int levelIndex;
 		public Vector2Int size;
 		public Func<RoomInfo[,], RoomInfo[]> startEndReserver;
-		public Action<RoomInfo[,]> remover;
+		public Action<System.Random, RoomInfo[,]> remover;
 		public float removeGatesProcent;
 		public float bigRoomProcent;
 		public Dictionary<Vector2Int, float> bigRoomTypesProcents;

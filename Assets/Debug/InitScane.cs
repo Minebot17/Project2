@@ -93,11 +93,11 @@ public class InitScane : NetworkBehaviour {
 					x.Cast<RoomInfo>().First(y =>
 						y != null && y.Position.y < 2 && y.Position.x > 14 && y.Position.x < 16)
 				},
-				rooms => {
+				(random, rooms) => {
 					for (int x = 0; x < rooms.GetLength(0); x++)
 					for (int y = 0; y < rooms.GetLength(1); y++) {
 						float procent = (-(1f / 3f) * (float) Math.Pow(x - 15, 2) + 100) / 100f;
-						if (rnd.NextDouble() > procent)
+						if (random.NextDouble() > procent)
 							rooms[x, y] = null;
 					}
 				},
@@ -132,10 +132,11 @@ public class InitScane : NetworkBehaviour {
 	}
 	
 	public void OnSpawnGeneration(NetworkMessage msg) {
-		Debug.Log("dawdawd");
 		string[] data = msg.ReadMessage<StringMessage>().value.Split(',');
 		GenerationInfo generation = InitScane.instance.GetGeneration(int.Parse(data[0]));
 		GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, int.Parse(data[1]), false);
+		if (VisualizeTestGeneration)
+			GenerationManager.VisualizeGeneration(generation);
 		msg.conn.Send(spawnObjIndex, new EmptyMessage());
 	}
 
@@ -155,6 +156,8 @@ public class InitScane : NetworkBehaviour {
 			InitScane.instance.seedToSpawn = InitScane.rnd.Next();
 			GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, InitScane.instance.seedToSpawn, true);
 			NetworkServer.SendToAll(spawnGenIndex,new StringMessage(GenerationManager.currentGeneration.Seed + "," + InitScane.instance.seedToSpawn));
+			if (VisualizeTestGeneration)
+				GenerationManager.VisualizeGeneration(generation);
 		}
 		else if (RoomMode == RoomSpawnMode.SPAWN_GENERATION && !isServer)
 			NetworkManager.singleton.client.Send(getGenIndex, new EmptyMessage());
