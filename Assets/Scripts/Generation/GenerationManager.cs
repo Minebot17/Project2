@@ -160,7 +160,7 @@ public static class GenerationManager {
 
 	public static void VisualizeGeneration(GenerationInfo generation) {
 		GameObject visualizedGeneration = new GameObject("Generation");
-		visualizedGeneration.transform.position = new Vector3(0, 0, -201f);
+		visualizedGeneration.transform.position = new Vector3(0, 0, -201);
 		for(int x = 0; x < generation.size.x; x++)
 			for (int y = 0; y < generation.size.y; y++) {
 				if (generation.rooms[x, y] != null && generation.rooms[x, y].Position == new Vector2Int(x, y)) {
