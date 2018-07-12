@@ -160,7 +160,7 @@ public static class GenerationManager {
 
 	public static void VisualizeGeneration(GenerationInfo generation) {
 		GameObject visualizedGeneration = new GameObject("Generation");
-		visualizedGeneration.transform.position = new Vector3(0, 0, -11);
+		visualizedGeneration.transform.position = new Vector3(0, 0, -201f);
 		for(int x = 0; x < generation.size.x; x++)
 			for (int y = 0; y < generation.size.y; y++) {
 				if (generation.rooms[x, y] != null && generation.rooms[x, y].Position == new Vector2Int(x, y)) {
@@ -188,7 +188,7 @@ public static class GenerationManager {
 							gate.LocalPosition.x == 0 || gate.LocalPosition.x == 1 ? 247.5f + 495f * gate.LocalPosition.y : pos.x, 
 							gate.LocalPosition.x == 2 || gate.LocalPosition.x == 3 ? 138.5f + 277f * gate.LocalPosition.y : pos.y
 						);
-						gateObject.transform.localPosition = roomObject.transform.localPosition + pos + new Vector3(0, 0, -11f);
+						gateObject.transform.localPosition = roomObject.transform.localPosition + pos + new Vector3(0, 0, -201f);
 						gateObject.transform.parent = roomObject.transform;
 					}
 				}
