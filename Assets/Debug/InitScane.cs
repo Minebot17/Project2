@@ -151,6 +151,8 @@ public class InitScane : NetworkBehaviour {
 	private void Start() {
 		if (doStartForce)
 			LocalPlayer.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
+		if (isServer)
+			NetworkServer.SpawnObjects();
 		if (RoomMode == RoomSpawnMode.SPAWN_GENERATION && isServer) {
 			GenerationInfo generation = InitScane.instance.GetGeneration(InitScane.rnd.Next());
 			InitScane.instance.seedToSpawn = InitScane.rnd.Next();
