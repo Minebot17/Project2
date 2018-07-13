@@ -97,7 +97,7 @@ public static class ObjectsManager {
 		
 		return go;
 	}
-	
+
 	public static GameObject SpawnGameObject(GameObject obj, Vector2 coords, Vector3 rotate, Transform parent, bool forceInit) {
 		GameObject go = MonoBehaviour.Instantiate(obj);
 		go.transform.parent = parent;

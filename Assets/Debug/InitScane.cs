@@ -40,10 +40,12 @@ public class InitScane : NetworkBehaviour {
 	public GameObject FireObjectParticle;
 	public int seedToSpawn;
 	
-	public static short index = 0;
+	public static short indexController = 0;
 	public const int getGenIndex = 99;
 	public const int spawnGenIndex = 100;
 	public const int spawnObjIndex = 101;
+	public const int clientRequestIndex = 102;
+	public const int serverResponseIndex = 103;
 
 	private bool doStartForce;
 	public void Awake() {
@@ -64,6 +66,15 @@ public class InitScane : NetworkBehaviour {
 		NetworkServer.RegisterHandler(spawnGenIndex, OnSpawnGeneration);
 		NetworkManager.singleton.client.RegisterHandler(spawnObjIndex, OnSpawnNetworkObjects);
 		NetworkServer.RegisterHandler(spawnObjIndex, OnSpawnNetworkObjects);
+		NetworkManager.singleton.client.RegisterHandler(clientRequestIndex, NetworkSpawnSetupHandler.ClientRequest);
+		NetworkServer.RegisterHandler(clientRequestIndex, NetworkSpawnSetupHandler.ClientRequest);
+		NetworkManager.singleton.client.RegisterHandler(serverResponseIndex, NetworkSpawnSetupHandler.ServerResponse);
+		NetworkServer.RegisterHandler(serverResponseIndex, NetworkSpawnSetupHandler.ServerResponse);
+		
+		if (isClient) {
+			foreach (GameObject go in NetworkManager.singleton.spawnPrefabs)
+				ClientScene.RegisterSpawnHandler(go.GetComponent<NetworkIdentity>().assetId, SpawnObjectsDefault, UnSpawnObjectsDefault);
+		}
 		
 		switch (RoomMode) {
 			case RoomSpawnMode.SPAWN_ONE:
@@ -135,6 +146,7 @@ public class InitScane : NetworkBehaviour {
 		string[] data = msg.ReadMessage<StringMessage>().value.Split(',');
 		GenerationInfo generation = InitScane.instance.GetGeneration(int.Parse(data[0]));
 		GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, int.Parse(data[1]), false);
+		GenerationManager.SetCurrentRoom(GenerationManager.currentGeneration.startRoom.Position);
 		if (VisualizeTestGeneration)
 			GenerationManager.VisualizeGeneration(generation);
 	}
@@ -143,13 +155,17 @@ public class InitScane : NetworkBehaviour {
 		GenerationManager.SendAllObjectsToClients();
 		GameObject player = Instantiate(InitScane.instance.LocalPlayer);
 		GenerationManager.TeleportPlayerToStart(player);
-		NetworkServer.AddPlayerForConnection(msg.conn, player, index);
-		index++;
+		NetworkServer.AddPlayerForConnection(msg.conn, player, indexController);
+		indexController++;
+
+		NetworkSpawnSetupHandler.dirtyConnection = msg.conn;
+		NetworkSpawnSetupHandler.markDirty = true;
 	}
 
 	private void Start() {
 		if (doStartForce)
 			LocalPlayer.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
+
 		if (isServer)
 			NetworkServer.SpawnObjects();
 		if (RoomMode == RoomSpawnMode.SPAWN_GENERATION && isServer) {
@@ -159,14 +175,36 @@ public class InitScane : NetworkBehaviour {
 			GenerationManager.SendAllObjectsToClients();
 			GameObject player = Instantiate(InitScane.instance.LocalPlayer);
 			GenerationManager.TeleportPlayerToStart(player);
-			NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, index);
-			index++;
+			NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
+			indexController++;
 			if (VisualizeTestGeneration)
 				GenerationManager.VisualizeGeneration(generation);
 		}
 		else if (RoomMode == RoomSpawnMode.SPAWN_GENERATION && !isServer)
 			NetworkManager.singleton.client.Send(getGenIndex, new EmptyMessage());
 			
+	}
+
+	private GameObject SpawnObjectsDefault(Vector3 position, NetworkHash128 assetId) {
+		int x = (int)position.x % 495;
+		int y = (int)position.y % 277;
+		GameObject spawned = Instantiate(FindAssetID(assetId));
+		spawned.transform.parent = GenerationManager.spawnedRooms[x, y].transform.Find("Objects");
+		spawned.transform.position = position;
+		return spawned;
+	}
+	
+	public void UnSpawnObjectsDefault(GameObject spawned){
+		Destroy(spawned);
+	}
+
+	private GameObject FindAssetID(NetworkHash128 assetId) {
+		foreach (GameObject go in NetworkManager.singleton.spawnPrefabs) {
+			if (go.GetComponent<NetworkIdentity>().assetId.Equals(assetId))
+				return go;
+		}
+
+		return null;
 	}
 
 	private void FixedUpdate() {

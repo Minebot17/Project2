@@ -95,7 +95,7 @@ public static class RoomLoader {
 		Transform objectParent = roomObject.transform.Find("Objects");
 		for (int i = 0; i < objectParent.childCount; i++)
 			if (objectParent.GetChild(i).GetComponent<NetworkIdentity>() != null)
-				NetworkServer.Spawn(objectParent.GetChild(i).gameObject);
+				NetworkServer.Spawn(objectParent.GetChild(i).gameObject, objectParent.GetChild(i).gameObject.GetComponent<NetworkIdentity>().assetId);
 	}
 
 	#region Generators

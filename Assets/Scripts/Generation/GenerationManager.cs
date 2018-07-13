@@ -11,7 +11,7 @@ public static class GenerationManager {
 
 	public static GenerationInfo currentGeneration;
 	public static GameObject currentRoom;
-	private static GameObject[,] spawnedRooms;
+	public static GameObject[,] spawnedRooms;
 	private static Vector2Int currentRoomCoords = new Vector2Int(-1, -1);
 
 	/// <summary>
@@ -93,7 +93,7 @@ public static class GenerationManager {
 			TeleportPlayerToStart(player);
 	}
 
-	private static void SpawnRoom(RoomLoader.Room room, RoomInfo position, Transform parent, bool onServer) {
+	private static GameObject SpawnRoom(RoomLoader.Room room, RoomInfo position, Transform parent, bool onServer) {
 		GameObject spawnedRoom = RoomLoader.SpawnRoom(room, new Vector3(position.Position.x * 495, position.Position.y * 277, 0), onServer);
 		spawnedRoom.transform.parent = parent;
 		List<GameObject> gates = Utils.GetComponentsRecursive<GateObject>(spawnedRoom).ConvertAll(x => x.gameObject);
@@ -112,6 +112,7 @@ public static class GenerationManager {
 			for (int y = 0; y < position.Size.y; y++)
 				spawnedRooms[x + position.Position.x, y + position.Position.y] = spawnedRoom;
 		spawnedRoom.SetActive(false);
+		return spawnedRoom;
 	}
 
 	public static void SendAllObjectsToClients() {
