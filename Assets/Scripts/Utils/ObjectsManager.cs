@@ -28,6 +28,15 @@ public static class ObjectsManager {
 			return null;
 
 		go = SpawnGameObject(go, new Vector3(), go.transform.localEulerAngles, parent, false);
+		go = SetupRoomObject(go, obj);
+
+		if (go.GetComponent<NetworkIdentity>() != null)
+			NetworkServer.Spawn(go);
+		
+		return go;
+	}
+
+	public static GameObject SetupRoomObject(GameObject go, RoomObject obj) {
 		go.name = obj.prefabName + "_" + obj.ID;
 		go.transform.localPosition = obj.coords;
 		if (obj.data != null && obj.data.Length != 0) {
@@ -38,10 +47,12 @@ public static class ObjectsManager {
 			}
 
 			spawnedData.spawnedData = obj.data;
+			spawnedData.roomObject = obj;
 		}
 
 		if (go.GetComponent<TypedObject>() != null) {
 			TypedObject.Type type = go.GetComponent<TypedObject>().Types[obj.type];
+			go.GetComponent<TypedObject>().TypeIndex = obj.type;
 			go.transform.localScale = new Vector3(type.Size.x, type.Size.y, go.transform.localScale.z);
 			for (int i = 0; i < go.transform.childCount; i++)
 				go.transform.GetChild(i).position = go.transform.position + go.transform.GetChild(i).localPosition;
@@ -91,10 +102,6 @@ public static class ObjectsManager {
 		if (go.GetComponent<SimpleObject>().NotMirrorChildrensOnSpawn)
 			for (int i = 0; i < childCount; i++)
 				go.transform.GetChild(i).localScale = new Vector3(go.transform.GetChild(i).localScale.x * (obj.mirrorX ? -1 : 1), go.transform.GetChild(i).localScale.y * (obj.mirrorY ? -1 : 1), go.transform.GetChild(i).localScale.z);
-
-		if (go.GetComponent<NetworkIdentity>() != null)
-			NetworkServer.Spawn(go);
-		
 		return go;
 	}
 

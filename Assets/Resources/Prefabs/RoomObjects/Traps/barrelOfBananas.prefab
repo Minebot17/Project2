@@ -52,6 +52,8 @@ GameObject:
   - component: {fileID: 50252957457370436}
   - component: {fileID: 114534289146747540}
   - component: {fileID: 114319922169340544}
+  - component: {fileID: 114298260017691468}
+  - component: {fileID: 114738696899170694}
   m_Layer: 17
   m_Name: barrelOfBananas
   m_TagString: Untagged
@@ -245,6 +247,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Banana: {fileID: 1115864861430628, guid: 2216b34ca56644447a1f819fd6cac061, type: 2}
+--- !u!114 &114298260017691468
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1584260096530976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0ec1ba9d1a68b48827fc9f9871ab11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114319922169340544
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -350,6 +363,17 @@ MonoBehaviour:
     calculatedValue: 100
     effectProcent: 0
     effectValue: 0
+--- !u!114 &114738696899170694
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1584260096530976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c15fa92e49f5ebc4d97a661213257872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114825680368977310
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -44,7 +44,6 @@ public class InitScane : NetworkBehaviour {
 	public const int getGenIndex = 99;
 	public const int spawnGenIndex = 100;
 	public const int spawnObjIndex = 101;
-	public const int clientRequestIndex = 102;
 	public const int serverResponseIndex = 103;
 
 	private bool doStartForce;
@@ -66,8 +65,6 @@ public class InitScane : NetworkBehaviour {
 		NetworkServer.RegisterHandler(spawnGenIndex, OnSpawnGeneration);
 		NetworkManager.singleton.client.RegisterHandler(spawnObjIndex, OnSpawnNetworkObjects);
 		NetworkServer.RegisterHandler(spawnObjIndex, OnSpawnNetworkObjects);
-		NetworkManager.singleton.client.RegisterHandler(clientRequestIndex, NetworkSpawnSetupHandler.ClientRequest);
-		NetworkServer.RegisterHandler(clientRequestIndex, NetworkSpawnSetupHandler.ClientRequest);
 		NetworkManager.singleton.client.RegisterHandler(serverResponseIndex, NetworkSpawnSetupHandler.ServerResponse);
 		NetworkServer.RegisterHandler(serverResponseIndex, NetworkSpawnSetupHandler.ServerResponse);
 		
@@ -147,12 +144,13 @@ public class InitScane : NetworkBehaviour {
 		GenerationInfo generation = InitScane.instance.GetGeneration(int.Parse(data[0]));
 		GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, int.Parse(data[1]), false);
 		GenerationManager.SetCurrentRoom(GenerationManager.currentGeneration.startRoom.Position);
+		msg.conn.Send(spawnObjIndex, new EmptyMessage());
 		if (VisualizeTestGeneration)
 			GenerationManager.VisualizeGeneration(generation);
 	}
 
 	public void OnSpawnNetworkObjects(NetworkMessage msg) {
-		GenerationManager.SendAllObjectsToClients();
+		//GenerationManager.SendAllObjectsToClients();
 		GameObject player = Instantiate(InitScane.instance.LocalPlayer);
 		GenerationManager.TeleportPlayerToStart(player);
 		NetworkServer.AddPlayerForConnection(msg.conn, player, indexController);

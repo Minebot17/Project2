@@ -4,4 +4,5 @@ using UnityEngine;
 
 public class SpawnedData : MonoBehaviour {
 	public string[] spawnedData;
+	public RoomObject roomObject;
 }

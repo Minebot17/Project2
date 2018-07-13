@@ -45,6 +45,8 @@ GameObject:
   - component: {fileID: 114537284860073752}
   - component: {fileID: 114242248075898426}
   - component: {fileID: 114805756443173432}
+  - component: {fileID: 114818331484845154}
+  - component: {fileID: 114028949574368998}
   m_Layer: 14
   m_Name: bulava
   m_TagString: Untagged
@@ -178,6 +180,17 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &114028949574368998
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1572888172980128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c15fa92e49f5ebc4d97a661213257872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114242248075898426
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -238,6 +251,17 @@ MonoBehaviour:
   Z: 0
   posLerpRate: 15
   posThreshold: 1
+--- !u!114 &114818331484845154
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1572888172980128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0ec1ba9d1a68b48827fc9f9871ab11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114840889767600626
 MonoBehaviour:
   m_ObjectHideFlags: 1

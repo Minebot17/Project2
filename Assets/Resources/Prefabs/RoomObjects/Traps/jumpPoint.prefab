@@ -60,6 +60,8 @@ GameObject:
   - component: {fileID: 114957092531875004}
   - component: {fileID: 114155397152760714}
   - component: {fileID: 114985634994006340}
+  - component: {fileID: 114529204780853694}
+  - component: {fileID: 114145771761801888}
   m_Layer: 14
   m_Name: jumpPoint
   m_TagString: Untagged
@@ -854,6 +856,17 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114145771761801888
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1215964558651176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c15fa92e49f5ebc4d97a661213257872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114151007829044576
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -899,6 +912,17 @@ MonoBehaviour:
     i15: 112
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &114529204780853694
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1215964558651176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0ec1ba9d1a68b48827fc9f9871ab11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114530090655576520
 MonoBehaviour:
   m_ObjectHideFlags: 1

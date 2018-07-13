@@ -34,6 +34,8 @@ GameObject:
   - component: {fileID: 114696391022409012}
   - component: {fileID: 114238611356225152}
   - component: {fileID: 114541956279209974}
+  - component: {fileID: 114170171870319678}
+  - component: {fileID: 114114360404252986}
   m_Layer: 17
   m_Name: barrel
   m_TagString: Untagged
@@ -274,6 +276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618acb647fc71424fbb515f544526e6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TypeIndex: 0
   Types:
   - Size: {x: 26, y: 30}
     MinUV: {x: 0.10644531, y: 0.6015625}
@@ -284,6 +287,28 @@ MonoBehaviour:
   - Size: {x: 26, y: 30}
     MinUV: {x: 0.051757812, y: 0.6015625}
     MaxUV: {x: 0.07714844, y: 0.66015625}
+--- !u!114 &114114360404252986
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1046486813272824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c15fa92e49f5ebc4d97a661213257872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114170171870319678
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1046486813272824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0ec1ba9d1a68b48827fc9f9871ab11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114238611356225152
 MonoBehaviour:
   m_ObjectHideFlags: 1

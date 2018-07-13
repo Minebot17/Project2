@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TypedObject : MonoBehaviour {
 	
+	public int TypeIndex;
 	public Type[] Types;
 
 	[System.Serializable]
