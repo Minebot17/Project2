@@ -137,7 +137,6 @@ public class InitScane : NetworkBehaviour {
 		GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, int.Parse(data[1]), false);
 		if (VisualizeTestGeneration)
 			GenerationManager.VisualizeGeneration(generation);
-		msg.conn.Send(spawnObjIndex, new EmptyMessage());
 	}
 
 	public void OnSpawnNetworkObjects(NetworkMessage msg) {
@@ -157,7 +156,11 @@ public class InitScane : NetworkBehaviour {
 			GenerationInfo generation = InitScane.instance.GetGeneration(InitScane.rnd.Next());
 			InitScane.instance.seedToSpawn = InitScane.rnd.Next();
 			GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, InitScane.instance.seedToSpawn, true);
-			NetworkServer.SendToAll(spawnGenIndex,new StringMessage(GenerationManager.currentGeneration.Seed + "," + InitScane.instance.seedToSpawn));
+			GenerationManager.SendAllObjectsToClients();
+			GameObject player = Instantiate(InitScane.instance.LocalPlayer);
+			GenerationManager.TeleportPlayerToStart(player);
+			NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, index);
+			index++;
 			if (VisualizeTestGeneration)
 				GenerationManager.VisualizeGeneration(generation);
 		}
