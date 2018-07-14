@@ -13,3 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Index: 0
   Projectile: {fileID: 1020922337752466, guid: 2fcc2ab829098ec4abb4d9413653cf28, type: 2}
+  TrustForce: 5000

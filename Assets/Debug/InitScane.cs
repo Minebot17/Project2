@@ -164,13 +164,10 @@ public class InitScane : NetworkBehaviour {
 		if (doStartForce)
 			LocalPlayer.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
 
-		if (isServer)
-			NetworkServer.SpawnObjects();
 		if (RoomMode == RoomSpawnMode.SPAWN_GENERATION && isServer) {
 			GenerationInfo generation = InitScane.instance.GetGeneration(InitScane.rnd.Next());
 			InitScane.instance.seedToSpawn = InitScane.rnd.Next();
 			GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, InitScane.instance.seedToSpawn, true);
-			GenerationManager.SendAllObjectsToClients();
 			GameObject player = Instantiate(InitScane.instance.LocalPlayer);
 			GenerationManager.TeleportPlayerToStart(player);
 			NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);

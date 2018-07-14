@@ -38,17 +38,19 @@ public static class ObjectsManager {
 
 	public static GameObject SetupRoomObject(GameObject go, RoomObject obj) {
 		go.name = obj.prefabName + "_" + obj.ID;
-		go.transform.localPosition = obj.coords;
+		go.transform.localPosition = new Vector3(obj.coords.x, obj.coords.y, go.transform.localPosition.z);
+		SpawnedData spawnedData = go.GetComponent<SpawnedData>();
 		if (obj.data != null && obj.data.Length != 0) {
-			SpawnedData spawnedData = go.GetComponent<SpawnedData>();
+			
 			if (spawnedData == null) {
 				Debug.LogError("Spawned prefab not have SpawnedData script: " + go.name);
 				return null;
 			}
 
 			spawnedData.spawnedData = obj.data;
-			spawnedData.roomObject = obj;
 		}
+		if (spawnedData != null)
+			spawnedData.roomObject = obj;
 
 		if (go.GetComponent<TypedObject>() != null) {
 			TypedObject.Type type = go.GetComponent<TypedObject>().Types[obj.type];

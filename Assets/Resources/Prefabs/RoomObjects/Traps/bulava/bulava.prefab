@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 114805756443173432}
   - component: {fileID: 114818331484845154}
   - component: {fileID: 114028949574368998}
+  - component: {fileID: 114417570930493292}
   m_Layer: 14
   m_Name: bulava
   m_TagString: Untagged
@@ -223,6 +224,22 @@ MonoBehaviour:
     i15: 140
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &114417570930493292
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1572888172980128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 701b501681160434fb7199245a1d48b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  X: 0
+  Y: 0
+  Z: 1
+  rotLerpRate: 150
+  rotThreshold: 1
 --- !u!114 &114537284860073752
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -249,7 +266,7 @@ MonoBehaviour:
   X: 1
   Y: 1
   Z: 0
-  posLerpRate: 15
+  posLerpRate: 150
   posThreshold: 1
 --- !u!114 &114818331484845154
 MonoBehaviour:
