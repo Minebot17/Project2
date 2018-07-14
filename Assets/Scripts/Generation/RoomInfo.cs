@@ -39,10 +39,10 @@ public class RoomInfo {
 			if (vec.x < generation.Rooms.GetLength(0) && vec.y < generation.Rooms.GetLength(1) && vec.x >= 0 && vec.y >= 0)
 				gate.RoomTo = vec;
 		});
-		Gates.RemoveAll(gate => generation.Rooms[gate.RoomTo.x, gate.RoomTo.y] == null);
+		Gates.RemoveAll(gate => gate.RoomTo == Vector2Int.zero || generation.Rooms[gate.RoomTo.x, gate.RoomTo.y] == null);
 		List<GateInfo> gates = new List<GateInfo>(Gates);
 		gates.ForEach(x => generation.ConstructGateIfNotExists(x.RoomFrom, generation.Rooms[x.RoomTo.x, x.RoomTo.y]));
-		Gates.RemoveAll(gate => generation.Rooms[gate.RoomTo.x, gate.RoomTo.y] == null);
+		Gates.RemoveAll(gate => gate.RoomTo == Vector2Int.zero || generation.Rooms[gate.RoomTo.x, gate.RoomTo.y] == null);
 	}
 
 	public void RemoveRandomGates(System.Random random, RoomInfo[,] rooms, float procent) {

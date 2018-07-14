@@ -55,6 +55,7 @@ public static class GenerationManager {
 		generation.ConstructPathToEndIfNotExists(); // конструируем путь от начала к концу (если он не существует) (обходя зарезервированные комнаты)
 		generation.CheckAllGates(); // задаем проходам room to, удаляем проходы в никуда
 		generation.WriteStats(); // записать характеристику и статистику о генерации в объект генерации
+		
 		return generation;
 	}
 

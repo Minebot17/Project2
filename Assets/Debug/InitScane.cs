@@ -39,6 +39,7 @@ public class InitScane : NetworkBehaviour {
 	public GameObject HitObjectParticle;
 	public GameObject FireObjectParticle;
 	public int seedToSpawn;
+	public int seedToGeneration;
 	
 	public static short indexController = 0;
 	public const int getGenIndex = 99;
@@ -127,6 +128,11 @@ public class InitScane : NetworkBehaviour {
 				new List<Func<GenerationInfo, List<RoomInfo>>>(), 1,
 				seed
 			);
+			Debug.Log("ReservedCount: " + generation.ReservedCount);
+			Debug.Log("RoomsCount: " + generation.RoomsCount);
+			Debug.Log("CellsCount: " + generation.CellsCount);
+			Debug.Log("GatesCount: " + generation.GatesCount);
+			Debug.Log("Seed: " + generation.Seed);
 			if (generation.CellsCount >= MinGenerationCellCount)
 				break;
 			Debug.Log("Regenerate");
@@ -165,8 +171,9 @@ public class InitScane : NetworkBehaviour {
 			LocalPlayer.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
 
 		if (RoomMode == RoomSpawnMode.SPAWN_GENERATION && isServer) {
-			GenerationInfo generation = InitScane.instance.GetGeneration(InitScane.rnd.Next());
-			InitScane.instance.seedToSpawn = InitScane.rnd.Next();
+			seedToGeneration = int.Parse(GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>().Seed);
+			GenerationInfo generation = InitScane.instance.GetGeneration(seedToGeneration == 0 ? InitScane.rnd.Next() : seedToGeneration);
+			seedToSpawn = seedToSpawn == 0 ? InitScane.rnd.Next() : seedToSpawn;
 			GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, InitScane.instance.seedToSpawn, true);
 			GameObject player = Instantiate(InitScane.instance.LocalPlayer);
 			GenerationManager.TeleportPlayerToStart(player);

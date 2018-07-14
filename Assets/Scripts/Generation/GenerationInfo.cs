@@ -289,11 +289,11 @@ public class GenerationInfo {
 		roomToCopy.GenerateGates(rooms);
 
 		foreach (GateInfo gate in roomFromCopy.Gates)
-			if (gate.RoomTo == roomTo.Position)
+			if (rooms[gate.RoomTo.x, gate.RoomTo.y] != null && rooms[gate.RoomTo.x, gate.RoomTo.y].Position == roomTo.Position)
 				localPosFrom = gate.LocalPosition;
 		
 		foreach (GateInfo gate in roomToCopy.Gates)
-			if (gate.RoomTo == roomFrom.Position)
+			if (rooms[gate.RoomTo.x, gate.RoomTo.y] != null && rooms[gate.RoomTo.x, gate.RoomTo.y].Position == roomFrom.Position)
 				localPosTo = gate.LocalPosition;
 		
 		roomFrom.AddGate(localPosFrom, rooms);
