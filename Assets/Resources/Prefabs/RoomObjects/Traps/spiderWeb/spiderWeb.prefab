@@ -67,6 +67,8 @@ GameObject:
   - component: {fileID: 114640863551779528}
   - component: {fileID: 114425127398283582}
   - component: {fileID: 114441675406639188}
+  - component: {fileID: 114888870950856150}
+  - component: {fileID: 114231141542357132}
   m_Layer: 14
   m_Name: spiderWeb
   m_TagString: Untagged
@@ -272,6 +274,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NearestColliders: []
+--- !u!114 &114231141542357132
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1850606278111970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 701b501681160434fb7199245a1d48b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  X: 0
+  Y: 0
+  Z: 1
+  rotLerpRate: 50
+  rotThreshold: 1
 --- !u!114 &114425127398283582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -362,6 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  NotMirrorChildrensOnSpawn: 0
 --- !u!114 &114824533270979514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -373,6 +392,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e679910b7ccb485448d2b92c0c5fd895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114888870950856150
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1850606278111970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 146
+    i1: 25
+    i2: 176
+    i3: 106
+    i4: 49
+    i5: 135
+    i6: 92
+    i7: 68
+    i8: 153
+    i9: 47
+    i10: 101
+    i11: 101
+    i12: 205
+    i13: 108
+    i14: 14
+    i15: 6
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!233 &233477059481509760
 HingeJoint2D:
   m_ObjectHideFlags: 1

@@ -13,6 +13,7 @@ using UnityEngine.Networking.NetworkSystem;
 public class InitScane : NetworkBehaviour {
 	public static InitScane instance;
 	public static System.Random rnd = new System.Random();
+	public static ServerEvents serverEvents = new ServerEvents();
 	public string LanguageCode;
 	public RoomSpawnMode RoomMode;
 	public string TestRoomName;
@@ -156,10 +157,15 @@ public class InitScane : NetworkBehaviour {
 	}
 
 	public void OnSpawnNetworkObjects(NetworkMessage msg) {
-		//GenerationManager.SendAllObjectsToClients();
 		GameObject player = Instantiate(InitScane.instance.LocalPlayer);
 		GenerationManager.TeleportPlayerToStart(player);
-		NetworkServer.AddPlayerForConnection(msg.conn, player, indexController);
+		player.GetComponent<EntityGroundInfo>().Initilize();
+		ServerEvents.OnServerPlayerAdd e = InitScane.serverEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
+			.CallListners(new ServerEvents.OnServerPlayerAdd(msg.conn, player));
+		if (e.IsCancel)
+			MonoBehaviour.Destroy(player);
+		else
+			NetworkServer.AddPlayerForConnection(msg.conn, player, indexController);
 		indexController++;
 
 		NetworkSpawnSetupHandler.dirtyConnection = msg.conn;

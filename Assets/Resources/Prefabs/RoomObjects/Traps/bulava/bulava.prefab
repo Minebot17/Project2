@@ -238,7 +238,7 @@ MonoBehaviour:
   X: 0
   Y: 0
   Z: 1
-  rotLerpRate: 150
+  rotLerpRate: 10
   rotThreshold: 1
 --- !u!114 &114537284860073752
 MonoBehaviour:

@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 114489124185812080}
   - component: {fileID: 114019036075670130}
   - component: {fileID: 114474405677426990}
+  - component: {fileID: 114826704107661664}
+  - component: {fileID: 114758614517115826}
   m_Layer: 14
   m_Name: banana
   m_TagString: Untagged
@@ -137,3 +139,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1002051749
+  NotMirrorChildrensOnSpawn: 0
+--- !u!114 &114758614517115826
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1960972369068822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8a223d6f68397459e3c7b1aa78b52c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  X: 1
+  Y: 1
+  Z: 0
+  posLerpRate: 150
+  posThreshold: 1
+--- !u!114 &114826704107661664
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1960972369068822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 50
+    i1: 56
+    i2: 145
+    i3: 23
+    i4: 88
+    i5: 83
+    i6: 214
+    i7: 68
+    i8: 200
+    i9: 88
+    i10: 76
+    i11: 233
+    i12: 249
+    i13: 236
+    i14: 204
+    i15: 54
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0

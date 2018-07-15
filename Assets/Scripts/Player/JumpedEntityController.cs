@@ -9,6 +9,7 @@ public class JumpedEntityController : NetworkBehaviour {
 	private Rigidbody2D rigidbody2D;
 
 	private void Start () {
+		InitScane.instance.Players.Add(gameObject);
 		info = GetComponent<EntityJumpedInfo>();
 		rigidbody2D = GetComponent<Rigidbody2D>();
 		

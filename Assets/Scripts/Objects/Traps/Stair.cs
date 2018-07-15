@@ -79,30 +79,43 @@ public class Stair : MonoBehaviour {
 			player.GetComponent<EntityGroundInfo>().GetEventSystem<EntityGroundInfo.LandingEvent>()
 				.SubcribeEvent(
 					@event => {
-						Collider2D[] result = new Collider2D[10];
-						Physics2D.OverlapCollider(
-							player.GetComponent<EntityGroundInfo>().GroundTrigger,
-							new ContactFilter2D(), result);
-						if (result.ToList().Exists(x => x != null && x.gameObject == childs[0])) {
-							if (type == 1) {
-								Timer.StartNewTimer("StairDisable", 0.5f, 1, gameObject, x => {
-									foreach (GameObject child in childs)
-										child.SetActive(false);
-								});
-								Timer.StartNewTimer("StairEnable", disableTime, 1, gameObject, x => {
-									foreach (GameObject child in childs)
-										child.SetActive(true);
-								});
-							}
-							else if (type == 2) {
-								Timer.StartNewTimer("StairRemove", 0.5f, 1, gameObject, x => {
-									foreach (GameObject child in childs)
-										child.SetActive(false);
-								});
-							}
-						}
+						SetupForPlayer(player);
 					}
 				);
+		}
+
+		InitScane.serverEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>().SubcribeEvent(x => {
+			x.Player.GetComponent<EntityGroundInfo>().GetEventSystem<EntityGroundInfo.LandingEvent>()
+				.SubcribeEvent(
+					@event => {
+						SetupForPlayer(x.Player);
+					}
+				);
+		});
+	}
+
+	private void SetupForPlayer(GameObject player) {
+		Collider2D[] result = new Collider2D[10];
+		Physics2D.OverlapCollider(
+			player.GetComponent<EntityGroundInfo>().GroundTrigger,
+			new ContactFilter2D(), result);
+		if (result.ToList().Exists(x => x != null && x.gameObject == childs[0])) {
+			if (type == 1) {
+				Timer.StartNewTimer("StairDisable", 0.5f, 1, gameObject, x => {
+					foreach (GameObject child in childs)
+						child.SetActive(false);
+				});
+				Timer.StartNewTimer("StairEnable", disableTime, 1, gameObject, x => {
+					foreach (GameObject child in childs)
+						child.SetActive(true);
+				});
+			}
+			else if (type == 2) {
+				Timer.StartNewTimer("StairRemove", 0.5f, 1, gameObject, x => {
+					foreach (GameObject child in childs)
+						child.SetActive(false);
+				});
+			}
 		}
 	}
 }
