@@ -42,17 +42,14 @@ public class InitScane : NetworkBehaviour {
 	public int seedToGeneration;
 	public bool doStartForce;
 	
-	public static short indexController = 0;
-	public const int getGenIndex = 99;
-	public const int spawnGenIndex = 100;
-	public const int spawnObjIndex = 101;
-	public const int serverResponseIndex = 103;
+	public short indexController = 0;
 	
 	public void Awake() {
 		instance = this;
 		Timer.InitializeCreate();
 		LanguageManager.Initialize();
 		LanguageManager.SetLanguage(x => x.Code.Equals(LanguageCode));
+		MessageManager.Initialize();
 		
 		ObjectsManager.LoadAllObjectsFromResources();
 		RoomLoader.LoadAllRoomsFromResources();
@@ -60,29 +57,10 @@ public class InitScane : NetworkBehaviour {
 		PlayerLayerMask = LayerMask.GetMask("Player");
 		TrapLayerMask = LayerMask.GetMask("Trap");
 		
-		NetworkManager.singleton.client.RegisterHandler(getGenIndex, OnGetGen);
-		NetworkServer.RegisterHandler(getGenIndex, OnGetGen);
-		NetworkManager.singleton.client.RegisterHandler(spawnGenIndex, OnSpawnGeneration);
-		NetworkServer.RegisterHandler(spawnGenIndex, OnSpawnGeneration);
-		NetworkManager.singleton.client.RegisterHandler(spawnObjIndex, OnSpawnNetworkObjects);
-		NetworkServer.RegisterHandler(spawnObjIndex, OnSpawnNetworkObjects);
-		NetworkManager.singleton.client.RegisterHandler(serverResponseIndex, NetworkSpawnSetupHandler.ServerResponse);
-		NetworkServer.RegisterHandler(serverResponseIndex, NetworkSpawnSetupHandler.ServerResponse);
-		
 		if (isClient) {
 			foreach (GameObject go in NetworkManager.singleton.spawnPrefabs)
 				ClientScene.RegisterSpawnHandler(go.GetComponent<NetworkIdentity>().assetId, SpawnObjectsDefault, UnSpawnObjectsDefault);
 		}
-		
-		/*switch (RoomMode) {
-			case RoomSpawnMode.SPAWN_ONE:
-				
-				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
-				break;
-			case RoomSpawnMode.SPAWN_ONE_ROOMEDITOR:
-				
-				break;
-		}*/
 	}
 
 	public GenerationInfo GetGeneration(int seed) {
@@ -135,35 +113,6 @@ public class InitScane : NetworkBehaviour {
 
 		return generation;
 	}
-	
-	public void OnGetGen(NetworkMessage msg){
-		msg.conn.Send(spawnGenIndex,new StringMessage(GenerationManager.currentGeneration.Seed + "," + InitScane.instance.seedToSpawn));
-	}
-	
-	public void OnSpawnGeneration(NetworkMessage msg) {
-		string[] data = msg.ReadMessage<StringMessage>().value.Split(',');
-		GenerationInfo generation = InitScane.instance.GetGeneration(int.Parse(data[0]));
-		GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, int.Parse(data[1]), false);
-		GenerationManager.SetCurrentRoom(GenerationManager.currentGeneration.startRoom.Position);
-		msg.conn.Send(spawnObjIndex, new EmptyMessage());
-		if (VisualizeTestGeneration)
-			GenerationManager.VisualizeGeneration(generation);
-	}
-
-	public void OnSpawnNetworkObjects(NetworkMessage msg) {
-		GameObject player = Instantiate(InitScane.instance.LocalPlayer);
-		GenerationManager.TeleportPlayerToStart(player);
-		ServerEvents.OnServerPlayerAdd e = InitScane.serverEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
-			.CallListners(new ServerEvents.OnServerPlayerAdd(msg.conn, player));
-		if (e.IsCancel)
-			MonoBehaviour.Destroy(player);
-		else
-			NetworkServer.AddPlayerForConnection(msg.conn, player, indexController);
-		indexController++;
-
-		NetworkSpawnSetupHandler.dirtyConnection = msg.conn;
-		NetworkSpawnSetupHandler.markDirty = true;
-	}
 
 	private void Start() {
 		if (isServer) {
@@ -203,7 +152,7 @@ public class InitScane : NetworkBehaviour {
 			}
 		}
 		else
-			NetworkManager.singleton.client.Send(getGenIndex, new EmptyMessage());
+			MessageManager.GetGenServerMessage.SendToServer(new EmptyMessage());
 	}
 
 	private GameObject SpawnObjectsDefault(Vector3 position, NetworkHash128 assetId) {

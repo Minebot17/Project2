@@ -11,6 +11,7 @@ public static class GenerationManager {
 
 	public static GenerationInfo currentGeneration;
 	public static GameObject currentRoom;
+	public static List<GameObject> activeRooms = new List<GameObject>();
 	public static GameObject[,] spawnedRooms;
 	private static Vector2Int currentRoomCoords = new Vector2Int(-1, -1);
 
@@ -114,13 +115,6 @@ public static class GenerationManager {
 				spawnedRooms[x + position.Position.x, y + position.Position.y] = spawnedRoom;
 		spawnedRoom.SetActive(false);
 		return spawnedRoom;
-	}
-
-	public static void SendAllObjectsToClients() {
-		for(int x = 0; x < currentGeneration.size.x; x++)
-			for(int y = 0; y < currentGeneration.size.y; y++)
-				if (currentGeneration.rooms[x, y] != null && spawnedRooms[x, y] != null && currentGeneration.rooms[x, y].Position == new Vector2Int(x, y))
-					RoomLoader.SendObjects(spawnedRooms[x, y]);
 	}
 
 	private static void OnGateEnter(GameObject player, GameObject gateObject) {
