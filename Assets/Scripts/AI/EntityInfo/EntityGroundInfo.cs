@@ -8,23 +8,16 @@ public class EntityGroundInfo : EntityInfo, IEventProvider{
 	public Collider2D GroundTrigger;
 	public bool OnGround;
 	public float MaxFallVelocity;
-	public bool initilize;
 
 	protected Rigidbody2D rigidbody2D;
 
-	protected virtual void Start() {	
-		rigidbody2D = GetComponent<Rigidbody2D>();
-
-		if (!initilize) {
-			addEvent(new EventHandler<FallEvent>());
-			addEvent(new EventHandler<LandingEvent>());
-		}
-	}
-
-	public void Initilize() {
+	private void Awake() {
 		addEvent(new EventHandler<FallEvent>());
 		addEvent(new EventHandler<LandingEvent>());
-		initilize = true;
+	}
+
+	protected virtual void Start() {	
+		rigidbody2D = GetComponent<Rigidbody2D>();
 	}
 
 	protected virtual void FixedUpdate() {

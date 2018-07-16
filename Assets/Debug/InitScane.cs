@@ -15,7 +15,6 @@ public class InitScane : NetworkBehaviour {
 	public static System.Random rnd = new System.Random();
 	public static ServerEvents serverEvents = new ServerEvents();
 	public string LanguageCode;
-	public RoomSpawnMode RoomMode;
 	public string TestRoomName;
 	public GameObject LocalPlayer;
 	public List<GameObject> Players;
@@ -41,14 +40,14 @@ public class InitScane : NetworkBehaviour {
 	public GameObject FireObjectParticle;
 	public int seedToSpawn;
 	public int seedToGeneration;
+	public bool doStartForce;
 	
 	public static short indexController = 0;
 	public const int getGenIndex = 99;
 	public const int spawnGenIndex = 100;
 	public const int spawnObjIndex = 101;
 	public const int serverResponseIndex = 103;
-
-	private bool doStartForce;
+	
 	public void Awake() {
 		instance = this;
 		Timer.InitializeCreate();
@@ -75,21 +74,15 @@ public class InitScane : NetworkBehaviour {
 				ClientScene.RegisterSpawnHandler(go.GetComponent<NetworkIdentity>().assetId, SpawnObjectsDefault, UnSpawnObjectsDefault);
 		}
 		
-		switch (RoomMode) {
+		/*switch (RoomMode) {
 			case RoomSpawnMode.SPAWN_ONE:
-				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(TestRoomName)), Vector3.zero, true);
+				
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				break;
 			case RoomSpawnMode.SPAWN_ONE_ROOMEDITOR:
-				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8), Vector3.zero, true);
-				string[] gateInfo = File.ReadAllLines(Application.streamingAssetsPath + "/gate.txt", Encoding.UTF8);
-				GameObject startPos = new GameObject("startPosition");
-				startPos.transform.position = new Vector3(int.Parse(gateInfo[0]), int.Parse(gateInfo[1]), -1f);
-				startPos.AddComponent<NetworkStartPosition>();
-				doStartForce = bool.Parse(gateInfo[2]);
-				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
+				
 				break;
-		}
+		}*/
 	}
 
 	public GenerationInfo GetGeneration(int seed) {
@@ -137,6 +130,7 @@ public class InitScane : NetworkBehaviour {
 			if (generation.CellsCount >= MinGenerationCellCount)
 				break;
 			Debug.Log("Regenerate");
+			seed = new System.Random(seed).Next();
 		}
 
 		return generation;
@@ -159,7 +153,6 @@ public class InitScane : NetworkBehaviour {
 	public void OnSpawnNetworkObjects(NetworkMessage msg) {
 		GameObject player = Instantiate(InitScane.instance.LocalPlayer);
 		GenerationManager.TeleportPlayerToStart(player);
-		player.GetComponent<EntityGroundInfo>().Initilize();
 		ServerEvents.OnServerPlayerAdd e = InitScane.serverEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
 			.CallListners(new ServerEvents.OnServerPlayerAdd(msg.conn, player));
 		if (e.IsCancel)
@@ -173,24 +166,44 @@ public class InitScane : NetworkBehaviour {
 	}
 
 	private void Start() {
-		if (doStartForce)
-			LocalPlayer.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
-
-		if (RoomMode == RoomSpawnMode.SPAWN_GENERATION && isServer) {
-			seedToGeneration = int.Parse(GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>().Seed);
-			GenerationInfo generation = InitScane.instance.GetGeneration(seedToGeneration == 0 ? InitScane.rnd.Next() : seedToGeneration);
-			seedToSpawn = seedToSpawn == 0 ? InitScane.rnd.Next() : seedToSpawn;
-			GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, InitScane.instance.seedToSpawn, true);
-			GameObject player = Instantiate(InitScane.instance.LocalPlayer);
-			GenerationManager.TeleportPlayerToStart(player);
-			NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
-			indexController++;
-			if (VisualizeTestGeneration)
-				GenerationManager.VisualizeGeneration(generation);
+		if (isServer) {
+			NetworkManagerCustomGUI gui = GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>();
+			if (gui.RoomMode == RoomSpawnMode.SPAWN_GENERATION) {
+				seedToGeneration = int.Parse(gui.Seed);
+				GenerationInfo generation = GetGeneration(seedToGeneration == 0 ? rnd.Next() : seedToGeneration);
+				seedToSpawn = seedToSpawn == 0 ? rnd.Next() : seedToSpawn;
+				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, seedToSpawn, true);
+				GameObject player = Instantiate(LocalPlayer);
+				GenerationManager.TeleportPlayerToStart(player);
+				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
+				indexController++;
+				if (VisualizeTestGeneration)
+					GenerationManager.VisualizeGeneration(generation);
+			}
+			else if (gui.RoomMode == RoomSpawnMode.SPAWN_ONE) {
+				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(TestRoomName)), Vector3.zero, true);
+				GameObject player = Instantiate(LocalPlayer);
+				player.transform.position = GameObject.Find("startPosition").transform.position;
+				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
+				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
+				ServerEvents.OnServerPlayerAdd e = InitScane.serverEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
+					.CallListners(new ServerEvents.OnServerPlayerAdd(NetworkServer.connections[0], player));
+			}
+			else if (gui.RoomMode == RoomSpawnMode.SPAWN_ONE_ROOMEDITOR) {
+				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8), Vector3.zero, true);
+				string[] gateInfo = File.ReadAllLines(Application.streamingAssetsPath + "/gate.txt", Encoding.UTF8);
+				GameObject.Find("startPosition").transform.position = new Vector3(int.Parse(gateInfo[0]), int.Parse(gateInfo[1]), -1f);
+				doStartForce = bool.Parse(gateInfo[2]);
+				GameObject player = Instantiate(LocalPlayer);
+				player.transform.position = GameObject.Find("startPosition").transform.position;
+				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
+				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
+				ServerEvents.OnServerPlayerAdd e = InitScane.serverEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
+					.CallListners(new ServerEvents.OnServerPlayerAdd(NetworkServer.connections[0], player));
+			}
 		}
-		else if (RoomMode == RoomSpawnMode.SPAWN_GENERATION && !isServer)
+		else
 			NetworkManager.singleton.client.Send(getGenIndex, new EmptyMessage());
-			
 	}
 
 	private GameObject SpawnObjectsDefault(Vector3 position, NetworkHash128 assetId) {

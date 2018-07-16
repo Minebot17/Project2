@@ -5,19 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scanes/Lobby.unity
     guid: 62152fde3cddc814e8d40f0940915f29
   - enabled: 1
-    path: Assets/Scanes/OnlineGeneration.unity
+    path: Assets/Scanes/Start.unity
     guid: 0f66b5d557cf6c141b4cf184cfb45b69
-  - enabled: 1
-    path: Assets/Scanes/OfflineTest.unity
-    guid: cc4f6c69ef7b7604d88a8285ae8d519b
-  - enabled: 1
-    path: Assets/Scanes/RoomEditor.unity
-    guid: b170131bb6f5cf44896859b3f744cb75
   m_configObjects: {}
