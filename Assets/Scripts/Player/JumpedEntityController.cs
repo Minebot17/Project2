@@ -8,10 +8,6 @@ public class JumpedEntityController : NetworkBehaviour {
 	private EntityJumpedInfo info;
 	private Rigidbody2D rigidbody2D;
 
-	private void Awake() {
-		InitScane.instance.Players.Add(gameObject);
-	}
-
 	private void Start () {
 		info = GetComponent<EntityJumpedInfo>();
 		rigidbody2D = GetComponent<Rigidbody2D>();
@@ -47,14 +43,6 @@ public class JumpedEntityController : NetworkBehaviour {
 				line3.SetPosition(line3.positionCount-1, transform.position + new Vector3(-16.5f, -20.5f, -0.1f));
 			});
 		}
-		
-		if (!isLocalPlayer)
-			return;
-		Utils.SetLocalPlayer(gameObject);
-		if (GenerationManager.currentGeneration != null)
-			GenerationManager.TeleportPlayerToStart(gameObject);
-		if (InitScane.instance.doStartForce)
-			rigidbody2D.AddForce(new Vector2(0, 30000)); // tODO;
 	}
 
 	private void FixedUpdate() {

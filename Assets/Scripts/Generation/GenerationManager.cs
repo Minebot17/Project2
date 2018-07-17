@@ -229,10 +229,16 @@ public static class GenerationManager {
 
 	public static void ApplyActiveRooms(List<GameObject> newActiveRooms) {
 		foreach (GameObject room in activeRooms)
-			room.SetActive(false);
+			if (!newActiveRooms.Contains(room))
+				room.SetActive(false);
 		foreach (GameObject room in newActiveRooms)
-			room.SetActive(true);
+			if (!activeRooms.Contains(room))
+				room.SetActive(true);
 		activeRooms = newActiveRooms;
+	}
+
+	public static void ActivateRoom() { // serialize and deserialize
+		
 	}
 
 	public class GenerationData {
