@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Networking.NetworkSystem;
 using Random = System.Random;
 
 public static class GenerationManager {
@@ -121,9 +122,10 @@ public static class GenerationManager {
 		Vector2Int localPosition = GateInfo.RoomObjectToLocalPosition(gateObject.transform.localPosition);
 		Vector2Int nextCoord = GateInfo.LocalPositionToVector(localPosition) + currentRoomCoords;
 		if (spawnedRooms != null && nextCoord.x >= 0 && nextCoord.x < spawnedRooms.GetLength(0) && nextCoord.y >= 0 &&
-		    nextCoord.y < spawnedRooms.GetLength(1) && player.GetComponent<NetworkIdentity>().isLocalPlayer
+		    nextCoord.y < spawnedRooms.GetLength(1)
 		    ) {
-			SetCurrentRoom(nextCoord);
+			if (player.GetComponent<NetworkIdentity>().isLocalPlayer)
+				SetCurrentRoom(nextCoord);
 			Vector3 toPlayerCoords =
 				localPosition.x == 0 ? new Vector3(0, -55f) :
 				localPosition.x == 1 ? new Vector3(0, 55f) :
@@ -132,6 +134,22 @@ public static class GenerationManager {
 			player.transform.position += toPlayerCoords;
 			if (localPosition.x == 1)
 				player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000f));
+		}
+
+		if (player.GetComponent<NetworkIdentity>().isServer) {
+			List<Vector2Int> coords = new List<Vector2Int>();
+			foreach (GameObject p in InitScane.instance.Players)
+				coords.Add(new Vector2Int((int) p.transform.position.x / 495, (int) p.transform.position.y / 277));
+			
+			string toMessage = "";
+			List<GameObject> newActiveRooms = new List<GameObject>();
+			foreach (Vector2Int coord in coords) {
+				newActiveRooms.Add(spawnedRooms[coord.x, coord.y]);
+				toMessage += coord.x + "," + coord.y + ";";
+			}
+
+			ApplyActiveRooms(newActiveRooms);
+			MessageManager.MarkDirtyActiveRoomsClientMessage.SendToAllClients(new StringMessage(toMessage));
 		}
 	}
 
@@ -207,6 +225,14 @@ public static class GenerationManager {
 		}
 
 		return false;
+	}
+
+	public static void ApplyActiveRooms(List<GameObject> newActiveRooms) {
+		foreach (GameObject room in activeRooms)
+			room.SetActive(false);
+		foreach (GameObject room in newActiveRooms)
+			room.SetActive(true);
+		activeRooms = newActiveRooms;
 	}
 
 	public class GenerationData {

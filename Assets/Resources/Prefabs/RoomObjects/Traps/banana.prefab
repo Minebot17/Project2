@@ -27,6 +27,8 @@ GameObject:
   - component: {fileID: 114474405677426990}
   - component: {fileID: 114826704107661664}
   - component: {fileID: 114758614517115826}
+  - component: {fileID: 114495993713336542}
+  - component: {fileID: 114161875059468140}
   m_Layer: 14
   m_Name: banana
   m_TagString: Untagged
@@ -115,6 +117,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ae4d13aa16e02940a27f68bc4598818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114161875059468140
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1960972369068822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c15fa92e49f5ebc4d97a661213257872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114474405677426990
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -140,6 +153,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1002051749
   NotMirrorChildrensOnSpawn: 0
+--- !u!114 &114495993713336542
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1960972369068822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0ec1ba9d1a68b48827fc9f9871ab11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114758614517115826
 MonoBehaviour:
   m_ObjectHideFlags: 1

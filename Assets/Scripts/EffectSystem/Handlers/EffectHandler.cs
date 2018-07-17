@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Обработчик системы эффектов. Должен быть на объекте, если он хочет иметь на себе эффекты
 /// </summary>
-public class EffectHandler : MonoBehaviour, IEventProvider {
+public class EffectHandler : NetworkBehaviour, IEventProvider {
 	
 	private readonly object[] eventHandlers = {
 		new EventHandler<AddEffectEvent>()

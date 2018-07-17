@@ -31,6 +31,7 @@ GameObject:
   - component: {fileID: 114915229315782332}
   - component: {fileID: 70765826420954712}
   - component: {fileID: 114094588665896764}
+  - component: {fileID: 114570952290323926}
   m_Layer: 14
   m_Name: tail
   m_TagString: Untagged
@@ -201,6 +202,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ListNames:
   - Burn
+--- !u!114 &114570952290323926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033642383183678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 133
+    i1: 203
+    i2: 58
+    i3: 32
+    i4: 124
+    i5: 212
+    i6: 124
+    i7: 196
+    i8: 217
+    i9: 237
+    i10: 205
+    i11: 172
+    i12: 61
+    i13: 122
+    i14: 67
+    i15: 6
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114658445920973540
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(SpawnedData))]
 public class HiddenEntryObject : MonoBehaviour {
 
 	void Start () {
+		NetworkServer.Spawn(transform.GetChild(1).gameObject);
 		string[] data = GetComponent<SpawnedData>().spawnedData;
 		int length = int.Parse(data[0]);
 		bool horizontal = bool.Parse(data[1]);
