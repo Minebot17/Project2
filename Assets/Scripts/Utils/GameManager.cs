@@ -10,26 +10,17 @@ using UnityEngine.Events;
 using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 
-public class InitScane : NetworkBehaviour {
-	public static InitScane instance;
+public class GameManager : NetworkBehaviour {
+	public static GameManager Instance;
 	public static System.Random rnd = new System.Random();
-	public static ServerEvents serverEvents = new ServerEvents();
-	public string LanguageCode;
-	public string TestRoomName;
+	public static ServerEvents ServerEvents = new ServerEvents();
+	public GameSettings Settings;
 	public GameObject LocalPlayer;
 	public List<GameObject> Players;
 	public Mesh OnePlane;
 	public Mesh OnePlaneCenter;
 	public Material DefaultMaterial;
 	public Material GenerationMaterial;
-	public bool VisualizeMeshGeneration;
-	public bool VisualizeColliders;
-	public bool VisualizeTraectorySimple;
-	public bool VisualizeTraectoryAdvanced;
-	public bool VisualizeTestGeneration;
-	public bool LogEvents;
-	public int MinGenerationCellCount;
-	public float TraectoryTracingFrequency;
 	public GameObject PointDebugObject;
 	public GameObject LineDebugObject;
 	public int RoomLayerMask;
@@ -45,10 +36,12 @@ public class InitScane : NetworkBehaviour {
 	public short indexController = 0;
 	
 	public void Awake() {
-		instance = this;
+		Instance = this;
+		Settings = new GameSettings();
+		Settings.Load();
 		Timer.InitializeCreate();
 		LanguageManager.Initialize();
-		LanguageManager.SetLanguage(x => x.Code.Equals(LanguageCode));
+		LanguageManager.SetLanguage(x => x.Code.Equals(Settings.SettingLanguageCode.Value));
 		MessageManager.Initialize();
 		
 		ObjectsManager.LoadAllObjectsFromResources();
@@ -105,7 +98,7 @@ public class InitScane : NetworkBehaviour {
 			Debug.Log("CellsCount: " + generation.CellsCount);
 			Debug.Log("GatesCount: " + generation.GatesCount);
 			Debug.Log("Seed: " + generation.Seed);
-			if (generation.CellsCount >= MinGenerationCellCount)
+			if (generation.CellsCount >= Settings.SettingMinGenerationCellCount.Value)
 				break;
 			Debug.Log("Regenerate");
 			seed = new System.Random(seed).Next();
@@ -126,16 +119,16 @@ public class InitScane : NetworkBehaviour {
 				GenerationManager.TeleportPlayerToStart(player);
 				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
 				indexController++;
-				if (VisualizeTestGeneration)
+				if (Settings.SettingVisualizeTestGeneration.Value)
 					GenerationManager.VisualizeGeneration(generation);
 			}
 			else if (gui.RoomMode == RoomSpawnMode.SPAWN_ONE) {
-				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(TestRoomName)), Vector3.zero, true);
+				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(Settings.SettingTestRoomName.Value)), Vector3.zero, true);
 				GameObject player = Instantiate(LocalPlayer);
 				player.transform.position = GameObject.Find("startPosition").transform.position;
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
-				ServerEvents.OnServerPlayerAdd e = InitScane.serverEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
+				ServerEvents.OnServerPlayerAdd e = GameManager.ServerEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
 					.CallListners(new ServerEvents.OnServerPlayerAdd(NetworkServer.connections[0], player));
 			}
 			else if (gui.RoomMode == RoomSpawnMode.SPAWN_ONE_ROOMEDITOR) {
@@ -147,7 +140,7 @@ public class InitScane : NetworkBehaviour {
 				player.transform.position = GameObject.Find("startPosition").transform.position;
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
-				ServerEvents.OnServerPlayerAdd e = InitScane.serverEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
+				ServerEvents.OnServerPlayerAdd e = GameManager.ServerEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
 					.CallListners(new ServerEvents.OnServerPlayerAdd(NetworkServer.connections[0], player));
 			}
 		}

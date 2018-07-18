@@ -59,7 +59,7 @@ public static class ObjectsManager {
 			for (int i = 0; i < go.transform.childCount; i++)
 				go.transform.GetChild(i).position = go.transform.position + go.transform.GetChild(i).localPosition;
 			
-			Mesh mesh = MonoBehaviour.Instantiate(InitScane.instance.OnePlane);
+			Mesh mesh = MonoBehaviour.Instantiate(GameManager.Instance.OnePlane);
 			mesh.SetUVs(0, new List<Vector2>() {
 				new Vector2(type.MinUV.x, type.MinUV.y), 
 				new Vector2(type.MaxUV.x, type.MinUV.y),

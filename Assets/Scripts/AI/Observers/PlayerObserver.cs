@@ -8,7 +8,7 @@ public class PlayerObserver : Observer {
 	public GameObject NearestTarget;
 
 	protected override void Observe() {
-		List<GameObject> currentTargets = InitScane.instance.Players.FindAll(player => Vector3.Distance(player.transform.position, transform.position) < ObserveRadius);
+		List<GameObject> currentTargets = GameManager.Instance.Players.FindAll(player => Vector3.Distance(player.transform.position, transform.position) < ObserveRadius);
 
 		foreach (GameObject newTarget in currentTargets) {
 			if (Targets.Exists(x => x == newTarget))

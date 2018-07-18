@@ -75,7 +75,7 @@ public static class RoomLoader {
 			go.transform.parent = meshParent.transform;
 			go.transform.localPosition = new Vector3(0, 0, mesh.layer);
 			go.AddComponent<MeshFilter>().mesh = mesh.mesh;
-			go.AddComponent<MeshRenderer>().material = mesh.material == null ? InitScane.instance.DefaultMaterial : mesh.material;
+			go.AddComponent<MeshRenderer>().material = mesh.material == null ? GameManager.Instance.DefaultMaterial : mesh.material;
 			if (mesh.name.Equals("background"))
 				go.layer = 9;
 			else if (mesh.name.Equals("shadowMeshX") || mesh.name.Equals("shadowMeshY"))
@@ -439,8 +439,8 @@ public static class RoomLoader {
 		foreach (Corner corner in corners) {
 			corner.FindConnections(corners);
 
-			if (InitScane.instance.VisualizeMeshGeneration)
-				MonoBehaviour.Instantiate(InitScane.instance.PointDebugObject, new Vector3(corner.coords.x, corner.coords.y, -1), new Quaternion());
+			if (GameManager.Instance.Settings.SettingVisualizeMeshGeneration.Value)
+				MonoBehaviour.Instantiate(GameManager.Instance.PointDebugObject, new Vector3(corner.coords.x, corner.coords.y, -1), new Quaternion());
 		}
 
 		List<Vector3> vertices = new List<Vector3>();
@@ -458,8 +458,8 @@ public static class RoomLoader {
 		foreach (Corner corner in corners) {
 			corner.FindConnections(new List<Corner>(corners.Cast<Corner>()));
 
-			if (InitScane.instance.VisualizeMeshGeneration)
-				MonoBehaviour.Instantiate(InitScane.instance.PointDebugObject, new Vector3(corner.coords.x, corner.coords.y, -1), new Quaternion());
+			if (GameManager.Instance.Settings.SettingVisualizeMeshGeneration.Value)
+				MonoBehaviour.Instantiate(GameManager.Instance.PointDebugObject, new Vector3(corner.coords.x, corner.coords.y, -1), new Quaternion());
 		}
 
 		List<Vector3> vertices = new List<Vector3>();
@@ -533,11 +533,11 @@ public static class RoomLoader {
 			corner.FindConnections(corners);
 
 			//Debug
-			if (InitScane.instance.VisualizeColliders) {
-				MonoBehaviour.Instantiate(InitScane.instance.PointDebugObject, new Vector3(corner.coords.x, corner.coords.y, -0.1f),
+			if (GameManager.Instance.Settings.SettingVisualizeColliders.Value) {
+				MonoBehaviour.Instantiate(GameManager.Instance.PointDebugObject, new Vector3(corner.coords.x, corner.coords.y, -0.1f),
 					new Quaternion());
 				if (corner.xConnection != null) {
-					LineRenderer render = MonoBehaviour.Instantiate(InitScane.instance.LineDebugObject).GetComponent<LineRenderer>();
+					LineRenderer render = MonoBehaviour.Instantiate(GameManager.Instance.LineDebugObject).GetComponent<LineRenderer>();
 					render.SetPositions(new Vector3[] {
 						new Vector3(corner.coords.x, corner.coords.y, -0.1f),
 						new Vector3(corner.xConnection.coords.x, corner.xConnection.coords.y, -0.1f)
@@ -545,7 +545,7 @@ public static class RoomLoader {
 				}
 
 				if (corner.yConnection != null) {
-					LineRenderer render = MonoBehaviour.Instantiate(InitScane.instance.LineDebugObject).GetComponent<LineRenderer>();
+					LineRenderer render = MonoBehaviour.Instantiate(GameManager.Instance.LineDebugObject).GetComponent<LineRenderer>();
 					render.SetPositions(new Vector3[] {
 						new Vector3(corner.coords.x, corner.coords.y, -0.1f),
 						new Vector3(corner.yConnection.coords.x, corner.yConnection.coords.y, -0.1f)
@@ -822,7 +822,7 @@ public static class RoomLoader {
 	}
 
 	private static void addHiddenBorder(Vector2Int coords, int length, bool horizontal, bool mirror) {
-		objectsToAddToNextRoom.Add(new RoomObject("hiddenEntryBorder", new Vector3(coords.x, coords.y, -0.009f), InitScane.rnd.Next(), false, mirror, 0, new string[] { Mathf.Abs(length) + "", horizontal + "" }));
+		objectsToAddToNextRoom.Add(new RoomObject("hiddenEntryBorder", new Vector3(coords.x, coords.y, -0.009f), GameManager.rnd.Next(), false, mirror, 0, new string[] { Mathf.Abs(length) + "", horizontal + "" }));
 	}
 
 	public static int[] triangleConnectedCorners(List<Corner> corners) {
@@ -843,9 +843,9 @@ public static class RoomLoader {
 					allLines.Add(line);
 			}
 
-		if (InitScane.instance.VisualizeMeshGeneration)
+		if (GameManager.Instance.Settings.SettingVisualizeMeshGeneration.Value)
 			foreach (Line line in allLines) {
-				LineRenderer render = MonoBehaviour.Instantiate(InitScane.instance.LineDebugObject).GetComponent<LineRenderer>();
+				LineRenderer render = MonoBehaviour.Instantiate(GameManager.Instance.LineDebugObject).GetComponent<LineRenderer>();
 				render.SetPositions(new Vector3[] { new Vector3(line.start.coords.x, line.start.coords.y, -1), new Vector3(line.end.coords.x, line.end.coords.y, -1) });
 			}
 
@@ -880,7 +880,7 @@ public static class RoomLoader {
 
 	private static void debugTriangle(List<Corner> corners, Triangle tringle) {
 		GameObject obj = new GameObject("triangle");
-		obj.AddComponent<MeshRenderer>().material = InitScane.instance.DefaultMaterial;
+		obj.AddComponent<MeshRenderer>().material = GameManager.Instance.DefaultMaterial;
 		Mesh mesh = new Mesh();
 		Vector3[] vecs = new Vector3[3];
 		for (int i = 0; i < 3; i++)

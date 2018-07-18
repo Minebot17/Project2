@@ -9,7 +9,7 @@ public class EventBase {
 	private bool isCancel;
 
 	public EventBase(GameObject sender, bool isCancable) {
-		if (InitScane.instance.LogEvents)
+		if (GameManager.Instance.Settings.SettingLogEvents.Value)
 			Debug.Log("[Event] Sender: " + sender + " Type: " + this);
 		Sender = sender;
 		IsCancable = isCancable;

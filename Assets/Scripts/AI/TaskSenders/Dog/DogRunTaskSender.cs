@@ -16,7 +16,7 @@ public class DogRunTaskSender : AbstractTaskSender<DogTaskHandler, DogInfo> {
 	
 	private void FixedUpdate() {
 		if (handler.GetCurrentState() == handler.CalmState && info.OnGround) {
-			int random = InitScane.rnd.Next(20);
+			int random = GameManager.rnd.Next(20);
 			
 			if (random == 0 && !(handler.GetPrevTask() is RotateTask))
 				handler.AddTask(new RotateTask(gameObject));
@@ -42,6 +42,6 @@ public class DogRunTaskSender : AbstractTaskSender<DogTaskHandler, DogInfo> {
 	}
 	
 	private void AddRandomRun() {
-		handler.AddTask(new RunForwardTask(gameObject, info.ForwardCollider, info.ForwarDownCollider, (int) (InitScane.rnd.NextDouble() * 200f)));
+		handler.AddTask(new RunForwardTask(gameObject, info.ForwardCollider, info.ForwarDownCollider, (int) (GameManager.rnd.NextDouble() * 200f)));
 	}
 }

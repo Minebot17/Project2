@@ -15,7 +15,7 @@ public static class Utils {
 	}
 
 	public static bool IsTouchRoom(Collider2D collider2D) {
-		return Physics2D.IsTouchingLayers(collider2D, InitScane.instance.RoomLayerMask);
+		return Physics2D.IsTouchingLayers(collider2D, GameManager.Instance.RoomLayerMask);
 	}
 
 	public static bool IsFreeBetweenPlayer(GameObject player, Vector3 point) {
@@ -41,7 +41,7 @@ public static class Utils {
 	}
 
 	public static Vector2 RandomPoint(float scale) {
-		return new Vector2(((float)InitScane.rnd.NextDouble() - 0.5f) * scale * 2, ((float)InitScane.rnd.NextDouble() - 0.5f) * scale * 2);
+		return new Vector2(((float)GameManager.rnd.NextDouble() - 0.5f) * scale * 2, ((float)GameManager.rnd.NextDouble() - 0.5f) * scale * 2);
 	}
 
 	public static GameObject FindNearestGameObject(List<GameObject> list, Vector2 point) {
@@ -60,7 +60,7 @@ public static class Utils {
 
 	public static Vector2 GetPlayerLook() {
 		Vector2 mousePos = ToVector2(GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition));
-		Vector2 headPos = ToVector2(InitScane.instance.PlayerHead.transform.position);
+		Vector2 headPos = ToVector2(GameManager.Instance.PlayerHead.transform.position);
 		return (mousePos - headPos).normalized;
 	}
 
@@ -102,16 +102,16 @@ public static class Utils {
 	}
 
 	public static void SetLocalPlayer(GameObject player) {
-		InitScane.instance.LocalPlayer = player;
+		GameManager.Instance.LocalPlayer = player;
 		GameObject.Find("Main Camera").GetComponent<CameraFollower>().Target = player;
 		GameObject.Find("HpPanel").GetComponent<HealthPanelGUI>().SetTarget(player);
 	}
 
 	public static GameObject FindNearestPlayer(Vector3 point) {
-		return FindNearestGameObject(InitScane.instance.Players, point);
+		return FindNearestGameObject(GameManager.Instance.Players, point);
 	}
 
 	public static GameObject FindVisibleNearestPlayer(Vector3 point) {
-		return FindNearestGameObject(InitScane.instance.Players.FindAll(player => IsFreeBetweenPlayer(player, point)), point);
+		return FindNearestGameObject(GameManager.Instance.Players.FindAll(player => IsFreeBetweenPlayer(player, point)), point);
 	}
 }

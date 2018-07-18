@@ -57,7 +57,7 @@ public class EventHandler<T> : Exception where T : EventBase {
 		private EventPriority priority;
 		
 		public Listner(Action<T> method, EventPriority priority) {
-			id = InitScane.rnd.Next();
+			id = GameManager.rnd.Next();
 			this.method = method;
 			this.priority = priority;
 		}

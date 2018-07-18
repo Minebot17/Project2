@@ -27,16 +27,16 @@ public class BurnEffect : TimeEffect {
 		});
 		
 		List<Collider2D> colliders = Utils.GetComponentsRecursive<Collider2D>(Handler.gameObject);
-		if (Handler.gameObject.GetComponent<MeshFilter>() != null && Handler.gameObject.GetComponent<MeshFilter>().mesh == InitScane.instance.OnePlane) {
+		if (Handler.gameObject.GetComponent<MeshFilter>() != null && Handler.gameObject.GetComponent<MeshFilter>().mesh == GameManager.Instance.OnePlane) {
 			for (int x = 2; x < Handler.gameObject.transform.localScale.x; x += 4)
 				for (int y = 2; y < Handler.gameObject.transform.localScale.y; y += 4) {
 					Collider2D[] touching = Physics2D.OverlapPointAll(
 						Utils.ToVector2(Handler.gameObject.transform.position) + new Vector2(x, y),
-						InitScane.instance.TrapLayerMask);
+						GameManager.Instance.TrapLayerMask);
 	
 					foreach (Collider2D collider in touching)
 						if (colliders.Exists(i => i.Equals(collider))) {
-							emitters.Add(MonoBehaviour.Instantiate(InitScane.instance.FireObjectParticle,
+							emitters.Add(MonoBehaviour.Instantiate(GameManager.Instance.FireObjectParticle,
 								Handler.gameObject.transform.position + new Vector3(x, y, -1), new Quaternion(),
 								Handler.gameObject.transform));
 						}
@@ -53,7 +53,7 @@ public class BurnEffect : TimeEffect {
 	
 					foreach (Collider2D collider in touching)
 						if (colliders.Exists(i => i.Equals(collider))) {
-							emitters.Add(MonoBehaviour.Instantiate(InitScane.instance.FireObjectParticle,
+							emitters.Add(MonoBehaviour.Instantiate(GameManager.Instance.FireObjectParticle,
 								Handler.gameObject.transform.position + new Vector3(x, y, -1), new Quaternion(),
 								Handler.gameObject.transform));
 						}

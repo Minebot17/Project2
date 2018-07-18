@@ -92,7 +92,7 @@ public static class GenerationManager {
 				}
 			}
 
-		foreach (GameObject player in InitScane.instance.Players)
+		foreach (GameObject player in GameManager.Instance.Players)
 			TeleportPlayerToStart(player);
 	}
 
@@ -138,7 +138,7 @@ public static class GenerationManager {
 
 		if (player.GetComponent<NetworkIdentity>().isServer) {
 			List<Vector2Int> coords = new List<Vector2Int>();
-			foreach (GameObject p in InitScane.instance.Players)
+			foreach (GameObject p in GameManager.Instance.Players)
 				coords.Add(new Vector2Int((int) p.transform.position.x / 495, (int) p.transform.position.y / 277));
 			
 			string toMessage = "";
@@ -164,7 +164,7 @@ public static class GenerationManager {
 	}
 
 	public static void SetCurrentRoom() {
-		Vector3 position = InitScane.instance.LocalPlayer.transform.position;
+		Vector3 position = GameManager.Instance.LocalPlayer.transform.position;
 		SetCurrentRoom(new Vector2Int((int)position.x / 495, (int)position.y / 277));
 	}
 
@@ -186,8 +186,8 @@ public static class GenerationManager {
 					RoomInfo room = generation.rooms[x, y];
 					GameObject roomObject = new GameObject("room");
 					roomObject.transform.parent = visualizedGeneration.transform;
-					roomObject.AddComponent<MeshFilter>().mesh = InitScane.instance.OnePlane;
-					roomObject.AddComponent<MeshRenderer>().material = new Material(InitScane.instance.GenerationMaterial);
+					roomObject.AddComponent<MeshFilter>().mesh = GameManager.Instance.OnePlane;
+					roomObject.AddComponent<MeshRenderer>().material = new Material(GameManager.Instance.GenerationMaterial);
 					roomObject.GetComponent<MeshRenderer>().material.color =
 						(room.Equals(generation.startRoom) || room.Equals(generation.endRoom) ? Color.green : Color.red) - new Color(0, 0, 0, 0.8f);
 					roomObject.transform.localPosition = new Vector3(x * 495, y * 277);
@@ -195,8 +195,8 @@ public static class GenerationManager {
 
 					foreach (GateInfo gate in room.Gates) {
 						GameObject gateObject = new GameObject("gate");
-						gateObject.AddComponent<MeshFilter>().mesh = InitScane.instance.OnePlaneCenter;
-						gateObject.AddComponent<MeshRenderer>().material = new Material(InitScane.instance.GenerationMaterial);
+						gateObject.AddComponent<MeshFilter>().mesh = GameManager.Instance.OnePlaneCenter;
+						gateObject.AddComponent<MeshRenderer>().material = new Material(GameManager.Instance.GenerationMaterial);
 						gateObject.GetComponent<MeshRenderer>().material.color = Color.blue - new Color(0, 0, 0, 0.8f);
 						gateObject.transform.localScale = new Vector3(100, 100, 1);
 

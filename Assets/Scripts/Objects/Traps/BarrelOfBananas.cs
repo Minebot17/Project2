@@ -8,7 +8,7 @@ public class BarrelOfBananas : MonoBehaviour {
 	
 	private void Start() {
 		GetComponent<DeathStandart>().GetEventSystem<DeathStandart.DeathEvent>().SubcribeEvent(e => {
-			int count = InitScane.rnd.Next(3) + 3;
+			int count = GameManager.rnd.Next(3) + 3;
 
 			for (int i = 0; i < count; i++) {
 				GameObject banana = ObjectsManager.SpawnGameObject(Banana, transform.position + new Vector3(0, 0, -0.001f), new Vector3(), null, true);

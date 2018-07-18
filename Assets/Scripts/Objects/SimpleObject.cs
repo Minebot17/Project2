@@ -15,6 +15,6 @@ public class SimpleObject : NetworkBehaviour {
 	}
 
 	public void Initialize() {
-		id = InitScane.rnd.Next();
+		id = GameManager.rnd.Next();
 	}
 }
