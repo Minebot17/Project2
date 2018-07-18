@@ -13,32 +13,32 @@ public class JumpedEntityController : NetworkBehaviour {
 		rigidbody2D = GetComponent<Rigidbody2D>();
 		
 		// Debug
-		if (GameManager.Instance.Settings.SettingVisualizeTraectorySimple.Value) {
+		if (GameSettings.SettingVisualizeTraectorySimple.Value) {
 			LineRenderer line = Instantiate(GameManager.Instance.LineDebugObject, transform.position, new Quaternion(), transform).GetComponent<LineRenderer>();
-			Timer.StartNewTimer("PlayerTraectoryCenter", GameManager.Instance.Settings.SettingTraectoryTracingFrequency.Value, -1, gameObject, timer => {
+			Timer.StartNewTimer("PlayerTraectoryCenter", GameSettings.SettingTraectoryTracingFrequency.Value, -1, gameObject, timer => {
 				line.positionCount = line.positionCount + 1;
 				line.SetPosition(line.positionCount-1, transform.position + new Vector3(0, 0, -0.1f));
 			});
 		}
 
-		if (GameManager.Instance.Settings.SettingVisualizeTraectoryAdvanced.Value) {
+		if (GameSettings.SettingVisualizeTraectoryAdvanced.Value) {
 			LineRenderer line0 = Instantiate(GameManager.Instance.LineDebugObject, transform.position, new Quaternion(), transform).GetComponent<LineRenderer>();
-			Timer.StartNewTimer("PlayerTraectoryCenter", GameManager.Instance.Settings.SettingTraectoryTracingFrequency.Value, -1, gameObject, timer => {
+			Timer.StartNewTimer("PlayerTraectoryCenter", GameSettings.SettingTraectoryTracingFrequency.Value, -1, gameObject, timer => {
 				line0.positionCount = line0.positionCount + 1;
 				line0.SetPosition(line0.positionCount-1, transform.position + new Vector3(-16.5f, 32.5f, -0.1f));
 			});
 			LineRenderer line1 = Instantiate(GameManager.Instance.LineDebugObject, transform.position, new Quaternion(), transform).GetComponent<LineRenderer>();
-			Timer.StartNewTimer("PlayerTraectoryCenter", GameManager.Instance.Settings.SettingTraectoryTracingFrequency.Value, -1, gameObject, timer => {
+			Timer.StartNewTimer("PlayerTraectoryCenter", GameSettings.SettingTraectoryTracingFrequency.Value, -1, gameObject, timer => {
 				line1.positionCount = line1.positionCount + 1;
 				line1.SetPosition(line1.positionCount-1, transform.position + new Vector3(16.5f, 32.5f, -0.1f));
 			});
 			LineRenderer line2 = Instantiate(GameManager.Instance.LineDebugObject, transform.position, new Quaternion(), transform).GetComponent<LineRenderer>();
-			Timer.StartNewTimer("PlayerTraectoryCenter", GameManager.Instance.Settings.SettingTraectoryTracingFrequency.Value, -1, gameObject, timer => {
+			Timer.StartNewTimer("PlayerTraectoryCenter", GameSettings.SettingTraectoryTracingFrequency.Value, -1, gameObject, timer => {
 				line2.positionCount = line2.positionCount + 1;
 				line2.SetPosition(line2.positionCount-1, transform.position + new Vector3(16.5f, -20.5f, -0.1f));
 			});
 			LineRenderer line3 = Instantiate(GameManager.Instance.LineDebugObject, transform.position, new Quaternion(), transform).GetComponent<LineRenderer>();
-			Timer.StartNewTimer("PlayerTraectoryCenter", GameManager.Instance.Settings.SettingTraectoryTracingFrequency.Value, -1, gameObject, timer => {
+			Timer.StartNewTimer("PlayerTraectoryCenter", GameSettings.SettingTraectoryTracingFrequency.Value, -1, gameObject, timer => {
 				line3.positionCount = line3.positionCount + 1;
 				line3.SetPosition(line3.positionCount-1, transform.position + new Vector3(-16.5f, -20.5f, -0.1f));
 			});

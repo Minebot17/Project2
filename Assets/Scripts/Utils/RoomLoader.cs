@@ -439,7 +439,7 @@ public static class RoomLoader {
 		foreach (Corner corner in corners) {
 			corner.FindConnections(corners);
 
-			if (GameManager.Instance.Settings.SettingVisualizeMeshGeneration.Value)
+			if (GameSettings.SettingVisualizeMeshGeneration.Value)
 				MonoBehaviour.Instantiate(GameManager.Instance.PointDebugObject, new Vector3(corner.coords.x, corner.coords.y, -1), new Quaternion());
 		}
 
@@ -458,7 +458,7 @@ public static class RoomLoader {
 		foreach (Corner corner in corners) {
 			corner.FindConnections(new List<Corner>(corners.Cast<Corner>()));
 
-			if (GameManager.Instance.Settings.SettingVisualizeMeshGeneration.Value)
+			if (GameSettings.SettingVisualizeMeshGeneration.Value)
 				MonoBehaviour.Instantiate(GameManager.Instance.PointDebugObject, new Vector3(corner.coords.x, corner.coords.y, -1), new Quaternion());
 		}
 
@@ -533,7 +533,7 @@ public static class RoomLoader {
 			corner.FindConnections(corners);
 
 			//Debug
-			if (GameManager.Instance.Settings.SettingVisualizeColliders.Value) {
+			if (GameSettings.SettingVisualizeColliders.Value) {
 				MonoBehaviour.Instantiate(GameManager.Instance.PointDebugObject, new Vector3(corner.coords.x, corner.coords.y, -0.1f),
 					new Quaternion());
 				if (corner.xConnection != null) {
@@ -843,7 +843,7 @@ public static class RoomLoader {
 					allLines.Add(line);
 			}
 
-		if (GameManager.Instance.Settings.SettingVisualizeMeshGeneration.Value)
+		if (GameSettings.SettingVisualizeMeshGeneration.Value)
 			foreach (Line line in allLines) {
 				LineRenderer render = MonoBehaviour.Instantiate(GameManager.Instance.LineDebugObject).GetComponent<LineRenderer>();
 				render.SetPositions(new Vector3[] { new Vector3(line.start.coords.x, line.start.coords.y, -1), new Vector3(line.end.coords.x, line.end.coords.y, -1) });

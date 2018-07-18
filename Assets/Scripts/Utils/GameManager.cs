@@ -38,10 +38,10 @@ public class GameManager : NetworkBehaviour {
 	public void Awake() {
 		Instance = this;
 		Settings = new GameSettings();
-		Settings.Load();
+		GameSettings.Load();
 		Timer.InitializeCreate();
 		LanguageManager.Initialize();
-		LanguageManager.SetLanguage(x => x.Code.Equals(Settings.SettingLanguageCode.Value));
+		LanguageManager.SetLanguage(x => x.Code.Equals(GameSettings.SettingLanguageCode.Value));
 		MessageManager.Initialize();
 		
 		ObjectsManager.LoadAllObjectsFromResources();
@@ -98,7 +98,7 @@ public class GameManager : NetworkBehaviour {
 			Debug.Log("CellsCount: " + generation.CellsCount);
 			Debug.Log("GatesCount: " + generation.GatesCount);
 			Debug.Log("Seed: " + generation.Seed);
-			if (generation.CellsCount >= Settings.SettingMinGenerationCellCount.Value)
+			if (generation.CellsCount >= GameSettings.SettingMinGenerationCellCount.Value)
 				break;
 			Debug.Log("Regenerate");
 			seed = new System.Random(seed).Next();
@@ -110,7 +110,7 @@ public class GameManager : NetworkBehaviour {
 	private void Start() {
 		if (isServer) {
 			NetworkManagerCustomGUI gui = GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>();
-			if (gui.RoomMode == RoomSpawnMode.SPAWN_GENERATION) {
+			if (gui.StartArguments.Equals("new game")) {
 				seedToGeneration = int.Parse(gui.Seed);
 				GenerationInfo generation = GetGeneration(seedToGeneration == 0 ? rnd.Next() : seedToGeneration);
 				seedToSpawn = seedToSpawn == 0 ? rnd.Next() : seedToSpawn;
@@ -119,11 +119,14 @@ public class GameManager : NetworkBehaviour {
 				GenerationManager.TeleportPlayerToStart(player);
 				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
 				indexController++;
-				if (Settings.SettingVisualizeTestGeneration.Value)
+				if (GameSettings.SettingVisualizeTestGeneration.Value)
 					GenerationManager.VisualizeGeneration(generation);
 			}
-			else if (gui.RoomMode == RoomSpawnMode.SPAWN_ONE) {
-				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(Settings.SettingTestRoomName.Value)), Vector3.zero, true);
+			else if (gui.StartArguments.Contains("load game")) {
+				
+			}
+			else if (gui.StartArguments.Equals("test mode")) {
+				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(GameSettings.SettingTestRoomName.Value)), Vector3.zero, true);
 				GameObject player = Instantiate(LocalPlayer);
 				player.transform.position = GameObject.Find("startPosition").transform.position;
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
@@ -131,7 +134,7 @@ public class GameManager : NetworkBehaviour {
 				ServerEvents.OnServerPlayerAdd e = GameManager.ServerEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
 					.CallListners(new ServerEvents.OnServerPlayerAdd(NetworkServer.connections[0], player));
 			}
-			else if (gui.RoomMode == RoomSpawnMode.SPAWN_ONE_ROOMEDITOR) {
+			else if (gui.StartArguments.Equals("room editor")) {
 				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8), Vector3.zero, true);
 				string[] gateInfo = File.ReadAllLines(Application.streamingAssetsPath + "/gate.txt", Encoding.UTF8);
 				GameObject.Find("startPosition").transform.position = new Vector3(int.Parse(gateInfo[0]), int.Parse(gateInfo[1]), -1f);
@@ -172,11 +175,6 @@ public class GameManager : NetworkBehaviour {
 
 	private void FixedUpdate() {
 		InputManager.Handle();
-	}
-
-	[Serializable]
-	public enum RoomSpawnMode {
-		NONE, SPAWN_ONE, SPAWN_GENERATION, SPAWN_ONE_ROOMEDITOR
 	}
 	
 	[Serializable]
