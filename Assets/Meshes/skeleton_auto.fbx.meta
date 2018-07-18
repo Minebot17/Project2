@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 55e42e4aa5d846a418378554ba3842a8
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: BODY
     100002: BODY_MixB
@@ -328,7 +328,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.99
+      - time: 0.95
         functionName: EndAttack
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -362,6 +362,8 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0

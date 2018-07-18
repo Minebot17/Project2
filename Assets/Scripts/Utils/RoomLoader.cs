@@ -839,7 +839,7 @@ public static class RoomLoader {
 		foreach (Corner corner0 in corners)
 			foreach (Corner corner1 in corners) {
 				Line line = new Line(corner0, corner1);
-				if (!allLines.Contains(line) && isLineInFigure(corner0, corner1.coords) && isNotCrossLines(allLines, corner0, corner1))
+				if (corner0 != corner1 && !allLines.Contains(line) && isLineInFigure(corner0, corner1.coords) && isNotCrossLines(allLines, corner0, corner1))
 					allLines.Add(line);
 			}
 
