@@ -11,7 +11,6 @@ public class MessageManager {
 	private static GameManager init;
 	public static short LastIndex = 99;
 	public static List<GameMessage> ToRegister = new List<GameMessage>();
-	private static string toNick;
 
 	public static void Initialize() {
 		init = GameManager.Instance;
@@ -39,7 +38,6 @@ public class MessageManager {
 	
 	public static GameMessage SpawnObjServerMessage = new GameMessage(msg => {
 		GameObject player = MonoBehaviour.Instantiate(GameManager.Instance.LocalPlayer);
-		player.GetComponent<NetworkPlayer>().NickName = toNick;
 		GenerationManager.TeleportPlayerToStart(player);
 		ServerEvents.OnServerPlayerAdd e = GameManager.ServerEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
 			.CallListners(new ServerEvents.OnServerPlayerAdd(msg.conn, player));
@@ -81,8 +79,22 @@ public class MessageManager {
 		GenerationManager.SetCurrentRoom();
 	});
 	
-	public static GameMessage SendNickServerMessage = new GameMessage(msg => {
-		toNick = msg.ReadMessage<StringMessage>().value;
+	public static GameMessage RequestLobbyModeServerMessage = new GameMessage(msg => {
+		ResponseLobbyModeClientMessage.SendToClient(msg.conn, new StringMessage(GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>().StartArguments));
+	});
+	
+	public static GameMessage ResponseLobbyModeClientMessage = new GameMessage(msg => {
+		GameObject.Find("LobbyManager").AddComponent<NetworkLobbyClientHUD>().Initialize(msg.ReadMessage<StringMessage>().value);
+	});
+	
+	public static GameMessage SetReadyLobbyServerMessage = new GameMessage(msg => {
+		bool ready = bool.Parse(msg.ReadMessage<StringMessage>().value);
+		GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().SetReady(msg.conn, ready);
+	});
+	
+	public static GameMessage RequestProfileClientMessage = new GameMessage(msg => {
+		string mode = msg.ReadMessage<StringMessage>().value;
+		
 	});
 	
 	#endregion

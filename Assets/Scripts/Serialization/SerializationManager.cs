@@ -20,7 +20,7 @@ public class SerializationManager {
 		Directory.CreateDirectory(filePath + "/Objects");
 
 		foreach (GameObject player in GameManager.Instance.Players)
-			File.WriteAllLines(filePath + "/Players/" + player.GetComponent<NetworkPlayer>().NickName, SerializePlayer(player));
+			File.WriteAllLines(filePath + "/Players/" + player.GetComponent<GameProfile>().NickName, SerializePlayer(player));
 
 		for(int x = 0; x < GenerationManager.currentGeneration.size.x; x++)
 			for(int y = 0; y < GenerationManager.currentGeneration.size.y; y++) {

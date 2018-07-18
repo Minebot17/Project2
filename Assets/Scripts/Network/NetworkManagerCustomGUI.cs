@@ -9,7 +9,6 @@ using UnityEngine.Networking.NetworkSystem;
 [RequireComponent(typeof(NetworkManagerCustom))]
 public class NetworkManagerCustomGUI : MonoBehaviour {
 	public string StartArguments;
-	public string PlayerName;
 	public string IpAddress;
 	public string Port;
 	public string Seed;
@@ -25,7 +24,6 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 	private void OnGUI() {
 		if (!_started) {
 			GUILayout.Label("Name:");
-			PlayerName = GUILayout.TextField(PlayerName, GUILayout.Width(100));
 
 			GUILayout.Space(10);
 			GUILayout.Label("Ip:");
@@ -40,7 +38,6 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 				NetworkManager.singleton.networkAddress = IpAddress.Equals("localhost") ? "127.0.0.1" : IpAddress;
 				NetworkManager.singleton.networkPort = int.Parse(Port);
 				NetworkManager.singleton.StartClient();
-				MessageManager.SendNickServerMessage.SendToServer(new StringMessage(PlayerName));
 			}
 
 			if (GUILayout.Button("New game")) {
