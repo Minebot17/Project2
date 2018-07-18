@@ -163,6 +163,11 @@ public static class GenerationManager {
 			}
 	}
 
+	public static void SetCurrentRoom() {
+		Vector3 position = InitScane.instance.LocalPlayer.transform.position;
+		SetCurrentRoom(new Vector2Int((int)position.x / 495, (int)position.y / 277));
+	}
+
 	public static void SetCurrentRoom(Vector2Int coord) {
 		if (currentRoomCoords != new Vector2Int(-1, -1))
 			spawnedRooms[currentRoomCoords.x, currentRoomCoords.y].SetActive(false);
@@ -225,6 +230,17 @@ public static class GenerationManager {
 		}
 
 		return false;
+	}
+
+	public static void SendToClientActiveRooms(NetworkConnection conn) {
+		string toMessage = "";
+		List<GameObject> newActiveRooms = new List<GameObject>();
+		foreach (GameObject go in GenerationManager.activeRooms) {
+			Vector2Int coord = new Vector2Int((int)go.transform.position.x, (int)go.transform.position.y);
+			newActiveRooms.Add(GenerationManager.spawnedRooms[coord.x, coord.y]);
+			toMessage += coord.x + "," + coord.y + ";";
+		}
+		MessageManager.MarkDirtyActiveRoomsClientMessage.SendToClient(conn, new StringMessage());
 	}
 
 	public static void ApplyActiveRooms(List<GameObject> newActiveRooms) {
