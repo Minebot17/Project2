@@ -35,6 +35,7 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 
 			if (GUILayout.Button("Connect")) {
 				_started = true;
+				NetworkManagerCustom.IsServer = false;
 				NetworkManager.singleton.networkAddress = IpAddress.Equals("localhost") ? "127.0.0.1" : IpAddress;
 				NetworkManager.singleton.networkPort = int.Parse(Port);
 				NetworkManager.singleton.StartClient();

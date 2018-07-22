@@ -24,10 +24,11 @@ public class GameProfile : NetworkBehaviour {
 	}
 
 	public string Serialize() {
+		bool notInGO = transform == null;
 		List<string> list = new List<string>();
-		list.Add(transform.position.x+"");
-		list.Add(transform.position.y+"");
-		list.Add(transform.position.z+"");
+		list.Add(notInGO ? "0" : transform.position.x+"");
+		list.Add(notInGO ? "0" : transform.position.y+"");
+		list.Add(notInGO ? "0" : transform.position.z+"");
 		list.Add(ProfileName);
 		string result = "";
 		foreach (string data in list) {
@@ -38,8 +39,10 @@ public class GameProfile : NetworkBehaviour {
 	}
 
 	public void Deserialize(string data) {
+		bool notInGO = transform == null;
 		string[] list = data.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
-		transform.position = new Vector3(float.Parse(list[0]), float.Parse(list[1]), float.Parse(list[2]));
+		if (!notInGO)
+			transform.position = new Vector3(float.Parse(list[0]), float.Parse(list[1]), float.Parse(list[2]));
 		ProfileName = list[3];
 	}
 }

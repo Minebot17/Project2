@@ -30,9 +30,8 @@ public class NetworkLobbyServerHUD : MonoBehaviour {
 				prf.Deserialize(x);
 				return prf;
 			}).ToArray();
+			loadedGameName = arguments.Split('|')[1];
 		}
-
-		loadedGameName = arguments.Split('|')[1];
 	}
 	
 	private void OnGUI() {
@@ -50,9 +49,16 @@ public class NetworkLobbyServerHUD : MonoBehaviour {
 				if (readyMap[conn])
 					readyCount++;
 			}
+
+			int connectionsCount = 0;
+			foreach (NetworkConnection conn in NetworkServer.connections) {
+				if (conn != null)
+					connectionsCount++;
+			}
 			
-			GUILayout.Label("Вы в лобби. Подключено " + NetworkServer.connections.Count + " игроков");
-			GUILayout.Label("Готовы " + readyCount + " из " + readyMap.Count);
+			GUILayout.Space(20);
+			GUILayout.Label("Вы в лобби. Подключено " + connectionsCount + " игроков");
+			GUILayout.Label("Готовы " + readyCount + " из " + connectionsCount);
 
 			if (lobbyMode == LobbyMode.NEW_GAME) {
 				GUILayout.Label("Имя персонажа:");
@@ -70,7 +76,7 @@ public class NetworkLobbyServerHUD : MonoBehaviour {
 				SetReady(NetworkManager.singleton.client.connection, ready);
 			}
 
-			if (readyCount == readyMap.Count && GUILayout.Button("Поiхали!")) {
+			if (readyCount == connectionsCount && GUILayout.Button("Поiхали!")) {
 				MessageManager.RequestProfileClientMessage.SendToAllClients(new EmptyMessage());
 				lastConnections = readyCount;
 			}
@@ -78,7 +84,7 @@ public class NetworkLobbyServerHUD : MonoBehaviour {
 	}
 
 	public void SetReady(NetworkConnection conn, bool ready) {
-		readyMap.Add(conn, ready);
+		readyMap[conn] = ready;
 	}
 
 	public void RemoveConnection(NetworkConnection conn) {

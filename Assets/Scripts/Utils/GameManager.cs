@@ -42,7 +42,7 @@ public class GameManager : NetworkBehaviour {
 		Timer.InitializeCreate();
 		LanguageManager.Initialize();
 		LanguageManager.SetLanguage(x => x.Code.Equals(GameSettings.SettingLanguageCode.Value));
-		MessageManager.Initialize();
+		//MessageManager.Initialize();
 		
 		ObjectsManager.LoadAllObjectsFromResources();
 		RoomLoader.LoadAllRoomsFromResources();

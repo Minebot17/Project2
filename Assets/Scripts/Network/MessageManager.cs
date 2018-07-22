@@ -80,10 +80,12 @@ public class MessageManager {
 	});
 	
 	public static GameMessage RequestLobbyModeServerMessage = new GameMessage(msg => {
+		NetworkServer.SpawnObjects();
 		ResponseLobbyModeClientMessage.SendToClient(msg.conn, new StringMessage(GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>().StartArguments));
 	});
 	
 	public static GameMessage ResponseLobbyModeClientMessage = new GameMessage(msg => {
+		MonoBehaviour.Destroy(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyCommon>());
 		GameObject.Find("LobbyManager").AddComponent<NetworkLobbyClientHUD>().Initialize(msg.ReadMessage<StringMessage>().value);
 	});
 	
@@ -93,7 +95,7 @@ public class MessageManager {
 	});
 	
 	public static GameMessage RequestProfileClientMessage = new GameMessage(msg => {
-		ResponseProfileServerMessage.SendToServer(new StringMessage(GameObject.Find("Lobby").GetComponent<NetworkLobbyClientHUD>().GetProfile()));
+		ResponseProfileServerMessage.SendToServer(new StringMessage(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyClientHUD>().GetProfile()));
 	});
 	
 	public static GameMessage ResponseProfileServerMessage = new GameMessage(msg => {

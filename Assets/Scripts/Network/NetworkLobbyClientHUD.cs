@@ -6,8 +6,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 
-[AddComponentMenu("NetworkCustom/NetworkLobbyHUD")]
-[RequireComponent(typeof(NetworkManagerCustom))]
 public class NetworkLobbyClientHUD : MonoBehaviour {
 
 	private LobbyMode lobbyMode = LobbyMode.NONE;
@@ -20,8 +18,8 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 		lobbyMode = arguments.Equals("new game") ? LobbyMode.NEW_GAME :
 			arguments.Contains("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
 		profile = new GameProfile();
-		string[] gameProfiles = arguments.Split('|')[2].Split('&');
 		if (lobbyMode == LobbyMode.LOAD_GAME) {
+			string[] gameProfiles = arguments.Split('|')[2].Split('&');
 			allProfiles = gameProfiles.Select(x => {
 				GameProfile prf = new GameProfile();
 				prf.Deserialize(x);
@@ -32,6 +30,7 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 
 	private void OnGUI() {
 		if (lobbyMode != LobbyMode.NONE && lobbyMode != LobbyMode.ONLY_SERVER) {
+			GUILayout.Space(20);
 			GUILayout.Label("Вы в лобби у " + NetworkManager.singleton.client.serverIp);
 			
 			if (lobbyMode == LobbyMode.NEW_GAME) {

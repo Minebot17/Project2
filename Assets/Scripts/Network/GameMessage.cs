@@ -32,4 +32,8 @@ public class GameMessage {
 	public void SendToAllClients(MessageBase message) {
 		NetworkServer.SendToAll(index, message);
 	}
+
+	public short GetIndex() {
+		return index;
+	}
 }
