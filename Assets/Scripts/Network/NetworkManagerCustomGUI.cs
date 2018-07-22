@@ -49,7 +49,10 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 			
 			if (GUILayout.Button("Load game")) {
 				_started = true;
-				StartArguments = "load game";
+				List<string> gps = SerializationManager.GetGameProfiles("test");
+				string result = "";
+				gps.ForEach(x => result += x + "&");
+				StartArguments = "load game|test|" + result;
 				NetworkManager.singleton.networkPort = int.Parse(Port);
 				NetworkManager.singleton.StartHost();
 			}

@@ -115,10 +115,6 @@ public class GameManager : NetworkBehaviour {
 				GenerationInfo generation = GetGeneration(seedToGeneration == 0 ? rnd.Next() : seedToGeneration);
 				seedToSpawn = seedToSpawn == 0 ? rnd.Next() : seedToSpawn;
 				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, seedToSpawn, true);
-				GameObject player = Instantiate(LocalPlayer);
-				GenerationManager.TeleportPlayerToStart(player);
-				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
-				indexController++;
 				if (GameSettings.SettingVisualizeTestGeneration.Value)
 					GenerationManager.VisualizeGeneration(generation);
 			}

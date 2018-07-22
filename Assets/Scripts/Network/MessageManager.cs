@@ -93,8 +93,12 @@ public class MessageManager {
 	});
 	
 	public static GameMessage RequestProfileClientMessage = new GameMessage(msg => {
-		string mode = msg.ReadMessage<StringMessage>().value;
-		
+		ResponseProfileServerMessage.SendToServer(new StringMessage(GameObject.Find("Lobby").GetComponent<NetworkLobbyClientHUD>().GetProfile()));
+	});
+	
+	public static GameMessage ResponseProfileServerMessage = new GameMessage(msg => {
+		NetworkLobbyServerHUD hud = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>();
+		hud.AddNewProfile(msg.conn, msg.ReadMessage<StringMessage>().value);
 	});
 	
 	#endregion

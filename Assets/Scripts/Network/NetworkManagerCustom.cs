@@ -17,6 +17,15 @@ public class NetworkManagerCustom : NetworkManager {
 		if (sceneName.Equals("Lobby")) {
 			GameObject.Find("LobbyManager").AddComponent<NetworkLobbyServerHUD>().Initialize(GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>().StartArguments);
 		}
+		else if (sceneName.Equals("Start")) {
+			if (NetworkLobbyServerHUD.ServerOnly) {
+				GameObject player = Instantiate(GameManager.Instance.LocalPlayer);
+				player.GetComponent<GameProfile>().Deserialize(NetworkLobbyServerHUD.ServerOnlyProfile);
+				player.transform.position = GameObject.Find("StartPosition").transform.position;
+				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, GameManager.Instance.indexController);
+				GameManager.Instance.indexController++;
+			}
+		}
 	}
 
 	public override void OnServerDisconnect(NetworkConnection conn) {

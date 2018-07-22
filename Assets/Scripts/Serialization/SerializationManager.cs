@@ -20,7 +20,7 @@ public class SerializationManager {
 		Directory.CreateDirectory(filePath + "/Objects");
 
 		foreach (GameObject player in GameManager.Instance.Players)
-			File.WriteAllLines(filePath + "/Players/" + player.GetComponent<GameProfile>().NickName, SerializePlayer(player));
+			File.WriteAllLines(filePath + "/Players/" + player.GetComponent<GameProfile>().ProfileName, SerializePlayer(player));
 
 		for(int x = 0; x < GenerationManager.currentGeneration.size.x; x++)
 			for(int y = 0; y < GenerationManager.currentGeneration.size.y; y++) {
@@ -68,11 +68,27 @@ public class SerializationManager {
 		// TODO
 	}
 
+
+	public static List<string> GetGameProfiles(string saveName) {
+		string filePath = Application.persistentDataPath + "/Worlds/" + saveName;
+		if (!File.Exists(filePath + postfix))
+			return null;
+		
+		ZipFile.ExtractToDirectory(filePath + postfix, filePath);
+		List<string> result = new List<string>();
+		string[] files = Directory.GetFiles(filePath + "/Players");
+		foreach (string file in files) {
+			result.Add(File.ReadAllLines(file)[0]);
+		}
+
+		return result;
+	}
+
 	public static List<string> SerializePlayer(GameObject player) {
-		return null;
+		return new List<string>{ player.GetComponent<GameProfile>().Serialize() };
 	}
 
 	public static void DeserializePlayer(GameObject player, List<string> data) {
-		
+		player.GetComponent<GameProfile>().Deserialize(data[0]);
 	}
 }
