@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 
 public class NetworkLobbyCommon : MonoBehaviour {
+	
 	private void Awake() {
 		MessageManager.Initialize();
 	}

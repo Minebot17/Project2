@@ -154,7 +154,7 @@ public static class GenerationManager {
 	}
 
 	public static void TeleportPlayerToStart(GameObject player) {
-		SetCurrentRoom(currentGeneration.startRoom.Position);
+		//SetCurrentRoom(currentGeneration.startRoom.Position);
 		Transform objectFolder = spawnedRooms[currentRoomCoords.x, currentRoomCoords.y].transform.Find("Objects");
 		for (int i = 0; i < objectFolder.childCount; i++)
 			if (objectFolder.GetChild(i).name.Contains("playerPosition")) {
