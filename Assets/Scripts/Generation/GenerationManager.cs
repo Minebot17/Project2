@@ -91,9 +91,6 @@ public static class GenerationManager {
 						SpawnRoom(validRooms[random.Next(validRooms.Count)], currentPosition, generationObject.transform, onServer);
 				}
 			}
-
-		foreach (GameObject player in GameManager.Instance.Players)
-			TeleportPlayerToStart(player);
 	}
 
 	private static GameObject SpawnRoom(RoomLoader.Room room, RoomInfo position, Transform parent, bool onServer) {
@@ -253,8 +250,32 @@ public static class GenerationManager {
 		activeRooms = newActiveRooms;
 	}
 
-	public static void ActivateRoom() { // serialize and deserialize
+	public static void ActivateRoom(GameObject room) { // serialize and deserialize
 		
+	}
+
+	public static void InitializeRoom(Vector2Int position) {
+		if (!NetworkManagerCustom.IsServer)
+			return;
+		
+		Transform objects = spawnedRooms[position.x, position.y].transform.Find("Objects");
+		int initCount = 0;
+		for (int i = 0; i < objects.childCount; i++)
+			if (objects.GetChild(i).GetComponent<ISerializableObject>() != null)
+				initCount++;
+		MessageManager.InitRoomClientMessage.SendToAllClients(new StringMessage(position.x + ";" + position.y + ";" + initCount));
+		spawnedRooms[position.x, position.y].SetActive(true);
+		for (int i = 0; i < objects.childCount; i++) {
+			if (objects.GetChild(i).GetComponent<NetworkIdentity>() != null) {
+				objects.GetChild(i).GetComponent<NetworkIdentity>().serverOnly = false;
+				NetworkServer.Spawn(objects.GetChild(i).gameObject);
+			}
+
+			if (objects.GetChild(i).GetComponent<ISerializableObject>() != null)
+				objects.GetChild(i).GetComponent<ISerializableObject>().Initialize();
+		}
+
+		spawnedRooms[position.x, position.y].GetComponent<Room>().Initialized = true;
 	}
 
 	public class GenerationData {

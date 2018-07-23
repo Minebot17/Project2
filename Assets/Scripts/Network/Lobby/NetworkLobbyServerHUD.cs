@@ -12,17 +12,20 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 	private Dictionary<NetworkConnection, string> profilesMap = new Dictionary<NetworkConnection, string>();
 	private int lastConnections;
 	private string loadedGameName;
-	public static bool ServerOnly;
-	public static string ServerOnlyProfile;
 	
 	public override void Initialize(string arguments) {
 		lobbyMode = arguments.Equals("new game") ? LobbyMode.NEW_GAME :
 			arguments.Contains("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
+		ServerEvents.Initialize();
+		ServerEvents.singleton.StartAgrs = arguments;
+		NetworkManagerCustom.Mode = lobbyMode;
 		profile = new GameProfile().Serialize();
 		if (lobbyMode == LobbyMode.LOAD_GAME) {
 			allProfiles = arguments.Split('|')[2].Split('&');
 			loadedGameName = arguments.Split('|')[1];
 		}
+		else
+			ServerEvents.singleton.NewWorldName = "World " + GameManager.rnd.Next();
 	}
 	
 	protected override void OnGUI() {
@@ -30,8 +33,8 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 			if (lobbyMode == LobbyMode.ONLY_SERVER) {
 				profile = allProfiles.Length == 0 ? new GameProfile().Serialize() : allProfiles[0];
 				NetworkManager.singleton.ServerChangeScene("Start");
-				ServerOnly = true;
-				ServerOnlyProfile = profile;
+				ServerEvents.singleton.ServerOnly = true;
+				ServerEvents.singleton.ServerOnlyProfile = profile;
 				return;
 			}
 
@@ -53,6 +56,12 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 
 			if (!ready) {
 				if (lobbyMode == LobbyMode.NEW_GAME) {
+					GUILayout.Label("Название мира:");
+					ServerEvents.singleton.NewWorldName = GUILayout.TextField(ServerEvents.singleton.NewWorldName);
+					GUILayout.Label("Сид структуры мира (0 - рандом):");
+					ServerEvents.singleton.SeedToGenerate = GUILayout.TextField(ServerEvents.singleton.SeedToGenerate);
+					GUILayout.Label("Сид спавна комнат (0 - рандом):");
+					ServerEvents.singleton.SeedToSpawn = GUILayout.TextField(ServerEvents.singleton.SeedToSpawn);
 					GUILayout.Label("Имя персонажа:");
 					profileName = GUILayout.TextField(profileName);
 				}
@@ -70,6 +79,7 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 			}
 
 			if (readyCount == connectionsCount && GUILayout.Button("Поiхали!")) {
+				ServerEvents.singleton.InProgress = true;
 				MessageManager.RequestProfileClientMessage.SendToAllClients(new EmptyMessage());
 				lastConnections = readyCount;
 			}

@@ -84,14 +84,15 @@ public class Stair : MonoBehaviour {
 				);
 		}
 
-		GameManager.ServerEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>().SubcribeEvent(x => {
-			x.Player.GetComponent<EntityGroundInfo>().GetEventSystem<EntityGroundInfo.LandingEvent>()
-				.SubcribeEvent(
-					@event => {
-						SetupForPlayer(x.Player);
-					}
-				);
-		});
+		if (NetworkManagerCustom.IsServer)
+			ServerEvents.singleton.GetEventSystem<ServerEvents.OnServerPlayerAdd>().SubcribeEvent(x => {
+				x.Player.GetComponent<EntityGroundInfo>().GetEventSystem<EntityGroundInfo.LandingEvent>()
+					.SubcribeEvent(
+						@event => {
+							SetupForPlayer(x.Player);
+						}
+					);
+			});
 	}
 
 	private void SetupForPlayer(GameObject player) {

@@ -104,6 +104,11 @@ public static class ObjectsManager {
 		if (go.GetComponent<SimpleObject>().NotMirrorChildrensOnSpawn)
 			for (int i = 0; i < childCount; i++)
 				go.transform.GetChild(i).localScale = new Vector3(go.transform.GetChild(i).localScale.x * (obj.mirrorX ? -1 : 1), go.transform.GetChild(i).localScale.y * (obj.mirrorY ? -1 : 1), go.transform.GetChild(i).localScale.z);
+		if ((NetworkManagerCustom.Mode == NetworkLobbyClientHUD.LobbyMode.NEW_GAME ||
+		    NetworkManagerCustom.Mode == NetworkLobbyClientHUD.LobbyMode.LOAD_GAME) && go.GetComponent<NetworkIdentity>() != null) {
+			go.GetComponent<NetworkIdentity>().serverOnly = true;
+		}
+
 		return go;
 	}
 

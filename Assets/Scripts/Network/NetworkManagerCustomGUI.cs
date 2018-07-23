@@ -11,14 +11,12 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 	public string StartArguments;
 	public string IpAddress;
 	public string Port;
-	public string Seed;
 	private bool _started;
 
 	private void Start() {
 		_started = false;
 		IpAddress = "localhost";
 		Port = "7777";
-		Seed = "0";
 	}
 
 	private void OnGUI() {
@@ -30,8 +28,6 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 			IpAddress = GUILayout.TextField(IpAddress, GUILayout.Width(100));
 			GUILayout.Label("Port:");
 			Port = GUILayout.TextField(Port, 5);
-			GUILayout.Label("Map seed (0 - random):");
-			Seed = GUILayout.TextField(Seed);
 
 			if (GUILayout.Button("Connect")) {
 				_started = true;

@@ -13,7 +13,6 @@ using UnityEngine.Networking.NetworkSystem;
 public class GameManager : NetworkBehaviour {
 	public static GameManager Instance;
 	public static System.Random rnd = new System.Random();
-	public static ServerEvents ServerEvents = new ServerEvents();
 	public GameSettings Settings;
 	public GameObject LocalPlayer;
 	public List<GameObject> Players;
@@ -32,6 +31,7 @@ public class GameManager : NetworkBehaviour {
 	public int seedToSpawn;
 	public int seedToGeneration;
 	public bool doStartForce;
+	public static Vector2Int DefGenerationSize = new Vector2Int(30, 30);
 	
 	public short indexController = 0;
 	
@@ -60,7 +60,7 @@ public class GameManager : NetworkBehaviour {
 		GenerationInfo generation = null;
 		while (true) {
 			generation = GenerationManager.Generate(
-				0, new Vector2Int(30, 30),
+				0, DefGenerationSize,
 				x => new[] {
 					x.Cast<RoomInfo>().First(y =>
 						y != null && y.Position.y > 28 && y.Position.x > 14 && y.Position.x < 16),
@@ -111,15 +111,22 @@ public class GameManager : NetworkBehaviour {
 		if (isServer) {
 			NetworkManagerCustomGUI gui = GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>();
 			if (gui.StartArguments.Equals("new game")) {
-				seedToGeneration = int.Parse(gui.Seed);
+				seedToGeneration = int.Parse(ServerEvents.singleton.SeedToGenerate);
+				seedToSpawn = int.Parse(ServerEvents.singleton.SeedToSpawn);
 				GenerationInfo generation = GetGeneration(seedToGeneration == 0 ? rnd.Next() : seedToGeneration);
 				seedToSpawn = seedToSpawn == 0 ? rnd.Next() : seedToSpawn;
 				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, seedToSpawn, true);
+				MessageManager.GetGenServerMessage.SendToServer(new EmptyMessage());
 				if (GameSettings.SettingVisualizeTestGeneration.Value)
 					GenerationManager.VisualizeGeneration(generation);
 			}
 			else if (gui.StartArguments.Contains("load game")) {
-				
+				ServerEvents.singleton.LastLoadedWorld = SerializationManager.LoadWorld(gui.StartArguments.Split('|')[1]);
+				GenerationInfo generation = GetGeneration(ServerEvents.singleton.LastLoadedWorld.Info.SeedToGenerate);
+				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, ServerEvents.singleton.LastLoadedWorld.Info.SeedToSpawn, true);
+				MessageManager.GetGenServerMessage.SendToServer(new EmptyMessage());
+				if (GameSettings.SettingVisualizeTestGeneration.Value)
+					GenerationManager.VisualizeGeneration(generation);
 			}
 			else if (gui.StartArguments.Equals("test mode")) {
 				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(GameSettings.SettingTestRoomName.Value)), Vector3.zero, true);
@@ -127,7 +134,7 @@ public class GameManager : NetworkBehaviour {
 				player.transform.position = GameObject.Find("startPosition").transform.position;
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
-				ServerEvents.OnServerPlayerAdd e = GameManager.ServerEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
+				ServerEvents.OnServerPlayerAdd e = ServerEvents.singleton.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
 					.CallListners(new ServerEvents.OnServerPlayerAdd(NetworkServer.connections[0], player));
 			}
 			else if (gui.StartArguments.Equals("room editor")) {
@@ -139,7 +146,7 @@ public class GameManager : NetworkBehaviour {
 				player.transform.position = GameObject.Find("startPosition").transform.position;
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
-				ServerEvents.OnServerPlayerAdd e = GameManager.ServerEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
+				ServerEvents.OnServerPlayerAdd e = ServerEvents.singleton.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
 					.CallListners(new ServerEvents.OnServerPlayerAdd(NetworkServer.connections[0], player));
 			}
 		}
@@ -151,8 +158,19 @@ public class GameManager : NetworkBehaviour {
 		int x = (int)position.x % 495;
 		int y = (int)position.y % 277;
 		GameObject spawned = Instantiate(FindAssetID(assetId));
-		spawned.transform.parent = GenerationManager.spawnedRooms[x, y].transform.Find("Objects");
+		Room room = GenerationManager.spawnedRooms[x, y].GetComponent<Room>();
+		spawned.transform.parent = room.gameObject.transform.Find("Objects");
 		spawned.transform.position = position;
+		if (spawned.GetComponent<ISerializableObject>() != null && room.NeedInitializeObjects) {
+			room.ObjectToInitialize--;
+			spawned.GetComponent<ISerializableObject>().Initialize();
+
+			if (room.ObjectToInitialize == 0) {
+				room.NeedInitializeObjects = false;
+				room.Initialized = true;
+			}
+		}
+
 		return spawned;
 	}
 	

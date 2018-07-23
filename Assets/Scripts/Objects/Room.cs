@@ -9,7 +9,9 @@ public class Room : MonoBehaviour {
 	[SerializeField]
 	private Vector2Int size;
 
-	public bool IsObjectsInitialized;
+	public bool NeedInitializeObjects;
+	public int ObjectToInitialize;
+	public bool Initialized;
 	
 	public string RoomName {
 		get { return roomName; }
@@ -22,15 +24,5 @@ public class Room : MonoBehaviour {
 	public void Initialize(string roomName, Vector2Int size) {
 		this.roomName = roomName;
 		this.size = size;
-	}
-
-	public void InitializeObjects() {
-		Transform objs = transform.Find("Objects");
-		for (int i = 0; i < objs.childCount; i++) {
-			if (objs.GetChild(i).GetComponent<ISerializableObject>() != null)
-				objs.GetChild(i).GetComponent<ISerializableObject>().Initialize();
-		}
-
-		IsObjectsInitialized = true;
 	}
 }

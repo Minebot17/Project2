@@ -18,6 +18,7 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 	public virtual void Initialize(string arguments) {
 		lobbyMode = arguments.Equals("new game") ? LobbyMode.NEW_GAME :
 			arguments.Contains("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
+		NetworkManagerCustom.Mode = lobbyMode;
 		profile = new GameProfile().Serialize();
 		if (lobbyMode == LobbyMode.LOAD_GAME)
 			allProfiles = arguments.Split('|')[2].Split('&');
@@ -59,7 +60,7 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 			return profile;
 	}
 
-	protected enum LobbyMode {
+	public enum LobbyMode {
 		ONLY_SERVER, NEW_GAME, LOAD_GAME, NONE
 	}
 }

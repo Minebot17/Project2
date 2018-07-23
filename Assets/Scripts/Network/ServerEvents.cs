@@ -4,7 +4,22 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class ServerEvents : IEventProvider {
-	
+	public static ServerEvents singleton;
+	public string StartAgrs;
+	public string SeedToGenerate;
+	public string SeedToSpawn;
+	public SerializationManager.LoadedWorld LastLoadedWorld;
+	public bool ServerOnly;
+	public string ServerOnlyProfile;
+	public string NewWorldName;
+	public bool InProgress;
+	public int GenerationReady;
+
+	public static void Initialize() {
+		if (singleton == null)
+			singleton = new ServerEvents();
+	}
+
 	private readonly object[] eventHandlers = {
 		new EventHandler<OnServerPlayerAdd>(), 
 	};

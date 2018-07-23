@@ -30,13 +30,46 @@ public class MessageManager {
 		string[] data = msg.ReadMessage<StringMessage>().value.Split(',');
 		GenerationInfo generation = GameManager.Instance.GetGeneration(int.Parse(data[0]));
 		GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, int.Parse(data[1]), false);
-		GenerationManager.SetCurrentRoom(new Vector2Int(generation.startRoom.Position.x, generation.startRoom.Position.y));
 		if (GameSettings.SettingVisualizeTestGeneration.Value)
 			GenerationManager.VisualizeGeneration(generation);
-		SpawnObjServerMessage.SendToServer(new EmptyMessage());
-	});	
+		GenerationReadyServerMessage.SendToServer(new EmptyMessage());
+	});
 	
-	public static readonly GameMessage SpawnObjServerMessage = new GameMessage(msg => {
+	public static readonly GameMessage GenerationReadyServerMessage = new GameMessage(msg => {
+		ServerEvents.singleton.GenerationReady++;
+		if (ServerEvents.singleton.GenerationReady == NetworkServer.connections.Count(x => x != null)) {
+			GenerationManager.spawnedRooms[GenerationManager.currentGeneration.startRoom.Position.x, GenerationManager.currentGeneration.startRoom.Position.y].SetActive(true);
+			foreach (NetworkConnection conn in NetworkServer.connections) {
+				if (conn == null)
+					continue;
+				
+				GameObject player = MonoBehaviour.Instantiate(GameManager.Instance.LocalPlayer);
+				GenerationManager.TeleportPlayerToStart(player);
+				string data = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(msg.conn);
+				player.GetComponent<GameProfile>().Deserialize(data);
+				ServerEvents.OnServerPlayerAdd e = ServerEvents.singleton.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
+					.CallListners(new ServerEvents.OnServerPlayerAdd(conn, player));
+				if (e.IsCancel)
+					MonoBehaviour.Destroy(player);
+				else
+					NetworkServer.AddPlayerForConnection(conn, player, init.indexController);
+				init.indexController++;
+				StartNewGameClientMessage.SendToClient(conn, new EmptyMessage());
+				ReceivePlayerProfileClientMessage.SendToClient(conn, new StringMessage(data));
+			}
+			GenerationManager.InitializeRoom(GenerationManager.currentGeneration.startRoom.Position);
+		}
+	});
+
+	public static readonly GameMessage ReceivePlayerProfileClientMessage = new GameMessage(msg => {
+		msg.conn.playerControllers[0].gameObject.GetComponent<GameProfile>().Deserialize(msg.ReadMessage<StringMessage>().value);
+	});
+
+	public static readonly GameMessage StartNewGameClientMessage = new GameMessage(msg => {
+		GenerationManager.SetCurrentRoom();
+	});
+	
+	/*public static readonly GameMessage SpawnObjServerMessage = new GameMessage(msg => {
 		GameObject player = MonoBehaviour.Instantiate(GameManager.Instance.LocalPlayer);
 		string data = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(msg.conn);
 		player.GetComponent<GameProfile>().Deserialize(data);
@@ -53,7 +86,7 @@ public class MessageManager {
 		GenerationManager.SendToClientActiveRooms(msg.conn);
 		NetworkSpawnSetupHandler.dirtyConnection = msg.conn;
 		NetworkSpawnSetupHandler.markDirty = true;
-	});	
+	});	*/
 	
 	public static readonly GameMessage SpawnSetupClientMessage = new GameMessage(msg => {
 		string[] data = msg.ReadMessage<StringMessage>().value.Split(';');
@@ -104,6 +137,13 @@ public class MessageManager {
 	public static readonly GameMessage ResponseProfileServerMessage = new GameMessage(msg => {
 		NetworkLobbyServerHUD hud = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>();
 		hud.AddNewProfile(msg.conn, msg.ReadMessage<StringMessage>().value);
+	});
+	
+	public static readonly GameMessage InitRoomClientMessage = new GameMessage(msg => {
+		string[] str = msg.ReadMessage<StringMessage>().value.Split(';');
+		GameObject room = GenerationManager.spawnedRooms[int.Parse(str[0]), int.Parse(str[1])];
+		room.GetComponent<Room>().NeedInitializeObjects = true;
+		room.GetComponent<Room>().ObjectToInitialize = int.Parse(str[2]);
 	});
 	
 	#endregion
