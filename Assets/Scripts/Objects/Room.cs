@@ -8,6 +8,8 @@ public class Room : MonoBehaviour {
 	private string roomName;
 	[SerializeField]
 	private Vector2Int size;
+	[SerializeField]
+	public Vector2Int position;
 
 	public bool NeedInitializeObjects;
 	public int ObjectToInitialize;

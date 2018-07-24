@@ -10,7 +10,7 @@ public class GameProfile : NetworkBehaviour {
 	public string ProfileName;
 
 	private void Awake() {
-		GameManager.Instance.Players.Add(gameObject);
+		GameManager.singleton.Players.Add(gameObject);
 	}
 
 	private void Start() {
@@ -19,7 +19,7 @@ public class GameProfile : NetworkBehaviour {
 		Utils.SetLocalPlayer(gameObject);
 		if (GenerationManager.currentGeneration != null)
 			GenerationManager.TeleportPlayerToStart(gameObject);
-		if (GameManager.Instance.doStartForce)
+		if (GameManager.singleton.doStartForce)
 			GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
 	}
 

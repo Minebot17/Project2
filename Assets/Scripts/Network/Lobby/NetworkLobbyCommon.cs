@@ -8,6 +8,7 @@ public class NetworkLobbyCommon : MonoBehaviour {
 	
 	private void Awake() {
 		MessageManager.Initialize();
+		DontDestroyOnLoad(gameObject);
 	}
 
 	private void Start() {

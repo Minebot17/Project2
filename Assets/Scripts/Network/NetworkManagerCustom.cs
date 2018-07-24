@@ -11,11 +11,11 @@ public class NetworkManagerCustom : NetworkManager {
 
 	public override void OnServerSceneChanged(string sceneName) {
 		if (ServerEvents.singleton.ServerOnly) {
-			GameObject player = Instantiate(GameManager.Instance.LocalPlayer);
+			GameObject player = Instantiate(GameManager.singleton.LocalPlayer);
 			player.GetComponent<GameProfile>().Deserialize(ServerEvents.singleton.ServerOnlyProfile);
 			player.transform.position = GameObject.Find("StartPosition").transform.position;
-			NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, GameManager.Instance.indexController);
-			GameManager.Instance.indexController++;
+			NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, GameManager.singleton.indexController);
+			GameManager.singleton.indexController++;
 		}
 	}
 

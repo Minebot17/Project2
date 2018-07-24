@@ -59,7 +59,7 @@ public static class ObjectsManager {
 			for (int i = 0; i < go.transform.childCount; i++)
 				go.transform.GetChild(i).position = go.transform.position + go.transform.GetChild(i).localPosition;
 			
-			Mesh mesh = MonoBehaviour.Instantiate(GameManager.Instance.OnePlane);
+			Mesh mesh = MonoBehaviour.Instantiate(GameManager.singleton.OnePlane);
 			mesh.SetUVs(0, new List<Vector2>() {
 				new Vector2(type.MinUV.x, type.MinUV.y), 
 				new Vector2(type.MaxUV.x, type.MinUV.y),
@@ -104,10 +104,10 @@ public static class ObjectsManager {
 		if (go.GetComponent<SimpleObject>().NotMirrorChildrensOnSpawn)
 			for (int i = 0; i < childCount; i++)
 				go.transform.GetChild(i).localScale = new Vector3(go.transform.GetChild(i).localScale.x * (obj.mirrorX ? -1 : 1), go.transform.GetChild(i).localScale.y * (obj.mirrorY ? -1 : 1), go.transform.GetChild(i).localScale.z);
-		if ((NetworkManagerCustom.Mode == NetworkLobbyClientHUD.LobbyMode.NEW_GAME ||
+		/*if ((NetworkManagerCustom.Mode == NetworkLobbyClientHUD.LobbyMode.NEW_GAME ||
 		    NetworkManagerCustom.Mode == NetworkLobbyClientHUD.LobbyMode.LOAD_GAME) && go.GetComponent<NetworkIdentity>() != null) {
 			go.GetComponent<NetworkIdentity>().serverOnly = true;
-		}
+		}*/
 
 		return go;
 	}

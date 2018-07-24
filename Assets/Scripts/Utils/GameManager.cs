@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 
 public class GameManager : NetworkBehaviour {
-	public static GameManager Instance;
+	public static GameManager singleton;
 	public static System.Random rnd = new System.Random();
 	public GameSettings Settings;
 	public GameObject LocalPlayer;
@@ -36,7 +36,7 @@ public class GameManager : NetworkBehaviour {
 	public short indexController = 0;
 	
 	public void Awake() {
-		Instance = this;
+		singleton = this;
 		Settings = new GameSettings();
 		GameSettings.Load();
 		Timer.InitializeCreate();
@@ -115,7 +115,7 @@ public class GameManager : NetworkBehaviour {
 				seedToSpawn = int.Parse(ServerEvents.singleton.SeedToSpawn);
 				GenerationInfo generation = GetGeneration(seedToGeneration == 0 ? rnd.Next() : seedToGeneration);
 				seedToSpawn = seedToSpawn == 0 ? rnd.Next() : seedToSpawn;
-				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, seedToSpawn, true);
+				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, seedToSpawn, false);
 				MessageManager.GetGenServerMessage.SendToServer(new EmptyMessage());
 				if (GameSettings.SettingVisualizeTestGeneration.Value)
 					GenerationManager.VisualizeGeneration(generation);
@@ -123,7 +123,7 @@ public class GameManager : NetworkBehaviour {
 			else if (gui.StartArguments.Contains("load game")) {
 				ServerEvents.singleton.LastLoadedWorld = SerializationManager.LoadWorld(gui.StartArguments.Split('|')[1]);
 				GenerationInfo generation = GetGeneration(ServerEvents.singleton.LastLoadedWorld.Info.SeedToGenerate);
-				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, ServerEvents.singleton.LastLoadedWorld.Info.SeedToSpawn, true);
+				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, ServerEvents.singleton.LastLoadedWorld.Info.SeedToSpawn, false);
 				MessageManager.GetGenServerMessage.SendToServer(new EmptyMessage());
 				if (GameSettings.SettingVisualizeTestGeneration.Value)
 					GenerationManager.VisualizeGeneration(generation);
@@ -157,34 +157,16 @@ public class GameManager : NetworkBehaviour {
 	private GameObject SpawnObjectsDefault(Vector3 position, NetworkHash128 assetId) {
 		int x = (int)position.x % 495;
 		int y = (int)position.y % 277;
-		GameObject spawned = Instantiate(FindAssetID(assetId));
+		GameObject spawned = Instantiate(Utils.FindAssetID(assetId));
 		Room room = GenerationManager.spawnedRooms[x, y].GetComponent<Room>();
 		spawned.transform.parent = room.gameObject.transform.Find("Objects");
 		spawned.transform.position = position;
-		if (spawned.GetComponent<ISerializableObject>() != null && room.NeedInitializeObjects) {
-			room.ObjectToInitialize--;
-			spawned.GetComponent<ISerializableObject>().Initialize();
-
-			if (room.ObjectToInitialize == 0) {
-				room.NeedInitializeObjects = false;
-				room.Initialized = true;
-			}
-		}
 
 		return spawned;
 	}
 	
 	public void UnSpawnObjectsDefault(GameObject spawned){
 		Destroy(spawned);
-	}
-
-	private GameObject FindAssetID(NetworkHash128 assetId) {
-		foreach (GameObject go in NetworkManager.singleton.spawnPrefabs) {
-			if (go.GetComponent<NetworkIdentity>().assetId.Equals(assetId))
-				return go;
-		}
-
-		return null;
 	}
 
 	private void FixedUpdate() {

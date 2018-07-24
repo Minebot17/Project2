@@ -24,8 +24,12 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 			allProfiles = arguments.Split('|')[2].Split('&');
 			loadedGameName = arguments.Split('|')[1];
 		}
-		else
+		else {
 			ServerEvents.singleton.NewWorldName = "World " + GameManager.rnd.Next();
+			ServerEvents.singleton.SeedToGenerate = "0";
+			ServerEvents.singleton.SeedToSpawn = "0";
+			profileName = "Player " + GameManager.rnd.Next();
+		}
 	}
 	
 	protected override void OnGUI() {

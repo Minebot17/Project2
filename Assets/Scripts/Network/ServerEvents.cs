@@ -13,6 +13,7 @@ public class ServerEvents : IEventProvider {
 	public string ServerOnlyProfile;
 	public string NewWorldName;
 	public bool InProgress;
+	public bool MarkDirtyForSave;
 	public int GenerationReady;
 
 	public static void Initialize() {

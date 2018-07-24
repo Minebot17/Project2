@@ -49,7 +49,7 @@ public class AttackHandler : NetworkBehaviour, IAttackable {
 	
 	[ClientRpc]
 	private void RpcDamage(GameObject target, MeleeAttackInfo info) {
-		Instantiate(GameManager.Instance.HitObjectParticle).GetComponent<HitObjectParticle>().Initialize(new Vector2(info.Point.x * (int) transform.localScale.x, info.Point.y) + Utils.ToVector2(transform.position), info.Size, target);
+		Instantiate(GameManager.singleton.HitObjectParticle).GetComponent<HitObjectParticle>().Initialize(new Vector2(info.Point.x * (int) transform.localScale.x, info.Point.y) + Utils.ToVector2(transform.position), info.Size, target);
 	}
 
 	public virtual void AttackProjectile(Object args) {

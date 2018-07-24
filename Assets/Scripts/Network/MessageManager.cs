@@ -2,18 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 
 public class MessageManager {
 
-	private static GameManager init;
 	public static short LastIndex = 99;
 	public static readonly List<GameMessage> ToRegister = new List<GameMessage>();
 
 	public static void Initialize() {
-		init = GameManager.Instance;
 		foreach (GameMessage message in ToRegister)
 			message.Register();
 	}
@@ -23,41 +22,63 @@ public class MessageManager {
 	#region messages
 	
 	public static readonly GameMessage GetGenServerMessage = new GameMessage(msg => {
-		SpawnGenClientMessage.SendToClient(msg.conn, new StringMessage(GenerationManager.currentGeneration.Seed + "," + GameManager.Instance.seedToSpawn));
+		SpawnGenClientMessage.SendToClient(msg.conn, new StringMessage(GenerationManager.currentGeneration.Seed + "," + GameManager.singleton.seedToSpawn));
 	});	
 	
 	public static readonly GameMessage SpawnGenClientMessage = new GameMessage(msg => {
-		string[] data = msg.ReadMessage<StringMessage>().value.Split(',');
-		GenerationInfo generation = GameManager.Instance.GetGeneration(int.Parse(data[0]));
-		GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, int.Parse(data[1]), false);
-		if (GameSettings.SettingVisualizeTestGeneration.Value)
-			GenerationManager.VisualizeGeneration(generation);
+		if (!NetworkManagerCustom.IsServer) {
+			string[] data = msg.ReadMessage<StringMessage>().value.Split(',');
+			GenerationInfo generation = GameManager.singleton.GetGeneration(int.Parse(data[0]));
+			GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, int.Parse(data[1]), false);
+			if (GameSettings.SettingVisualizeTestGeneration.Value)
+				GenerationManager.VisualizeGeneration(generation);
+		}
+
 		GenerationReadyServerMessage.SendToServer(new EmptyMessage());
 	});
 	
 	public static readonly GameMessage GenerationReadyServerMessage = new GameMessage(msg => {
 		ServerEvents.singleton.GenerationReady++;
 		if (ServerEvents.singleton.GenerationReady == NetworkServer.connections.Count(x => x != null)) {
-			GenerationManager.spawnedRooms[GenerationManager.currentGeneration.startRoom.Position.x, GenerationManager.currentGeneration.startRoom.Position.y].SetActive(true);
-			foreach (NetworkConnection conn in NetworkServer.connections) {
-				if (conn == null)
-					continue;
+			if (ServerEvents.singleton.StartAgrs.Equals("new game")) {
+				Vector2Int startRoomPos = GenerationManager.currentGeneration.startRoom.Position;
+				GenerationManager.InitializeRoom(GenerationManager.spawnedRooms[startRoomPos.x, startRoomPos.y]);
+				foreach (NetworkConnection conn in NetworkServer.connections) {
+					if (conn == null)
+						continue;
+					
+					GameObject player = MonoBehaviour.Instantiate(GameManager.singleton.LocalPlayer);
+					string data = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn);
+					player.GetComponent<GameProfile>().Deserialize(data);
+					GenerationManager.TeleportPlayerToStart(player);
+					NetworkServer.AddPlayerForConnection(conn, player, GameManager.singleton.indexController++);
+					SendPlayerDataClientMessage.SendToClient(conn, new StringListMessage(SerializationManager.SerializePlayer(player)));
+				}
 				
-				GameObject player = MonoBehaviour.Instantiate(GameManager.Instance.LocalPlayer);
-				GenerationManager.TeleportPlayerToStart(player);
-				string data = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(msg.conn);
-				player.GetComponent<GameProfile>().Deserialize(data);
-				ServerEvents.OnServerPlayerAdd e = ServerEvents.singleton.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
-					.CallListners(new ServerEvents.OnServerPlayerAdd(conn, player));
-				if (e.IsCancel)
-					MonoBehaviour.Destroy(player);
-				else
-					NetworkServer.AddPlayerForConnection(conn, player, init.indexController);
-				init.indexController++;
-				StartNewGameClientMessage.SendToClient(conn, new EmptyMessage());
-				ReceivePlayerProfileClientMessage.SendToClient(conn, new StringMessage(data));
+				GenerationManager.ApplyActiveRooms();
 			}
-			GenerationManager.InitializeRoom(GenerationManager.currentGeneration.startRoom.Position);
+			else if (ServerEvents.singleton.StartAgrs.Contains("load game")) {
+				SerializationManager.LoadedWorld save = ServerEvents.singleton.LastLoadedWorld;
+				foreach (NetworkConnection conn in NetworkServer.connections) {
+					if (conn == null)
+						continue;
+
+					List<string> data = save.Players.Find(x =>
+						x[0].Equals(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn)));
+					if (data == null) {
+						conn.Disconnect();
+						continue;
+					}
+
+					GameObject player = MonoBehaviour.Instantiate(GameManager.singleton.LocalPlayer);
+					SerializationManager.DeserializePlayer(player, data);
+					NetworkServer.AddPlayerForConnection(conn, player, GameManager.singleton.indexController++);
+					SendPlayerDataClientMessage.SendToClient(conn, new StringListMessage(SerializationManager.SerializePlayer(player)));
+				}
+
+				GenerationManager.ApplyActiveRooms();
+			}
+			SetCurrentRoomClientMessage.SendToAllClients(new EmptyMessage());
 		}
 	});
 
@@ -138,13 +159,66 @@ public class MessageManager {
 		NetworkLobbyServerHUD hud = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>();
 		hud.AddNewProfile(msg.conn, msg.ReadMessage<StringMessage>().value);
 	});
-	
-	public static readonly GameMessage InitRoomClientMessage = new GameMessage(msg => {
-		string[] str = msg.ReadMessage<StringMessage>().value.Split(';');
-		GameObject room = GenerationManager.spawnedRooms[int.Parse(str[0]), int.Parse(str[1])];
-		room.GetComponent<Room>().NeedInitializeObjects = true;
-		room.GetComponent<Room>().ObjectToInitialize = int.Parse(str[2]);
+
+	public static readonly GameMessage SendPlayerDataClientMessage = new GameMessage(msg => {
+		List<string> data = msg.ReadMessage<StringListMessage>().Value;
+		SerializationManager.DeserializePlayer(NetworkManager.singleton.client.connection.playerControllers[0].gameObject, data);
+	});
+
+	public static readonly GameMessage SetCurrentRoomClientMessage = new GameMessage(msg => {
+		foreach (GameObject player in GameManager.singleton.Players) {
+			int x = (int)player.transform.position.x % 495;
+			int y = (int)player.transform.position.y % 277;
+			GenerationManager.spawnedRooms[x, y].SetActive(true);
+			
+			if (player.GetComponent<NetworkIdentity>().isLocalPlayer)
+				GenerationManager.SetCurrentRoom(new Vector2Int(x, y));
+		}
+	});
+
+	public static readonly GameMessage SetActiveRoomClientMessage = new GameMessage(msg => {
+		ActiveRoomMessage message = msg.ReadMessage<ActiveRoomMessage>();
+		Transform parent = GenerationManager.spawnedRooms[message.PositionX, message.PositionY].transform.Find("Objects");
+		for (int i = 0; i < parent.childCount; i++)
+			if (parent.GetChild(i).GetComponent<NetworkIdentity>() != null && parent.GetChild(i)
+				    .GetComponent<NetworkIdentity>().netId.ToString().Equals(message.NetworkIDs[i])) {
+				parent.GetChild(i).GetComponent<ISerializableObject>().Deserialize(message.Data[i]);
+			}
 	});
 	
+	[System.Serializable]
+	public class StringListMessage : MessageBase {
+		public StringList Value = new StringList();
+
+		public StringListMessage() { }
+
+		public StringListMessage(List<string> value) {
+			Value = (StringList) value;
+		}
+	}
+
+	[System.Serializable]
+	public class ActiveRoomMessage : MessageBase {
+		public int PositionX;
+		public int PositionY;
+		public StringList NetworkIDs;
+		public MultyStringList Data;
+
+		public ActiveRoomMessage() { }
+
+		public ActiveRoomMessage(Vector2Int position, List<string> networkIDs, List<List<string>> data) {
+			PositionX = position.x;
+			PositionY = position.y;
+			NetworkIDs = (StringList)networkIDs;
+			Data = (MultyStringList)data;
+		}
+	}
+
+	[System.Serializable]
+	public class StringList : List<string> { }
+
+	[System.Serializable]
+	public class MultyStringList : List<List<string>> { }
+
 	#endregion
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public static class Utils {
 
@@ -15,7 +16,7 @@ public static class Utils {
 	}
 
 	public static bool IsTouchRoom(Collider2D collider2D) {
-		return Physics2D.IsTouchingLayers(collider2D, GameManager.Instance.RoomLayerMask);
+		return Physics2D.IsTouchingLayers(collider2D, GameManager.singleton.RoomLayerMask);
 	}
 
 	public static bool IsFreeBetweenPlayer(GameObject player, Vector3 point) {
@@ -60,7 +61,7 @@ public static class Utils {
 
 	public static Vector2 GetPlayerLook() {
 		Vector2 mousePos = ToVector2(GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition));
-		Vector2 headPos = ToVector2(GameManager.Instance.PlayerHead.transform.position);
+		Vector2 headPos = ToVector2(GameManager.singleton.PlayerHead.transform.position);
 		return (mousePos - headPos).normalized;
 	}
 
@@ -102,16 +103,25 @@ public static class Utils {
 	}
 
 	public static void SetLocalPlayer(GameObject player) {
-		GameManager.Instance.LocalPlayer = player;
+		GameManager.singleton.LocalPlayer = player;
 		GameObject.Find("Main Camera").GetComponent<CameraFollower>().Target = player;
 		GameObject.Find("HpPanel").GetComponent<HealthPanelGUI>().SetTarget(player);
 	}
 
 	public static GameObject FindNearestPlayer(Vector3 point) {
-		return FindNearestGameObject(GameManager.Instance.Players, point);
+		return FindNearestGameObject(GameManager.singleton.Players, point);
 	}
 
 	public static GameObject FindVisibleNearestPlayer(Vector3 point) {
-		return FindNearestGameObject(GameManager.Instance.Players.FindAll(player => IsFreeBetweenPlayer(player, point)), point);
+		return FindNearestGameObject(GameManager.singleton.Players.FindAll(player => IsFreeBetweenPlayer(player, point)), point);
+	}
+	
+	public static GameObject FindAssetID(NetworkHash128 assetId) {
+		foreach (GameObject go in NetworkManager.singleton.spawnPrefabs) {
+			if (go.GetComponent<NetworkIdentity>().assetId.Equals(assetId))
+				return go;
+		}
+
+		return null;
 	}
 }

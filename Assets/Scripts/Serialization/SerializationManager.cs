@@ -9,7 +9,11 @@ using UnityEngine.Networking;
 public class SerializationManager {
 	private const string postfix = ".rgw";
 	private static string currentSaveName;
-	
+
+	public static void SaveWorld() {
+		SaveWorld(currentSaveName);
+	}
+
 	public static void SaveWorld(string saveName) {
 		currentSaveName = saveName;
 		string filePath = Application.persistentDataPath + "/Worlds/" + saveName;
@@ -20,7 +24,7 @@ public class SerializationManager {
 		Directory.CreateDirectory(filePath + "/Players");
 		Directory.CreateDirectory(filePath + "/Objects");
 
-		foreach (GameObject player in GameManager.Instance.Players)
+		foreach (GameObject player in GameManager.singleton.Players)
 			File.WriteAllLines(filePath + "/Players/" + player.GetComponent<GameProfile>().ProfileName, SerializePlayer(player));
 
 		for(int x = 0; x < GenerationManager.currentGeneration.size.x; x++)
@@ -45,7 +49,7 @@ public class SerializationManager {
 		
 		File.WriteAllLines(filePath + "/worldInfo", new [] {
 			GenerationManager.currentGeneration.Seed+"", 
-			GameManager.Instance.seedToGeneration+""
+			GameManager.singleton.seedToGeneration+""
 			// TODO: Добавить сохранение индекса уровня
 		});
 		
@@ -73,7 +77,7 @@ public class SerializationManager {
 			foreach (string objectFile in objectFiles)
 				loadedObjects[roomPosition.x, roomPosition.y].Add(
 					new LoadedWorld.LoadedObject(
-						int.Parse(objectFile.Split('/')[objectFile.Split('/').Length - 1].Split('_')[0]),
+						objectFile.Split('/')[objectFile.Split('/').Length - 1].Split('_')[0],
 						File.ReadAllLines(objectFile).ToList()
 					)
 				);
@@ -136,9 +140,9 @@ public class SerializationManager {
 		}
 
 		public class LoadedObject {
-			public int AssetID;
+			public string AssetID;
 			public List<string> Data;
-			public LoadedObject(int assetId, List<string> data) {
+			public LoadedObject(string assetId, List<string> data) {
 				AssetID = assetId;
 				Data = data;
 			}

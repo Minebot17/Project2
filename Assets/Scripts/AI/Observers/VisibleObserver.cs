@@ -6,7 +6,7 @@ public class VisibleObserver : PlayerObserver {
 	public Vector3 Offset;
 
 	protected override void Observe() {
-		List<GameObject> currentTargets = GameManager.Instance.Players.FindAll(player =>
+		List<GameObject> currentTargets = GameManager.singleton.Players.FindAll(player =>
 			Vector3.Distance(player.transform.position, transform.position) < ObserveRadius &&
 			Utils.IsFreeBetweenPlayer(player, transform.position + Offset));
 

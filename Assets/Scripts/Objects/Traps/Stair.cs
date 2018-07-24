@@ -75,7 +75,7 @@ public class Stair : MonoBehaviour {
 		center.AddComponent<MeshRenderer>().material = StairMaterial;
 		childs.Add(center);
 
-		foreach (GameObject player in GameManager.Instance.Players) {
+		foreach (GameObject player in GameManager.singleton.Players) {
 			player.GetComponent<EntityGroundInfo>().GetEventSystem<EntityGroundInfo.LandingEvent>()
 				.SubcribeEvent(
 					@event => {
