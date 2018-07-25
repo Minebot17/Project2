@@ -8,6 +8,7 @@ using UnityEngine.Networking.NetworkSystem;
 public class NetworkManagerCustom : NetworkManager {
 	public static bool IsServer = true;
 	public static NetworkLobbyClientHUD.LobbyMode Mode;
+	public List<GameObject> RegisteredPrefabs = new List<GameObject>();
 
 	public override void OnServerSceneChanged(string sceneName) {
 		if (ServerEvents.singleton.ServerOnly) {

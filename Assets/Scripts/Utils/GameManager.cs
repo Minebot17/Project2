@@ -49,11 +49,6 @@ public class GameManager : NetworkBehaviour {
 		RoomLayerMask = LayerMask.GetMask("Room");
 		PlayerLayerMask = LayerMask.GetMask("Player");
 		TrapLayerMask = LayerMask.GetMask("Trap");
-		
-		if (isClient) {
-			foreach (GameObject go in NetworkManager.singleton.spawnPrefabs)
-				ClientScene.RegisterSpawnHandler(go.GetComponent<NetworkIdentity>().assetId, SpawnObjectsDefault, UnSpawnObjectsDefault);
-		}
 	}
 
 	public GenerationInfo GetGeneration(int seed) {
@@ -154,9 +149,9 @@ public class GameManager : NetworkBehaviour {
 			MessageManager.GetGenServerMessage.SendToServer(new EmptyMessage());
 	}
 
-	private GameObject SpawnObjectsDefault(Vector3 position, NetworkHash128 assetId) {
-		int x = (int)position.x % 495;
-		int y = (int)position.y % 277;
+	public static GameObject SpawnObjectsDefault(Vector3 position, NetworkHash128 assetId) {
+		int x = (int)position.x / 495;
+		int y = (int)position.y / 277;
 		GameObject spawned = Instantiate(Utils.FindAssetID(assetId));
 		Room room = GenerationManager.spawnedRooms[x, y].GetComponent<Room>();
 		spawned.transform.parent = room.gameObject.transform.Find("Objects");
@@ -165,7 +160,7 @@ public class GameManager : NetworkBehaviour {
 		return spawned;
 	}
 	
-	public void UnSpawnObjectsDefault(GameObject spawned){
+	public static void UnSpawnObjectsDefault(GameObject spawned){
 		Destroy(spawned);
 	}
 

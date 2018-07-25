@@ -25,6 +25,11 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 		else {
 			profileName = "Player " + GameManager.rnd.Next();
 		}
+		
+		if (!NetworkManagerCustom.IsServer) {
+			foreach (GameObject go in ((NetworkManagerCustom)NetworkManager.singleton).RegisteredPrefabs)
+				ClientScene.RegisterSpawnHandler(go.GetComponent<NetworkIdentity>().assetId, GameManager.SpawnObjectsDefault, GameManager.UnSpawnObjectsDefault);
+		}
 	}
 
 	protected virtual void OnGUI() {

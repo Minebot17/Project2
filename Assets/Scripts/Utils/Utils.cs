@@ -117,7 +117,7 @@ public static class Utils {
 	}
 	
 	public static GameObject FindAssetID(NetworkHash128 assetId) {
-		foreach (GameObject go in NetworkManager.singleton.spawnPrefabs) {
+		foreach (GameObject go in ((NetworkManagerCustom)NetworkManager.singleton).RegisteredPrefabs) {
 			if (go.GetComponent<NetworkIdentity>().assetId.Equals(assetId))
 				return go;
 		}

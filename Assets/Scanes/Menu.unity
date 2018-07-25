@@ -229,7 +229,6 @@ MonoBehaviour:
   StartArguments: 
   IpAddress: 
   Port: 
-  Seed: 0
 --- !u!114 &1469394493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,7 +257,6 @@ MonoBehaviour:
   m_OnlineScene: Lobby
   m_SpawnPrefabs:
   - {fileID: 1801596076533684, guid: 4efa03d6ea959804892186d7e734d96d, type: 2}
-  - {fileID: 1046486813272824, guid: 96d20a9c2b30c4044a4c38a210700ffe, type: 2}
   - {fileID: 1584260096530976, guid: 722999a6527be89499b40ca1485926f5, type: 2}
   - {fileID: 1215964558651176, guid: 13d9eb3f34713344d972dd9bfacafd70, type: 2}
   - {fileID: 1572888172980128, guid: 0eb3872e12cb957479e80ff15354fe8c, type: 2}
@@ -321,6 +319,8 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
+  RegisteredPrefabs:
+  - {fileID: 1046486813272824, guid: 96d20a9c2b30c4044a4c38a210700ffe, type: 2}
 --- !u!4 &1469394494
 Transform:
   m_ObjectHideFlags: 0

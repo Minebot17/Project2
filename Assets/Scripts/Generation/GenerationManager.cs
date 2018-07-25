@@ -255,8 +255,12 @@ public static class GenerationManager {
 	public static void ApplyActiveRooms() {
 		List<Vector2Int> coords = new List<Vector2Int>();
 		List<GameObject> newActiveRooms = new List<GameObject>();
-		foreach (GameObject p in GameManager.singleton.Players)
-			coords.Add(new Vector2Int((int) p.transform.position.x / 495, (int) p.transform.position.y / 277));
+		foreach (GameObject p in GameManager.singleton.Players) {
+			Vector2Int coord = new Vector2Int((int) p.transform.position.x / 495, (int) p.transform.position.y / 277);
+			if (!coords.Contains(coord))
+				coords.Add(coord);
+		}
+
 		foreach (Vector2Int coord in coords)
 			newActiveRooms.Add(spawnedRooms[coord.x, coord.y]);
 		ApplyActiveRooms(newActiveRooms);

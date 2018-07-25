@@ -17,8 +17,6 @@ public class GameProfile : NetworkBehaviour {
 		if (!isLocalPlayer)
 			return;
 		Utils.SetLocalPlayer(gameObject);
-		if (GenerationManager.currentGeneration != null)
-			GenerationManager.TeleportPlayerToStart(gameObject);
 		if (GameManager.singleton.doStartForce)
 			GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
 	}

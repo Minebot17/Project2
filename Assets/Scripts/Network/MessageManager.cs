@@ -138,7 +138,6 @@ public class MessageManager {
 	});
 	
 	public static readonly GameMessage RequestLobbyModeServerMessage = new GameMessage(msg => {
-		NetworkServer.SpawnObjects();
 		ResponseLobbyModeClientMessage.SendToClient(msg.conn, new StringMessage(GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>().StartArguments));
 	});
 	
@@ -163,7 +162,7 @@ public class MessageManager {
 
 	public static readonly GameMessage SendPlayerDataClientMessage = new GameMessage(msg => {
 		List<string> data = msg.ReadMessage<StringListMessage>().Value;
-		SerializationManager.DeserializePlayer(NetworkManager.singleton.client.connection.playerControllers[0].gameObject, data);
+		SerializationManager.DeserializePlayer(GameManager.singleton.Players.Find(x => x.GetComponent<NetworkIdentity>().isLocalPlayer), data);
 		MonoBehaviour.Destroy(GameObject.Find("LobbyManager"));
 	});
 
@@ -182,10 +181,11 @@ public class MessageManager {
 		ActiveRoomMessage message = msg.ReadMessage<ActiveRoomMessage>();
 		Transform parent = GenerationManager.spawnedRooms[message.PositionX, message.PositionY].transform.Find("Objects");
 		for (int i = 0; i < message.NetworkIDs.Count; i++)
-			if (parent.GetChild(i).GetComponent<NetworkIdentity>() != null && parent.GetChild(i)
-				    .GetComponent<NetworkIdentity>().netId.ToString().Equals(message.NetworkIDs[i])) {
-				parent.GetChild(i).GetComponent<ISerializableObject>().Deserialize(message.Data[i]);
-			}
+			for (int j = 0; j < parent.childCount; j++)
+				if (parent.GetChild(j).GetComponent<NetworkIdentity>() != null && parent.GetChild(j)
+						.GetComponent<NetworkIdentity>().netId.ToString().Equals(message.NetworkIDs[i])) {
+					parent.GetChild(j).GetComponent<ISerializableObject>().Deserialize(message.Data[i]);
+				}
 	});
 	
 	[System.Serializable]
