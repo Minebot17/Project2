@@ -11,7 +11,7 @@ public class SerializationManager {
 	private static string currentSaveName;
 
 	public static void SaveWorld() {
-		SaveWorld(currentSaveName);
+		SaveWorld(currentSaveName == null ? ServerEvents.singleton.NewWorldName : currentSaveName);
 	}
 
 	public static void SaveWorld(string saveName) {
@@ -34,9 +34,9 @@ public class SerializationManager {
 					string roomPath = filePath + "/Objects/" + x + "x" + y;
 					Directory.CreateDirectory(roomPath);
 					
-					Transform objs = room.transform.Find("Objests");
+					Transform objs = room.transform.Find("Objects");
 					for (int j = 0; j < objs.childCount; j++)
-						if (objs.GetChild(j).GetComponent<ISerializableObject>() != null) {
+						if (objs.GetChild(j).GetComponent<ISerializableObject>() != null && objs.GetComponent<NetworkIdentity>() != null) {
 							int index = 0;
 							if (File.Exists(roomPath + "/" + objs.GetComponent<NetworkIdentity>().assetId + "_" + index))
 								index++;
@@ -104,15 +104,15 @@ public class SerializationManager {
 
 	public static List<string> SerializePlayer(GameObject player) {
 		return new List<string> {
+			player.GetComponent<GameProfile>().Serialize(),
 			player.transform.position.x+"",
-			player.transform.position.y+"",
-			player.GetComponent<GameProfile>().Serialize()
+			player.transform.position.y+""
 		};
 	}
 
 	public static void DeserializePlayer(GameObject player, List<string> data) {
-		player.GetComponent<GameProfile>().Deserialize(data[2]);
-		player.transform.position = new Vector3(float.Parse(data[0]), float.Parse(data[1]), player.transform.position.z);
+		player.GetComponent<GameProfile>().Deserialize(data[0]);
+		player.transform.position = new Vector3(float.Parse(data[1]), float.Parse(data[2]), player.transform.position.z);
 	}
 
 	public class LoadedWorld {

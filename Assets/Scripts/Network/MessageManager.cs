@@ -41,8 +41,9 @@ public class MessageManager {
 		ServerEvents.singleton.GenerationReady++;
 		if (ServerEvents.singleton.GenerationReady == NetworkServer.connections.Count(x => x != null)) {
 			if (ServerEvents.singleton.StartAgrs.Equals("new game")) {
-				Vector2Int startRoomPos = GenerationManager.currentGeneration.startRoom.Position;
-				GenerationManager.InitializeRoom(GenerationManager.spawnedRooms[startRoomPos.x, startRoomPos.y]);
+				//Vector2Int startRoomPos = GenerationManager.currentGeneration.startRoom.Position;
+				//GenerationManager.spawnedRooms[startRoomPos.x, startRoomPos.y].SetActive(true);
+				//GenerationManager.InitializeRoom(GenerationManager.spawnedRooms[startRoomPos.x, startRoomPos.y]);
 				foreach (NetworkConnection conn in NetworkServer.connections) {
 					if (conn == null)
 						continue;
@@ -163,12 +164,13 @@ public class MessageManager {
 	public static readonly GameMessage SendPlayerDataClientMessage = new GameMessage(msg => {
 		List<string> data = msg.ReadMessage<StringListMessage>().Value;
 		SerializationManager.DeserializePlayer(NetworkManager.singleton.client.connection.playerControllers[0].gameObject, data);
+		MonoBehaviour.Destroy(GameObject.Find("LobbyManager"));
 	});
 
 	public static readonly GameMessage SetCurrentRoomClientMessage = new GameMessage(msg => {
 		foreach (GameObject player in GameManager.singleton.Players) {
-			int x = (int)player.transform.position.x % 495;
-			int y = (int)player.transform.position.y % 277;
+			int x = (int)player.transform.position.x / 495;
+			int y = (int)player.transform.position.y / 277;
 			GenerationManager.spawnedRooms[x, y].SetActive(true);
 			
 			if (player.GetComponent<NetworkIdentity>().isLocalPlayer)
@@ -179,7 +181,7 @@ public class MessageManager {
 	public static readonly GameMessage SetActiveRoomClientMessage = new GameMessage(msg => {
 		ActiveRoomMessage message = msg.ReadMessage<ActiveRoomMessage>();
 		Transform parent = GenerationManager.spawnedRooms[message.PositionX, message.PositionY].transform.Find("Objects");
-		for (int i = 0; i < parent.childCount; i++)
+		for (int i = 0; i < message.NetworkIDs.Count; i++)
 			if (parent.GetChild(i).GetComponent<NetworkIdentity>() != null && parent.GetChild(i)
 				    .GetComponent<NetworkIdentity>().netId.ToString().Equals(message.NetworkIDs[i])) {
 				parent.GetChild(i).GetComponent<ISerializableObject>().Deserialize(message.Data[i]);
@@ -193,7 +195,23 @@ public class MessageManager {
 		public StringListMessage() { }
 
 		public StringListMessage(List<string> value) {
-			Value = (StringList) value;
+			Value = new StringList();
+			Value.AddRange(value);
+		}
+		
+		// De-serialize the contents of the reader into this message
+		public override void Deserialize(NetworkReader reader) {
+			int count = reader.ReadInt32();
+			for (int i = 0; i < count; i++)
+				Value.Add(reader.ReadString());
+		}
+
+		// Serialize the contents of this message into the writer
+		public override void Serialize(NetworkWriter writer) {
+			writer.Write(Value.Count);
+			foreach (string value in Value) {
+				writer.Write(value);
+			}
 		}
 	}
 
@@ -209,8 +227,49 @@ public class MessageManager {
 		public ActiveRoomMessage(Vector2Int position, List<string> networkIDs, List<List<string>> data) {
 			PositionX = position.x;
 			PositionY = position.y;
-			NetworkIDs = (StringList)networkIDs;
-			Data = (MultyStringList)data;
+			NetworkIDs = new StringList();
+			Data = new MultyStringList();
+			NetworkIDs.AddRange(networkIDs);
+			Data.AddRange(data);
+		}
+		
+		// De-serialize the contents of the reader into this message
+		public override void Deserialize(NetworkReader reader) {
+			PositionX = reader.ReadInt32();
+			PositionY = reader.ReadInt32();
+			NetworkIDs = new StringList();
+			Data = new MultyStringList();
+			int count = reader.ReadInt32();
+			for (int i = 0; i < count; i++)
+				NetworkIDs.Add(reader.ReadString());
+
+			int count0 = reader.ReadInt32();
+			for (int i = 0; i < count0; i++) {
+				int count1 = reader.ReadInt32();
+				List<string> toAdd = new List<string>();
+				for (int j = 0; j < count1; j++) {
+					toAdd.Add(reader.ReadString());
+				}
+				Data.Add(toAdd);
+			}
+		}
+
+		// Serialize the contents of this message into the writer
+		public override void Serialize(NetworkWriter writer) {
+			writer.Write(PositionX);
+			writer.Write(PositionY);
+			writer.Write(NetworkIDs.Count);
+			foreach (string value in NetworkIDs) {
+				writer.Write(value);
+			}
+			
+			writer.Write(Data.Count);
+			foreach (List<string> list in Data) {
+				writer.Write(list.Count);
+				foreach (string s in list) {
+					writer.Write(s);
+				}
+			}
 		}
 	}
 

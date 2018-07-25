@@ -94,8 +94,13 @@ public static class RoomLoader {
 	public static List<GameObject> SpawnSerializebleObjects(Room room, GameObject roomObject) {
 		List<GameObject> result = new List<GameObject>();
 		Transform parent = roomObject.transform.Find("Objects");
-		foreach (RoomObject obj in room.objects)
-			result.Add(ObjectsManager.SpawnRoomObject(obj, parent));
+		foreach (RoomObject obj in room.objects) {
+			GameObject spawned = ObjectsManager.SpawnRoomObject(obj, parent,
+				x => x.GetComponent<NetworkIdentity>() != null && x.GetComponent<ISerializableObject>() != null);
+			if (spawned != null)
+				result.Add(spawned);
+		}
+
 		return result;
 	}
 

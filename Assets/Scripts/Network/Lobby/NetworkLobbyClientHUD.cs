@@ -22,9 +22,15 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 		profile = new GameProfile().Serialize();
 		if (lobbyMode == LobbyMode.LOAD_GAME)
 			allProfiles = arguments.Split('|')[2].Split('&');
+		else {
+			profileName = "Player " + GameManager.rnd.Next();
+		}
 	}
 
 	protected virtual void OnGUI() {
+		if (ServerEvents.singleton != null && ServerEvents.singleton.InProgress)
+			return;
+		
 		if (lobbyMode != LobbyMode.NONE && lobbyMode != LobbyMode.ONLY_SERVER) {
 			GUILayout.Space(20);
 			GUILayout.Label("Вы в лобби у " + NetworkManager.singleton.client.serverIp);

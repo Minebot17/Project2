@@ -33,6 +33,9 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 	}
 	
 	protected override void OnGUI() {
+		if (ServerEvents.singleton.InProgress)
+			return;
+		
 		if (lobbyMode != LobbyMode.NONE) {
 			if (lobbyMode == LobbyMode.ONLY_SERVER) {
 				profile = allProfiles.Length == 0 ? new GameProfile().Serialize() : allProfiles[0];
