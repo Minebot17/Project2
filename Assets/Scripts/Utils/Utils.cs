@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -116,12 +117,40 @@ public static class Utils {
 		return FindNearestGameObject(GameManager.singleton.Players.FindAll(player => IsFreeBetweenPlayer(player, point)), point);
 	}
 	
-	public static GameObject FindAssetID(NetworkHash128 assetId) {
+	public static GameObject FindAssetID(string assetId) {
 		foreach (GameObject go in ((NetworkManagerCustom)NetworkManager.singleton).RegisteredPrefabs) {
-			if (go.GetComponent<NetworkIdentity>().assetId.Equals(assetId))
+			if (go.GetComponent<NetworkIdentity>().assetId.ToString().Equals(assetId))
 				return go;
 		}
 
 		return null;
+	}
+
+	public static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs) {
+		DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+
+		if (!dir.Exists) {
+			throw new DirectoryNotFoundException(
+				"Source directory does not exist or could not be found: "
+				+ sourceDirName);
+		}
+
+		DirectoryInfo[] dirs = dir.GetDirectories();
+		if (!Directory.Exists(destDirName)) {
+			Directory.CreateDirectory(destDirName);
+		}
+
+		FileInfo[] files = dir.GetFiles();
+		foreach (FileInfo file in files) {
+			string temppath = Path.Combine(destDirName, file.Name);
+			file.CopyTo(temppath, false);
+		}
+
+		if (copySubDirs) {
+			foreach (DirectoryInfo subdir in dirs) {
+				string temppath = Path.Combine(destDirName, subdir.Name);
+				DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+			}
+		}
 	}
 }

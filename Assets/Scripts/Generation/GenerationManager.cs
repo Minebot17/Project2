@@ -279,6 +279,7 @@ public static class GenerationManager {
 	public static void ActivateRoom(GameObject room, bool active) {
 		if (!NetworkManagerCustom.IsServer) {
 			room.SetActive(active);
+			return;
 		}
 
 		if (active) {
@@ -290,7 +291,7 @@ public static class GenerationManager {
 
 				Transform parent = room.transform.Find("Objects");
 				foreach (SerializationManager.LoadedWorld.LoadedObject loadedObject in loadedObjects) {
-					GameObject gameObject = ObjectsManager.SpawnGameObject(Utils.FindAssetID(NetworkHash128.Parse(loadedObject.AssetID)),
+					GameObject gameObject = ObjectsManager.SpawnGameObject(Utils.FindAssetID(loadedObject.AssetID),
 						Vector2.zero, Vector3.zero, parent, true);
 					NetworkServer.Spawn(gameObject);
 					gameObject.GetComponent<ISerializableObject>().Deserialize(loadedObject.Data);
@@ -300,6 +301,7 @@ public static class GenerationManager {
 				InitializeRoom(room);
 			}
 			SerializationManager.SaveWorld();
+			ServerEvents.singleton.LastLoadedWorld = SerializationManager.LoadWorld();
 			List<string> networkIds = new List<string>();
 			List<List<string>> data = new List<List<string>>();
 			Transform parent0 = room.transform.Find("Objects");
@@ -313,9 +315,11 @@ public static class GenerationManager {
 		}
 		else {
 			SerializationManager.SaveWorld();
+			ServerEvents.singleton.LastLoadedWorld = SerializationManager.LoadWorld();
 			Transform parent = room.transform.Find("Objects");
 			for (int i = 0; i < parent.childCount; i++)
-				NetworkServer.Destroy(parent.GetChild(i).gameObject);
+				if (parent.GetChild(i).gameObject.GetComponent<NetworkIdentity>() != null)
+					NetworkServer.Destroy(parent.GetChild(i).gameObject);
 			room.SetActive(false);
 		}
 	}

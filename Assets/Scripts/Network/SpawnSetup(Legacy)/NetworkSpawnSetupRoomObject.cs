@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,9 +46,13 @@ public class NetworkSpawnSetupRoomObject : MonoBehaviour, INetworkSpawnSetup {
 
 	private string[] GetSpawnedData(List<string> data) {
 		int end = 8;
-		while (!data[end].Equals("endRoomObject")) {
+		int threshold = 200;
+		while (threshold > 0 && !data[end].Equals("endRoomObject")) {
+			threshold--;
 			end++;
 		}
+		if (threshold <= 0)
+			throw new Exception("Infinity while");
 
 		return data.GetRange(8, end - 8).ToArray();
 	}

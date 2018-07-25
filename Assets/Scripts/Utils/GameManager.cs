@@ -53,7 +53,9 @@ public class GameManager : NetworkBehaviour {
 
 	public GenerationInfo GetGeneration(int seed) {
 		GenerationInfo generation = null;
-		while (true) {
+		int threshold = 50;
+		while (threshold > 0) {
+			threshold--;
 			generation = GenerationManager.Generate(
 				0, DefGenerationSize,
 				x => new[] {
@@ -70,7 +72,7 @@ public class GameManager : NetworkBehaviour {
 							rooms[x, y] = null;
 					}
 				},
-				0.55f, 0.4f,
+				0.55f, 0f,
 				new Dictionary<Vector2Int, float>() {
 					{new Vector2Int(1, 2), 0.3f},
 					{new Vector2Int(1, 3), 0.3f},
@@ -86,18 +88,22 @@ public class GameManager : NetworkBehaviour {
 					{new Vector2Int(4, 4), 0.05f},
 				},
 				new List<Func<GenerationInfo, List<RoomInfo>>>(), 1,
-				seed
+				seed // 1082609359 for test
 			);
-			Debug.Log("ReservedCount: " + generation.ReservedCount);
-			Debug.Log("RoomsCount: " + generation.RoomsCount);
-			Debug.Log("CellsCount: " + generation.CellsCount);
-			Debug.Log("GatesCount: " + generation.GatesCount);
-			Debug.Log("Seed: " + generation.Seed);
-			if (generation.CellsCount >= GameSettings.SettingMinGenerationCellCount.Value)
+			if (generation.CellsCount >= GameSettings.SettingMinGenerationCellCount.Value) {
+				Debug.Log("ReservedCount: " + generation.ReservedCount);
+				Debug.Log("RoomsCount: " + generation.RoomsCount);
+				Debug.Log("CellsCount: " + generation.CellsCount);
+				Debug.Log("GatesCount: " + generation.GatesCount);
+				Debug.Log("Seed: " + generation.Seed);
 				break;
+			}
+
 			Debug.Log("Regenerate");
 			seed = new System.Random(seed).Next();
 		}
+		if (threshold <= 0)
+			throw new Exception("incorrect filters for the current generation");
 
 		return generation;
 	}
@@ -152,7 +158,7 @@ public class GameManager : NetworkBehaviour {
 	public static GameObject SpawnObjectsDefault(Vector3 position, NetworkHash128 assetId) {
 		int x = (int)position.x / 495;
 		int y = (int)position.y / 277;
-		GameObject spawned = Instantiate(Utils.FindAssetID(assetId));
+		GameObject spawned = Instantiate(Utils.FindAssetID(assetId.ToString()));
 		Room room = GenerationManager.spawnedRooms[x, y].GetComponent<Room>();
 		spawned.transform.parent = room.gameObject.transform.Find("Objects");
 		spawned.transform.position = position;

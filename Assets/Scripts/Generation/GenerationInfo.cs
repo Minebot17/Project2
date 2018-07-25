@@ -228,7 +228,9 @@ public class GenerationInfo {
 		GetConnectedRoomsRecursive(startRoom, ref connectedRooms);
 		if (!connectedRooms.Contains(endRoom)) {
 			List<RoomInfo> triedRooms = new List<RoomInfo>();
-			while (true) {
+			int threshold = 1000;
+			while (threshold > 0) {
+				threshold--;
 				List<RoomInfo> selectedRooms = connectedRooms.Where(x => (x.Equals(startRoom) || !x.IsReserved) && x.Position != Vector2Int.zero && !triedRooms.Contains(x))
 					.OrderBy(x => Vector2Int.Distance(x.Position, endRoom.Position)).ToList();
 				if (selectedRooms.Count == 0)

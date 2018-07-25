@@ -12,7 +12,7 @@ public class GameSettings {
 	public static readonly BoolSettingValue SettingVisualizeTraectoryAdvanced = new BoolSettingValue("SettingVisualizeTraectoryAdvanced", false);
 	public static readonly BoolSettingValue SettingVisualizeTestGeneration = new BoolSettingValue("SettingVisualizeTestGeneration", true);
 	public static readonly BoolSettingValue SettingLogEvents = new BoolSettingValue("SettingLogEvents", false);
-	public static readonly IntSettingValue SettingMinGenerationCellCount = new IntSettingValue("MinGenerationCellCount", 500);
+	public static readonly IntSettingValue SettingMinGenerationCellCount = new IntSettingValue("MinGenerationCellCount", 100);
 	public static readonly FloatSettingValue SettingTraectoryTracingFrequency = new FloatSettingValue("TraectoryTracingFrequency", 10);
 	public static readonly StringSettingValue SettingLanguageCode = new StringSettingValue("LanguageCode", "en");
 	public static readonly StringSettingValue SettingTestRoomName = new StringSettingValue("TestRoomName", "test");
