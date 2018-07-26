@@ -13,7 +13,7 @@ public class GateTrigger : MonoBehaviour, IEventProvider {
 		    !other.gameObject.GetComponent<EffectHandler>().Contains<InvulnerabilityEffect>()
 		    ) {
 			GetEventSystem<EnterGateEvent>().CallListners(new EnterGateEvent(transform.parent.gameObject, other.gameObject));
-			other.gameObject.GetComponent<EffectHandler>().AddEffect(new InvulnerabilityEffect(0.5f));
+			other.gameObject.GetComponent<EffectHandler>().AddEffect(new InvulnerabilityEffect(0.25f));
 		}
 	}
 	

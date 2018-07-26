@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class SerializationManager {
+	public static LoadedWorld World;
+	public static bool MarkDirtySave;
 	private const string postfix = ".rgw";
 	private static string currentSaveName;
 
@@ -16,19 +18,36 @@ public class SerializationManager {
 
 	public static void SaveWorld(string saveName) {
 		currentSaveName = saveName;
+		World = ConstructLoadedWorld();
 		string filePath = Application.persistentDataPath + "/Worlds/" + saveName;
 
 		Directory.CreateDirectory(filePath);
 		Directory.CreateDirectory(filePath + "/Players");
 		Directory.CreateDirectory(filePath + "/Objects");
 
-		foreach (GameObject player in GameManager.singleton.Players)
-			File.WriteAllLines(filePath + "/Players/" + player.GetComponent<GameProfile>().ProfileName, SerializePlayer(player));
-
+		for (int i = 0; i < GameManager.singleton.Players.Count; i++)
+			File.WriteAllLines(filePath + "/Players/" + GameManager.singleton.Players[i].GetComponent<GameProfile>().ProfileName, World.Players[i]);
+		
 		for(int x = 0; x < GenerationManager.currentGeneration.size.x; x++)
+			for (int y = 0; y < GenerationManager.currentGeneration.size.y; y++) {
+				if (World.Objects[x, y] != null) {
+					string roomPath = filePath + "/Objects/" + x + "x" + y;
+					Directory.CreateDirectory(roomPath);
+					
+					foreach (LoadedWorld.LoadedObject loadedObject in World.Objects[x, y]) {
+						int index = 0;
+						while (File.Exists(roomPath + "/" + loadedObject.AssetID + "_" + index))
+							index++;
+							
+						File.WriteAllLines(roomPath + "/" + loadedObject.AssetID + "_" + index, loadedObject.Data);
+					}
+				}
+			}
+
+		/*for(int x = 0; x < GenerationManager.currentGeneration.size.x; x++)
 			for(int y = 0; y < GenerationManager.currentGeneration.size.y; y++) {
 				GameObject room = GenerationManager.spawnedRooms[x, y];
-				if (room != null && GenerationManager.currentGeneration.rooms[x, y].Position == new Vector2Int(x, y) && room.GetComponent<Room>().Initialized) {
+				if (room != null && GenerationManager.currentGeneration.rooms[x, y].Position == new Vector2Int(x, y) && room.GetComponent<Room>().Initialized && room.activeSelf) {
 					string roomPath = filePath + "/Objects/" + x + "x" + y;
 					Directory.CreateDirectory(roomPath);
 					
@@ -56,9 +75,8 @@ public class SerializationManager {
 						File.WriteAllLines(roomPath + "/" + loadedObject.AssetID + "_" + index, loadedObject.Data);
 					}
 				}
-			}
+			}*/
 		
-
 		/*if (currentSaveName != null) {
 			ZipFile.ExtractToDirectory(Application.persistentDataPath + "/Worlds/" + currentSaveName + postfix, filePath + "_Copy");
 			string[] newRooms = Directory.GetDirectories(filePath + "/Objects");
@@ -81,14 +99,14 @@ public class SerializationManager {
 		Directory.Delete(filePath, true);
 	}
 
-	public static LoadedWorld LoadWorld() {
-		return LoadWorld(currentSaveName);
+	public static void LoadWorld() {
+		LoadWorld(currentSaveName);
 	}
 
-	public static LoadedWorld LoadWorld(string saveName) {
+	public static void LoadWorld(string saveName) {
 		string filePath = Application.persistentDataPath + "/Worlds/" + saveName;
 		if (!File.Exists(filePath + postfix))
-			return null;
+			return;
 		
 		ZipFile.ExtractToDirectory(filePath + postfix, filePath);
 		
@@ -116,9 +134,8 @@ public class SerializationManager {
 		int seedToSpawn = int.Parse(worldInfo[1]);
 		
 		Directory.Delete(filePath, true);
-		return new LoadedWorld(players, loadedObjects, seedToGeneration, seedToSpawn, 0);
+		World = new LoadedWorld(players, loadedObjects, seedToGeneration, seedToSpawn, 0);
 	}
-
 
 	public static List<string> GetGameProfiles(string saveName) {
 		string filePath = Application.persistentDataPath + "/Worlds/" + saveName;
@@ -143,6 +160,35 @@ public class SerializationManager {
 	public static void DeserializePlayer(GameObject player, List<string> data) {
 		player.GetComponent<GameProfile>().Deserialize(data[0]);
 		player.transform.position = new Vector3(float.Parse(data[1]), float.Parse(data[2]), player.transform.position.z);
+	}
+
+	public static LoadedWorld ConstructLoadedWorld() {
+		List<List<string>> players = new List<List<string>>();
+		List<LoadedWorld.LoadedObject>[,] objectsToAdd = new List<LoadedWorld.LoadedObject>[GameManager.DefGenerationSize.x, GameManager.DefGenerationSize.y];
+		
+		foreach (GameObject player in GameManager.singleton.Players)
+			players.Add(SerializePlayer(player));
+
+		for(int x = 0; x < GenerationManager.currentGeneration.size.x; x++)
+			for(int y = 0; y < GenerationManager.currentGeneration.size.y; y++) {
+				GameObject room = GenerationManager.spawnedRooms[x, y];
+				if (room != null && GenerationManager.currentGeneration.rooms[x, y].Position == new Vector2Int(x, y) && room.GetComponent<Room>().Initialized && room.activeSelf) {
+					objectsToAdd[x, y] = new List<LoadedWorld.LoadedObject>();
+					Transform objs = room.transform.Find("Objects");
+					for (int j = 0; j < objs.childCount; j++)
+						if (objs.GetChild(j).GetComponent<ISerializableObject>() != null && objs.GetChild(j).GetComponent<NetworkIdentity>() != null)
+							objectsToAdd[x, y].Add(
+								new LoadedWorld.LoadedObject(
+									objs.GetChild(j).GetComponent<NetworkIdentity>().assetId.ToString(),
+									objs.GetChild(j).GetComponent<ISerializableObject>().Serialize()
+								)
+							);
+				}
+				else if (World?.Objects[x, y] != null)
+					objectsToAdd[x, y] = World.Objects[x, y];
+			}
+		
+		return new LoadedWorld(players, objectsToAdd, GenerationManager.currentGeneration.Seed, GameManager.singleton.seedToSpawn, 0);
 	}
 
 	public class LoadedWorld {

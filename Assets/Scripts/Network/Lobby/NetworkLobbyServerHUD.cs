@@ -26,7 +26,7 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 		}
 		else {
 			ServerEvents.singleton.NewWorldName = "World " + GameManager.rnd.Next();
-			ServerEvents.singleton.SeedToGenerate = "0";
+			ServerEvents.singleton.SeedToGenerate = "1082609359";
 			ServerEvents.singleton.SeedToSpawn = "0";
 			profileName = "Player " + GameManager.rnd.Next();
 		}

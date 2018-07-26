@@ -122,9 +122,9 @@ public class GameManager : NetworkBehaviour {
 					GenerationManager.VisualizeGeneration(generation);
 			}
 			else if (gui.StartArguments.Contains("load game")) {
-				ServerEvents.singleton.LastLoadedWorld = SerializationManager.LoadWorld(gui.StartArguments.Split('|')[1]);
-				GenerationInfo generation = GetGeneration(ServerEvents.singleton.LastLoadedWorld.Info.SeedToGenerate);
-				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, ServerEvents.singleton.LastLoadedWorld.Info.SeedToSpawn, false);
+				SerializationManager.LoadWorld(gui.StartArguments.Split('|')[1]);
+				GenerationInfo generation = GetGeneration(SerializationManager.World.Info.SeedToGenerate);
+				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, SerializationManager.World.Info.SeedToSpawn, false);
 				MessageManager.GetGenServerMessage.SendToServer(new EmptyMessage());
 				if (GameSettings.SettingVisualizeTestGeneration.Value)
 					GenerationManager.VisualizeGeneration(generation);
@@ -172,6 +172,10 @@ public class GameManager : NetworkBehaviour {
 
 	private void FixedUpdate() {
 		InputManager.Handle();
+		if (NetworkManagerCustom.IsServer && SerializationManager.MarkDirtySave) {
+			SerializationManager.SaveWorld();
+			SerializationManager.MarkDirtySave = false;
+		}
 	}
 	
 	[Serializable]

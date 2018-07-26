@@ -8,12 +8,10 @@ public class ServerEvents : IEventProvider {
 	public string StartAgrs;
 	public string SeedToGenerate;
 	public string SeedToSpawn;
-	public SerializationManager.LoadedWorld LastLoadedWorld;
 	public bool ServerOnly;
 	public string ServerOnlyProfile;
 	public string NewWorldName;
 	public bool InProgress;
-	public bool MarkDirtyForSave;
 	public int GenerationReady;
 
 	public static void Initialize() {

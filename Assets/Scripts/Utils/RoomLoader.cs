@@ -78,7 +78,7 @@ public static class RoomLoader {
 			go.AddComponent<MeshRenderer>().material = mesh.material == null ? GameManager.singleton.DefaultMaterial : mesh.material;
 			if (mesh.name.Equals("background"))
 				go.layer = 9;
-			else if (mesh.name.Equals("shadowMeshX") || mesh.name.Equals("shadowMeshY"))
+			else if (mesh.name.Equals("shadowMeshX") || mesh.name.Equals("shadowMeshY") || mesh.name.Equals("shadowCornerMeshX") || mesh.name.Equals("shadowCornerMeshY"))
 				go.layer = 10;
 			else if (mesh.name.Equals("wall") || mesh.name.Equals("hiddenWall"))
 				go.GetComponent<MeshRenderer>().receiveShadows = false;
@@ -131,7 +131,9 @@ public static class RoomLoader {
 			generateHiddenBackground(hiddenCorners, -0.001f),
 			generateWall(hiddenInvertedCuttedCornersBarierr, -0.008f, true),
 			generateShadowMeshX(concat, size),
-			generateShadowMeshY(concat, size)
+			generateShadowMeshY(concat, size),
+			generateCornerShadowMeshX(concat, size),
+			generateCornerShadowMeshY(concat, size)
 		};
 
 		lastColliderPoints = generateCollider(new List<Corner>(getGatesCorners(size, removePreGateCorners(concat), gates).Concat(removePreGateCorners(concat))));
@@ -298,6 +300,168 @@ public static class RoomLoader {
 		}
 
 		return new RoomMesh("shadowMeshY", getMesh(vertices, uv, triangles.ToArray(), getNormals(vertices.Count)), null, 0);
+	}
+
+	private static RoomMesh generateCornerShadowMeshX(List<Corner> cornersFake, Vector2Int size) {
+		List<Corner> corners = copyCornerList(cornersFake);
+		corners.RemoveAll(x => !(x.IsExtremeX(size.x) || x.IsExtremeY(size.y)));
+
+		List<Vector3> vertices = new List<Vector3>();
+		List<Vector2> uv = new List<Vector2>();
+		List<int> triangles = new List<int>();
+		List<Corner> checkedCorners = new List<Corner>();
+
+		int i = 0;
+		foreach (Corner corner in corners) {
+			corner.FindConnections(corners);
+			if (checkedCorners.Contains(corner) || corner.xConnection == null)
+				continue;
+			bool toDown = FacingUtils.GetFacingsFromCornerFacing(corner.cornerFacing)[1] == Facing.DOWN;
+			bool connectionRighter = corner.xConnection.coords.x > corner.coords.x;
+			Corner leftCorner = connectionRighter ? corner : corner.xConnection;
+			Corner rightCorner = connectionRighter ? corner.xConnection : corner;
+
+			bool fail = true;
+			if (leftCorner.coords.y == 0 && rightCorner.coords.y == 0 || leftCorner.coords.y == size.y * 277 && rightCorner.coords.y == size.y * 277) {
+				Vector2 lastLeftCoord = leftCorner.coords;
+				
+				for (int x = 0; x < size.x; x++) {
+					float xCenter = 495f * (x + 0.5f);
+					if (xCenter - 27f >= leftCorner.coords.x && xCenter + 27f <= rightCorner.coords.x) {
+
+						vertices.Add(new Vector3(lastLeftCoord.x, lastLeftCoord.y, 100));
+						vertices.Add(new Vector3(xCenter - 27f, lastLeftCoord.y, 100));
+						vertices.Add(new Vector3(xCenter - 27f, lastLeftCoord.y, -100));
+						vertices.Add(new Vector3(lastLeftCoord.x, lastLeftCoord.y, -100));
+
+						lastLeftCoord = new Vector2(xCenter + 27f, lastLeftCoord.y);
+
+						/*vertices.Add(new Vector3(xCenter + 27f, leftCorner.coords.y, 100));
+						vertices.Add(new Vector3(rightCorner.coords.x, leftCorner.coords.y, 100));
+						vertices.Add(new Vector3(rightCorner.coords.x, leftCorner.coords.y, -100));
+						vertices.Add(new Vector3(xCenter + 27f, leftCorner.coords.y, -100));*/
+
+						for (int j = 0; j < 4; j++)
+							uv.Add(new Vector2());
+						triangles.AddRange(!toDown ? new int[] { i + 1, i, i + 3, i + 3, i + 2, i + 1 } : new int[] { i, i + 1, i + 3, i + 2, i + 3, i + 1 });
+						//triangles.AddRange(!toDown ? new int[] { i + 5, i + 4, i + 7, i + 7, i + 6, i + 5 } : new int[] { i + 4, i + 5, i + 7, i + 6, i + 7, i + 5 });
+
+						i += 4;
+						fail = false;
+						//break;
+					}
+				}
+
+				if (!fail && (int) lastLeftCoord.x != rightCorner.coords.x) {
+					vertices.Add(new Vector3(lastLeftCoord.x, lastLeftCoord.y, 100));
+					vertices.Add(new Vector3(rightCorner.coords.x, lastLeftCoord.y, 100));
+					vertices.Add(new Vector3(rightCorner.coords.x, lastLeftCoord.y, -100));
+					vertices.Add(new Vector3(lastLeftCoord.x, lastLeftCoord.y, -100));
+					
+					for (int j = 0; j < 4; j++)
+						uv.Add(new Vector2());
+					triangles.AddRange(!toDown ? new int[] { i + 1, i, i + 3, i + 3, i + 2, i + 1 } : new int[] { i, i + 1, i + 3, i + 2, i + 3, i + 1 });
+					i += 4;
+				}
+			}
+			if (fail) {
+				vertices.Add(new Vector3(leftCorner.coords.x, leftCorner.coords.y, 100));
+				vertices.Add(new Vector3(rightCorner.coords.x, leftCorner.coords.y, 100));
+				vertices.Add(new Vector3(rightCorner.coords.x, leftCorner.coords.y, -100));
+				vertices.Add(new Vector3(leftCorner.coords.x, leftCorner.coords.y, -100));
+
+				for (int j = 0; j < 4; j++)
+					uv.Add(new Vector2());
+				triangles.AddRange(!toDown ? new int[] { i + 1, i, i + 3, i + 3, i + 2, i + 1 } : new int[] { i, i + 1, i + 3, i + 2, i + 3, i + 1 });
+
+				i += 4;
+			}
+			checkedCorners.Add(corner);
+			checkedCorners.Add(corner.xConnection);
+		}
+
+		return new RoomMesh("shadowCornerMeshX", getMesh(vertices, uv, triangles.ToArray(), getNormals(vertices.Count)), null, 0);
+	}
+
+	private static RoomMesh generateCornerShadowMeshY(List<Corner> cornersFake, Vector2Int size) {
+		List<Corner> corners = copyCornerList(cornersFake);
+		corners.RemoveAll(x => !(x.IsExtremeX(size.x) || x.IsExtremeY(size.y)));
+
+		List<Vector3> vertices = new List<Vector3>();
+		List<Vector2> uv = new List<Vector2>();
+		List<int> triangles = new List<int>();
+		List<Corner> checkedCorners = new List<Corner>();
+
+		int i = 0;
+		foreach (Corner corner in corners) {
+			corner.FindConnections(corners);
+			if (checkedCorners.Contains(corner) || corner.yConnection == null)
+				continue;
+			bool toLeft = FacingUtils.GetFacingsFromCornerFacing(corner.cornerFacing)[0] == Facing.LEFT;
+			bool connectionUpper = corner.yConnection.coords.y > corner.coords.y;
+			Corner downCorner = connectionUpper ? corner : corner.yConnection;
+			Corner upCorner = connectionUpper ? corner.yConnection : corner;
+
+			bool fail = true;
+			if (downCorner.coords.x == 0 && upCorner.coords.x == 0 || downCorner.coords.x == size.x * 495 && upCorner.coords.x == size.x * 495) {
+				Vector2 lastDownCoord = downCorner.coords;
+				
+				for (int y = 0; y < size.y; y++) {
+					float yCenter = 277f * (y + 0.5f);
+					if (yCenter - 27f >= downCorner.coords.y && yCenter + 27f <= upCorner.coords.y) {
+
+						vertices.Add(new Vector3(lastDownCoord.x, lastDownCoord.y, 100));
+						vertices.Add(new Vector3(lastDownCoord.x, yCenter - 27f, 100));
+						vertices.Add(new Vector3(lastDownCoord.x, yCenter - 27f, -100));
+						vertices.Add(new Vector3(lastDownCoord.x, lastDownCoord.y, -100));
+
+						lastDownCoord = new Vector2(lastDownCoord.x, yCenter + 27f);
+
+						/*vertices.Add(new Vector3(downCorner.coords.x, yCenter + 27f, 100));
+						vertices.Add(new Vector3(downCorner.coords.x, upCorner.coords.y, 100));
+						vertices.Add(new Vector3(downCorner.coords.x, upCorner.coords.y, -100));
+						vertices.Add(new Vector3(downCorner.coords.x, yCenter + 27f, -100));*/
+
+						for (int j = 0; j < 4; j++)
+							uv.Add(new Vector2());
+						triangles.AddRange(toLeft ? new int[] { i + 1, i, i + 3, i + 3, i + 2, i + 1 } : new int[] { i, i + 1, i + 3, i + 2, i + 3, i + 1 });
+						//triangles.AddRange(toLeft ? new int[] { i + 5, i + 4, i + 7, i + 7, i + 6, i + 5 } : new int[] { i + 4, i + 5, i + 7, i + 6, i + 7, i + 5 });
+
+						i += 4;
+						fail = false;
+						//break;
+					}
+				}
+				
+				if (!fail && (int) lastDownCoord.y != upCorner.coords.y) {
+					vertices.Add(new Vector3(lastDownCoord.x, lastDownCoord.y, 100));
+					vertices.Add(new Vector3(lastDownCoord.x, upCorner.coords.y, 100));
+					vertices.Add(new Vector3(lastDownCoord.x, upCorner.coords.y, -100));
+					vertices.Add(new Vector3(lastDownCoord.x, lastDownCoord.y, -100));
+					
+					for (int j = 0; j < 4; j++)
+						uv.Add(new Vector2());
+					triangles.AddRange(toLeft ? new int[] { i + 1, i, i + 3, i + 3, i + 2, i + 1 } : new int[] { i, i + 1, i + 3, i + 2, i + 3, i + 1 });
+					i += 4;
+				}
+			}
+			if (fail) {
+				vertices.Add(new Vector3(downCorner.coords.x, downCorner.coords.y, 100));
+				vertices.Add(new Vector3(downCorner.coords.x, upCorner.coords.y, 100));
+				vertices.Add(new Vector3(downCorner.coords.x, upCorner.coords.y, -100));
+				vertices.Add(new Vector3(downCorner.coords.x, downCorner.coords.y, -100));
+
+				for (int j = 0; j < 4; j++)
+					uv.Add(new Vector2());
+				triangles.AddRange(toLeft ? new int[] { i + 1, i, i + 3, i + 3, i + 2, i + 1 } : new int[] { i, i + 1, i + 3, i + 2, i + 3, i + 1 });
+
+				i += 4;
+			}
+			checkedCorners.Add(corner);
+			checkedCorners.Add(corner.yConnection);
+		}
+
+		return new RoomMesh("shadowCornerMeshY", getMesh(vertices, uv, triangles.ToArray(), getNormals(vertices.Count)), null, 0);
 	}
 
 	private static RoomMesh generateBordersY(List<Corner> cornersFake, Vector2Int size, float layer) {

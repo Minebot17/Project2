@@ -59,12 +59,11 @@ public class MessageManager {
 				GenerationManager.ApplyActiveRooms();
 			}
 			else if (ServerEvents.singleton.StartAgrs.Contains("load game")) {
-				SerializationManager.LoadedWorld save = ServerEvents.singleton.LastLoadedWorld;
 				foreach (NetworkConnection conn in NetworkServer.connections) {
 					if (conn == null)
 						continue;
 
-					List<string> data = save.Players.Find(x =>
+					List<string> data = SerializationManager.World.Players.Find(x =>
 						x[0].Equals(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn)));
 					if (data == null) {
 						conn.Disconnect();

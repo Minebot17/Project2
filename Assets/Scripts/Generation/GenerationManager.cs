@@ -178,8 +178,6 @@ public static class GenerationManager {
 	}
 
 	public static void SetCurrentRoom(Vector2Int coord) {
-		if (currentRoomCoords != new Vector2Int(-1, -1))
-			spawnedRooms[currentRoomCoords.x, currentRoomCoords.y].SetActive(false);
 		currentRoomCoords = coord;
 		spawnedRooms[coord.x, coord.y].SetActive(true);
 		currentRoom = spawnedRooms[coord.x, coord.y];
@@ -286,11 +284,9 @@ public static class GenerationManager {
 			room.SetActive(true);
 			if (room.GetComponent<Room>().Initialized) {
 				Vector2Int pos = room.GetComponent<Room>().position;
-				List<SerializationManager.LoadedWorld.LoadedObject> loadedObjects =
-					ServerEvents.singleton.LastLoadedWorld.Objects[pos.x, pos.y];
 
 				Transform parent = room.transform.Find("Objects");
-				foreach (SerializationManager.LoadedWorld.LoadedObject loadedObject in loadedObjects) {
+				foreach (SerializationManager.LoadedWorld.LoadedObject loadedObject in SerializationManager.World.Objects[pos.x, pos.y]) {
 					GameObject gameObject = ObjectsManager.SpawnGameObject(Utils.FindAssetID(loadedObject.AssetID),
 						Vector2.zero, Vector3.zero, parent, true);
 					NetworkServer.Spawn(gameObject);
@@ -300,8 +296,8 @@ public static class GenerationManager {
 			else {
 				InitializeRoom(room);
 			}
-			SerializationManager.SaveWorld();
-			ServerEvents.singleton.LastLoadedWorld = SerializationManager.LoadWorld();
+
+			SerializationManager.MarkDirtySave = true;
 			List<string> networkIds = new List<string>();
 			List<List<string>> data = new List<List<string>>();
 			Transform parent0 = room.transform.Find("Objects");
@@ -314,8 +310,7 @@ public static class GenerationManager {
 			MessageManager.SetActiveRoomClientMessage.SendToAllClients(new MessageManager.ActiveRoomMessage(room.GetComponent<Room>().position, networkIds, data));
 		}
 		else {
-			SerializationManager.SaveWorld();
-			ServerEvents.singleton.LastLoadedWorld = SerializationManager.LoadWorld();
+			SerializationManager.MarkDirtySave = true;
 			Transform parent = room.transform.Find("Objects");
 			for (int i = 0; i < parent.childCount; i++)
 				if (parent.GetChild(i).gameObject.GetComponent<NetworkIdentity>() != null)
