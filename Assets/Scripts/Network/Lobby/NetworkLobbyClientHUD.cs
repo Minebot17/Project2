@@ -18,7 +18,6 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 	public virtual void Initialize(string arguments) {
 		lobbyMode = arguments.Equals("new game") ? LobbyMode.NEW_GAME :
 			arguments.Contains("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
-		NetworkManagerCustom.Mode = lobbyMode;
 		profile = new GameProfile().Serialize();
 		if (lobbyMode == LobbyMode.LOAD_GAME)
 			allProfiles = arguments.Split('|')[2].Split('&');

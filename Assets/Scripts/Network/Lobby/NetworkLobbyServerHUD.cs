@@ -18,7 +18,6 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 			arguments.Contains("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
 		ServerEvents.Initialize();
 		ServerEvents.singleton.StartAgrs = arguments;
-		NetworkManagerCustom.Mode = lobbyMode;
 		profile = new GameProfile().Serialize();
 		if (lobbyMode == LobbyMode.LOAD_GAME) {
 			allProfiles = arguments.Split('|')[2].Split('&');
@@ -26,7 +25,7 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 		}
 		else {
 			ServerEvents.singleton.NewWorldName = "World " + GameManager.rnd.Next();
-			ServerEvents.singleton.SeedToGenerate = "1082609359";
+			ServerEvents.singleton.SeedToGenerate = "0";
 			ServerEvents.singleton.SeedToSpawn = "0";
 			profileName = "Player " + GameManager.rnd.Next();
 		}
@@ -38,10 +37,13 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 		
 		if (lobbyMode != LobbyMode.NONE) {
 			if (lobbyMode == LobbyMode.ONLY_SERVER) {
-				profile = allProfiles.Length == 0 ? new GameProfile().Serialize() : allProfiles[0];
+				GameProfile gm = new GameProfile();
+				gm.ProfileName = "Minebot";
+				profile = allProfiles == null ? gm.Serialize() : allProfiles[0];
 				NetworkManager.singleton.ServerChangeScene("Start");
 				ServerEvents.singleton.ServerOnly = true;
 				ServerEvents.singleton.ServerOnlyProfile = profile;
+				ServerEvents.singleton.InProgress = true;
 				return;
 			}
 
@@ -85,7 +87,7 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 				SetReady(NetworkManager.singleton.client.connection, ready);
 			}
 
-			if (readyCount == connectionsCount && GUILayout.Button("Поiхали!")) {
+			if (readyCount == connectionsCount && GUILayout.Button("Старт!")) {
 				ServerEvents.singleton.InProgress = true;
 				MessageManager.RequestProfileClientMessage.SendToAllClients(new EmptyMessage());
 				lastConnections = readyCount;

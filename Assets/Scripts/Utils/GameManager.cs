@@ -72,7 +72,7 @@ public class GameManager : NetworkBehaviour {
 							rooms[x, y] = null;
 					}
 				},
-				0.55f, 0f,
+				0.55f, 0.4f,
 				new Dictionary<Vector2Int, float>() {
 					{new Vector2Int(1, 2), 0.3f},
 					{new Vector2Int(1, 3), 0.3f},
@@ -133,10 +133,10 @@ public class GameManager : NetworkBehaviour {
 				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(GameSettings.SettingTestRoomName.Value)), Vector3.zero, true);
 				GameObject player = Instantiate(LocalPlayer);
 				player.transform.position = GameObject.Find("startPosition").transform.position;
+				if (ServerEvents.singleton.ServerOnlyProfile != null)
+					player.GetComponent<GameProfile>().Deserialize(ServerEvents.singleton.ServerOnlyProfile);
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
-				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
-				ServerEvents.OnServerPlayerAdd e = ServerEvents.singleton.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
-					.CallListners(new ServerEvents.OnServerPlayerAdd(NetworkServer.connections[0], player));
+				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController++);
 			}
 			else if (gui.StartArguments.Equals("room editor")) {
 				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8), Vector3.zero, true);
@@ -146,9 +146,7 @@ public class GameManager : NetworkBehaviour {
 				GameObject player = Instantiate(LocalPlayer);
 				player.transform.position = GameObject.Find("startPosition").transform.position;
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
-				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController);
-				ServerEvents.OnServerPlayerAdd e = ServerEvents.singleton.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
-					.CallListners(new ServerEvents.OnServerPlayerAdd(NetworkServer.connections[0], player));
+				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController++);
 			}
 		}
 		else

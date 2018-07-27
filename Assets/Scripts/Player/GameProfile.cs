@@ -22,8 +22,19 @@ public class GameProfile : NetworkBehaviour {
 	}
 
 	public string Serialize() {
+		bool inGo;
+		try {
+			Vector3 a = transform.position;
+			inGo = true;
+		}
+		catch (NullReferenceException e) {
+			inGo = false;
+		}
 		List<string> list = new List<string>();
 		list.Add(ProfileName);
+		if (inGo) {
+			transform.Find("NameRender").GetComponent<TextMesh>().text = ProfileName;
+		}
 		string result = "";
 		foreach (string data in list) {
 			result += data + ";";

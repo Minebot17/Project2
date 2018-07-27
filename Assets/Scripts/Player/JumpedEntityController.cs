@@ -52,6 +52,7 @@ public class JumpedEntityController : NetworkBehaviour {
 			return;
 		
 		int scale = (int)transform.localScale.x;
+		transform.Find("NameRender").transform.localScale = new Vector3(scale, 1, 1);
 		bool toForward = scale == 1 ? InputManager.HorizontalAxis >= 1 : InputManager.HorizontalAxis <= -1;
 		bool toBack = scale == 1 ? InputManager.HorizontalAxis <= -1 : InputManager.HorizontalAxis >= 1;
 

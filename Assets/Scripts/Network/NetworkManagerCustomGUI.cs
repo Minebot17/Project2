@@ -21,9 +21,6 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 
 	private void OnGUI() {
 		if (!_started) {
-			GUILayout.Label("Name:");
-
-			GUILayout.Space(10);
 			GUILayout.Label("Ip:");
 			IpAddress = GUILayout.TextField(IpAddress, GUILayout.Width(100));
 			GUILayout.Label("Port:");
@@ -46,9 +43,9 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 			
 			if (GUILayout.Button("Load game")) {
 				_started = true;
-				List<string> gps = SerializationManager.GetGameProfiles("test");
+				SerializationManager.LoadWorld("test");
 				string result = "";
-				gps.ForEach(x => result += x + "&");
+				SerializationManager.World.Players.ForEach(x => result += x[0] + "&");
 				StartArguments = "load game|test|" + result;
 				NetworkManager.singleton.networkPort = int.Parse(Port);
 				NetworkManager.singleton.StartHost();

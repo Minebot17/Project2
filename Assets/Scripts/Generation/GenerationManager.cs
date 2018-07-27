@@ -96,7 +96,7 @@ public static class GenerationManager {
 
 	private static GameObject SpawnRoom(RoomLoader.Room room, RoomInfo position, Transform parent, bool onServer) {
 		GameObject spawnedRoom = RoomLoader.SpawnRoom(room, new Vector3(position.Position.x * 495, position.Position.y * 277, 0), onServer);
-		spawnedRoom.GetComponent<Room>().position = position.Position;
+		spawnedRoom.GetComponent<Room>().Position = position.Position;
 		spawnedRoom.transform.parent = parent;
 		List<GameObject> gates = Utils.GetComponentsRecursive<GateObject>(spawnedRoom).ConvertAll(x => x.gameObject);
 		gates.ForEach(x =>
@@ -135,28 +135,10 @@ public static class GenerationManager {
 				player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000f));
 		}
 
-		if (player.GetComponent<NetworkIdentity>().isServer) {
-			List<Vector2Int> coords = new List<Vector2Int>();
-			foreach (GameObject p in GameManager.singleton.Players)
-				coords.Add(new Vector2Int((int) p.transform.position.x / 495, (int) p.transform.position.y / 277));
-			
-			string toMessage = "";
-			List<GameObject> newActiveRooms = new List<GameObject>();
-			foreach (Vector2Int coord in coords) {
-				newActiveRooms.Add(spawnedRooms[coord.x, coord.y]);
-				toMessage += coord.x + "," + coord.y + ";";
-			}
-
-			ApplyActiveRooms(newActiveRooms);
-			//MessageManager.MarkDirtyActiveRoomsClientMessage.SendToAllClients(new StringMessage(toMessage));
-		}
-		else {
-			ApplyActiveRooms();
-		}
+		ApplyActiveRooms();
 	}
 
 	public static void TeleportPlayerToStart(GameObject player) {
-		//SetCurrentRoom(currentGeneration.startRoom.Position);
 		Transform objectFolder = null;
 		try {
 			spawnedRooms[currentRoomCoords.x, currentRoomCoords.y].transform.Find("Objects");
@@ -239,17 +221,6 @@ public static class GenerationManager {
 		return false;
 	}
 
-	/*public static void SendToClientActiveRooms(NetworkConnection conn) {
-		string toMessage = "";
-		List<GameObject> newActiveRooms = new List<GameObject>();
-		foreach (GameObject go in GenerationManager.activeRooms) {
-			Vector2Int coord = new Vector2Int((int)go.transform.position.x, (int)go.transform.position.y);
-			newActiveRooms.Add(GenerationManager.spawnedRooms[coord.x, coord.y]);
-			toMessage += coord.x + "," + coord.y + ";";
-		}
-		MessageManager.MarkDirtyActiveRoomsClientMessage.SendToClient(conn, new StringMessage());
-	}*/
-
 	public static void ApplyActiveRooms() {
 		List<Vector2Int> coords = new List<Vector2Int>();
 		List<GameObject> newActiveRooms = new List<GameObject>();
@@ -283,7 +254,7 @@ public static class GenerationManager {
 		if (active) {
 			room.SetActive(true);
 			if (room.GetComponent<Room>().Initialized) {
-				Vector2Int pos = room.GetComponent<Room>().position;
+				Vector2Int pos = room.GetComponent<Room>().Position;
 
 				Transform parent = room.transform.Find("Objects");
 				foreach (SerializationManager.LoadedWorld.LoadedObject loadedObject in SerializationManager.World.Objects[pos.x, pos.y]) {
@@ -307,7 +278,7 @@ public static class GenerationManager {
 					data.Add(parent0.GetChild(i).GetComponent<ISerializableObject>().Serialize());
 				}
 			}
-			MessageManager.SetActiveRoomClientMessage.SendToAllClients(new MessageManager.ActiveRoomMessage(room.GetComponent<Room>().position, networkIds, data));
+			MessageManager.SetActiveRoomClientMessage.SendToAllClients(new MessageManager.ActiveRoomMessage(room.GetComponent<Room>().Position, networkIds, data));
 		}
 		else {
 			SerializationManager.MarkDirtySave = true;

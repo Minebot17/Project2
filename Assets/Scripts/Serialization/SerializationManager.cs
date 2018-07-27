@@ -44,49 +44,6 @@ public class SerializationManager {
 				}
 			}
 
-		/*for(int x = 0; x < GenerationManager.currentGeneration.size.x; x++)
-			for(int y = 0; y < GenerationManager.currentGeneration.size.y; y++) {
-				GameObject room = GenerationManager.spawnedRooms[x, y];
-				if (room != null && GenerationManager.currentGeneration.rooms[x, y].Position == new Vector2Int(x, y) && room.GetComponent<Room>().Initialized && room.activeSelf) {
-					string roomPath = filePath + "/Objects/" + x + "x" + y;
-					Directory.CreateDirectory(roomPath);
-					
-					Transform objs = room.transform.Find("Objects");
-					for (int j = 0; j < objs.childCount; j++)
-						if (objs.GetChild(j).GetComponent<ISerializableObject>() != null && objs.GetChild(j).GetComponent<NetworkIdentity>() != null) {
-							int index = 0;
-							while (File.Exists(roomPath + "/" + objs.GetChild(j).GetComponent<NetworkIdentity>().assetId + "_" + index))
-								index++;
-							
-							File.WriteAllLines(roomPath + "/" + objs.GetChild(j).GetComponent<NetworkIdentity>().assetId + "_" + index, 
-								objs.GetChild(j).GetComponent<ISerializableObject>().Serialize());
-						}
-				}
-				else if (ServerEvents.singleton.LastLoadedWorld != null && ServerEvents.singleton.LastLoadedWorld.Objects[x, y] != null) {
-					string roomPath = filePath + "/Objects/" + x + "x" + y;
-					Directory.CreateDirectory(roomPath);
-
-					List<LoadedWorld.LoadedObject> objects = ServerEvents.singleton.LastLoadedWorld.Objects[x, y];
-					foreach (LoadedWorld.LoadedObject loadedObject in objects) {
-						int index = 0;
-						if (File.Exists(roomPath + "/" + loadedObject.AssetID + "_" + index))
-							index++;
-							
-						File.WriteAllLines(roomPath + "/" + loadedObject.AssetID + "_" + index, loadedObject.Data);
-					}
-				}
-			}*/
-		
-		/*if (currentSaveName != null) {
-			ZipFile.ExtractToDirectory(Application.persistentDataPath + "/Worlds/" + currentSaveName + postfix, filePath + "_Copy");
-			string[] newRooms = Directory.GetDirectories(filePath + "/Objects");
-			string[] oldRooms = Directory.GetDirectories(filePath + "_Copy" + "/Objects");
-			string[] needCopy = oldRooms.Where(x => !newRooms.Select(y => y.Split('\\')[1]).Contains(x.Split('\\')[1])).ToArray();
-			foreach (string roomToCopy in needCopy)
-				Utils.DirectoryCopy(filePath + "_Copy/Objects/" + roomToCopy, filePath + "/Objects/" + roomToCopy, true);
-			Directory.Delete(filePath + "_Copy", true);
-		}*/
-
 		File.WriteAllLines(filePath + "/worldInfo", new [] {
 			GenerationManager.currentGeneration.Seed+"", 
 			GameManager.singleton.seedToSpawn+""
@@ -135,18 +92,6 @@ public class SerializationManager {
 		
 		Directory.Delete(filePath, true);
 		World = new LoadedWorld(players, loadedObjects, seedToGeneration, seedToSpawn, 0);
-	}
-
-	public static List<string> GetGameProfiles(string saveName) {
-		string filePath = Application.persistentDataPath + "/Worlds/" + saveName;
-		if (!File.Exists(filePath + postfix))
-			return null;
-		
-		ZipFile.ExtractToDirectory(filePath + postfix, filePath);
-		string[] files = Directory.GetFiles(filePath + "/Players");
-		Directory.Delete(filePath, true);
-
-		return files.Select(file => File.ReadAllLines(file)[0]).ToList();
 	}
 
 	public static List<string> SerializePlayer(GameObject player) {

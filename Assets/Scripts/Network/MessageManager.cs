@@ -40,29 +40,17 @@ public class MessageManager {
 	public static readonly GameMessage GenerationReadyServerMessage = new GameMessage(msg => {
 		ServerEvents.singleton.GenerationReady++;
 		if (ServerEvents.singleton.GenerationReady == NetworkServer.connections.Count(x => x != null)) {
-			if (ServerEvents.singleton.StartAgrs.Equals("new game")) {
-				//Vector2Int startRoomPos = GenerationManager.currentGeneration.startRoom.Position;
-				//GenerationManager.spawnedRooms[startRoomPos.x, startRoomPos.y].SetActive(true);
-				//GenerationManager.InitializeRoom(GenerationManager.spawnedRooms[startRoomPos.x, startRoomPos.y]);
-				foreach (NetworkConnection conn in NetworkServer.connections) {
-					if (conn == null)
-						continue;
-					
-					GameObject player = MonoBehaviour.Instantiate(GameManager.singleton.LocalPlayer);
+			foreach (NetworkConnection conn in NetworkServer.connections) {
+				if (conn == null)
+					continue;
+				
+				GameObject player = MonoBehaviour.Instantiate(GameManager.singleton.LocalPlayer);
+				if (ServerEvents.singleton.StartAgrs.Equals("new game")) {
 					string data = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn);
 					player.GetComponent<GameProfile>().Deserialize(data);
 					GenerationManager.TeleportPlayerToStart(player);
-					NetworkServer.AddPlayerForConnection(conn, player, GameManager.singleton.indexController++);
-					SendPlayerDataClientMessage.SendToClient(conn, new StringListMessage(SerializationManager.SerializePlayer(player)));
 				}
-				
-				GenerationManager.ApplyActiveRooms();
-			}
-			else if (ServerEvents.singleton.StartAgrs.Contains("load game")) {
-				foreach (NetworkConnection conn in NetworkServer.connections) {
-					if (conn == null)
-						continue;
-
+				else if (ServerEvents.singleton.StartAgrs.Contains("load game")) {
 					List<string> data = SerializationManager.World.Players.Find(x =>
 						x[0].Equals(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn)));
 					if (data == null) {
@@ -70,70 +58,16 @@ public class MessageManager {
 						continue;
 					}
 
-					GameObject player = MonoBehaviour.Instantiate(GameManager.singleton.LocalPlayer);
 					SerializationManager.DeserializePlayer(player, data);
-					NetworkServer.AddPlayerForConnection(conn, player, GameManager.singleton.indexController++);
-					SendPlayerDataClientMessage.SendToClient(conn, new StringListMessage(SerializationManager.SerializePlayer(player)));
 				}
-
-				GenerationManager.ApplyActiveRooms();
+				
+				NetworkServer.AddPlayerForConnection(conn, player, GameManager.singleton.indexController++);
+				SendPlayerDataClientMessage.SendToClient(conn, new StringListMessage(SerializationManager.SerializePlayer(player)));
 			}
+			
+			GenerationManager.ApplyActiveRooms();
 			SetCurrentRoomClientMessage.SendToAllClients(new EmptyMessage());
 		}
-	});
-
-	public static readonly GameMessage ReceivePlayerProfileClientMessage = new GameMessage(msg => {
-		msg.conn.playerControllers[0].gameObject.GetComponent<GameProfile>().Deserialize(msg.ReadMessage<StringMessage>().value);
-	});
-
-	public static readonly GameMessage StartNewGameClientMessage = new GameMessage(msg => {
-		GenerationManager.SetCurrentRoom();
-	});
-	
-	/*public static readonly GameMessage SpawnObjServerMessage = new GameMessage(msg => {
-		GameObject player = MonoBehaviour.Instantiate(GameManager.Instance.LocalPlayer);
-		string data = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(msg.conn);
-		player.GetComponent<GameProfile>().Deserialize(data);
-		if (player.transform.position == Vector3.zero)
-			GenerationManager.TeleportPlayerToStart(player);
-		ServerEvents.OnServerPlayerAdd e = GameManager.ServerEvents.GetEventSystem<ServerEvents.OnServerPlayerAdd>()
-			.CallListners(new ServerEvents.OnServerPlayerAdd(msg.conn, player));
-		if (e.IsCancel)
-			MonoBehaviour.Destroy(player);
-		else
-			NetworkServer.AddPlayerForConnection(msg.conn, player, init.indexController);
-		init.indexController++;
-
-		GenerationManager.SendToClientActiveRooms(msg.conn);
-		NetworkSpawnSetupHandler.dirtyConnection = msg.conn;
-		NetworkSpawnSetupHandler.markDirty = true;
-	});	*/
-	
-	public static readonly GameMessage SpawnSetupClientMessage = new GameMessage(msg => {
-		string[] data = msg.ReadMessage<StringMessage>().value.Split(';');
-		uint id = uint.Parse(data[0]);
-		NetworkSpawnSetupHandler[] gos = GameObject.FindObjectsOfType<NetworkSpawnSetupHandler>();
-		foreach (NetworkSpawnSetupHandler go in gos) {
-			if (go.gameObject.GetComponent<NetworkIdentity>().netId.Value == id) {
-				int x = (int)go.transform.position.x / 495;
-				int y = (int)go.transform.position.y / 277;
-				go.name += id;
-				go.transform.parent = GenerationManager.spawnedRooms[x, y].transform.Find("Objects").transform;
-				go.gameObject.GetComponent<INetworkSpawnSetup>().RecieveData(go.gameObject, data.ToList());
-				break;
-			}
-		}
-	});	
-	
-	public static readonly GameMessage MarkDirtyActiveRoomsClientMessage = new GameMessage(msg => {
-		string[] coords = msg.ReadMessage<StringMessage>().value.Split(new []{';'}, StringSplitOptions.RemoveEmptyEntries);
-		List<GameObject> newActiveRooms = new List<GameObject>();
-		foreach (string coord in coords) {
-			string[] splitted = coord.Split(',');
-			newActiveRooms.Add(GenerationManager.spawnedRooms[int.Parse(splitted[0]), int.Parse(splitted[1])]);
-		}
-		GenerationManager.ApplyActiveRooms(newActiveRooms);
-		GenerationManager.SetCurrentRoom();
 	});
 	
 	public static readonly GameMessage RequestLobbyModeServerMessage = new GameMessage(msg => {
