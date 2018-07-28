@@ -10,7 +10,7 @@ public class NetworkSyncScaleChild : NetworkBehaviour {
 
 	private Vector3[] lastScales;
 
-	private void Start() {
+	private void Awake() {
 		lastScales = new Vector3[Childs.Count];
 		for (int i = 0; i < Childs.Count; i++)
 			lastScales[i] = Childs[i].Child.localScale;

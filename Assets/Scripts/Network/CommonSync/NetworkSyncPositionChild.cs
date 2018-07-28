@@ -13,7 +13,7 @@ public class NetworkSyncPositionChild : NetworkBehaviour {
 
 	private Vector3[] lastPositions;
 
-	private void Start() {
+	private void Awake() {
 		lastPositions = new Vector3[Childs.Count];
 		for (int i = 0; i < Childs.Count; i++)
 			lastPositions[i] = Childs[i].Child.localPosition;

@@ -53,7 +53,7 @@ public class MessageManager {
 				}
 				else if (ServerEvents.singleton.StartAgrs.Contains("load game")) {
 					List<string> data = SerializationManager.World.Players.Find(x =>
-						x[0].Equals(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn)));
+						x.Count != 0 && x[0].Equals(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn)));
 					if (data == null) {
 						conn.Disconnect();
 						continue;

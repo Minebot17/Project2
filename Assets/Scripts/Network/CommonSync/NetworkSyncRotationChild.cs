@@ -13,7 +13,7 @@ public class NetworkSyncRotationChild : NetworkBehaviour {
 
 	private Vector3[] lastRorations;
 
-	private void Start() {
+	private void Awake() {
 		lastRorations = new Vector3[Childs.Count];
 		for (int i = 0; i < Childs.Count; i++)
 			lastRorations[i] = Childs[i].Child.localEulerAngles;
