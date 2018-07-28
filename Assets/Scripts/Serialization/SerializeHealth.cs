@@ -7,7 +7,7 @@ public class SerializeHealth : MonoBehaviour, ISerializableObject {
 	public Health ToSerialize;
 	
 	public void Initialize() {
-		
+		ToSerialize.HealthValue = (int) ToSerialize.MaxHealth.GetCalculated();
 	}
 
 	public List<string> Serialize() {

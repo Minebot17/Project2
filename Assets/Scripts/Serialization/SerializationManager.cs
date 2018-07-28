@@ -61,6 +61,7 @@ public class SerializationManager {
 	}
 
 	public static void LoadWorld(string saveName) {
+		currentSaveName = saveName;
 		string filePath = Application.persistentDataPath + "/Worlds/" + saveName;
 		if (!File.Exists(filePath + postfix))
 			return;

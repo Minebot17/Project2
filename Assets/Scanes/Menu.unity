@@ -257,13 +257,6 @@ MonoBehaviour:
   m_OnlineScene: Lobby
   m_SpawnPrefabs:
   - {fileID: 1801596076533684, guid: 4efa03d6ea959804892186d7e734d96d, type: 2}
-  - {fileID: 1584260096530976, guid: 722999a6527be89499b40ca1485926f5, type: 2}
-  - {fileID: 1215964558651176, guid: 13d9eb3f34713344d972dd9bfacafd70, type: 2}
-  - {fileID: 1572888172980128, guid: 0eb3872e12cb957479e80ff15354fe8c, type: 2}
-  - {fileID: 1954549074551116, guid: 85f0b08bfbb41a146b67958102cd4fdf, type: 2}
-  - {fileID: 1960972369068822, guid: 323891175853d644c8584ce9f9eccc36, type: 2}
-  - {fileID: 1850606278111970, guid: 9219b06a31875c44992f6565cd6c0e06, type: 2}
-  - {fileID: 1337043013050784, guid: 8a0e0d3910dfbab47a95b16311e45196, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -321,6 +314,15 @@ MonoBehaviour:
   matchMaker: {fileID: 0}
   RegisteredPrefabs:
   - {fileID: 1046486813272824, guid: 96d20a9c2b30c4044a4c38a210700ffe, type: 2}
+  - {fileID: 1337043013050784, guid: 8a0e0d3910dfbab47a95b16311e45196, type: 2}
+  - {fileID: 1954549074551116, guid: 85f0b08bfbb41a146b67958102cd4fdf, type: 2}
+  - {fileID: 1128888440969902, guid: 6ffe2e22c3d4f9047a3d89237f27c19f, type: 2}
+  - {fileID: 1215964558651176, guid: 13d9eb3f34713344d972dd9bfacafd70, type: 2}
+  - {fileID: 1584260096530976, guid: 722999a6527be89499b40ca1485926f5, type: 2}
+  - {fileID: 1115864861430628, guid: 2216b34ca56644447a1f819fd6cac061, type: 2}
+  - {fileID: 1850606278111970, guid: 9219b06a31875c44992f6565cd6c0e06, type: 2}
+  - {fileID: 1572888172980128, guid: 0eb3872e12cb957479e80ff15354fe8c, type: 2}
+  - {fileID: 1960972369068822, guid: 323891175853d644c8584ce9f9eccc36, type: 2}
 --- !u!4 &1469394494
 Transform:
   m_ObjectHideFlags: 0

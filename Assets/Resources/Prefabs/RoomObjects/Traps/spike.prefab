@@ -27,6 +27,8 @@ GameObject:
   - component: {fileID: 114758639247040688}
   - component: {fileID: 114872966038311876}
   - component: {fileID: 114770497538537232}
+  - component: {fileID: 114649371090616760}
+  - component: {fileID: 114038635565898068}
   m_Layer: 0
   m_Name: spike
   m_TagString: Untagged
@@ -89,6 +91,22 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1128888440969902}
   m_Mesh: {fileID: 0}
+--- !u!114 &114038635565898068
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1128888440969902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8a223d6f68397459e3c7b1aa78b52c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  X: 1
+  Y: 1
+  Z: 0
+  posLerpRate: 15
+  posThreshold: 0.1
 --- !u!114 &114193048816567898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -130,6 +148,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 286730975
   NotMirrorChildrensOnSpawn: 0
+--- !u!114 &114649371090616760
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1128888440969902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 111
+    i1: 254
+    i2: 46
+    i3: 34
+    i4: 195
+    i5: 212
+    i6: 249
+    i7: 4
+    i8: 122
+    i9: 61
+    i10: 137
+    i11: 35
+    i12: 127
+    i13: 39
+    i14: 193
+    i15: 159
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114695024168272284
 MonoBehaviour:
   m_ObjectHideFlags: 1

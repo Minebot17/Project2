@@ -15,6 +15,11 @@ public class GameProfile : NetworkBehaviour {
 	}
 
 	private void Start() {
+		GetComponent<Health>().GetEventSystem<Health.HealthChangeEvent>().SubcribeEvent(e => {
+			TextMesh mesh = transform.Find("NameRender").GetComponent<TextMesh>();
+			transform.Find("HealthRener").localScale = new Vector3((e.NewHealth / GetComponent<Health>().MaxHealth.GetCalculated()) * 30f, 1, 1);
+		});
+		
 		if (!isLocalPlayer)
 			return;
 		Utils.SetLocalPlayer(gameObject);

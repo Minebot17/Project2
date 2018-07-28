@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -18,10 +19,10 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 	public virtual void Initialize(string arguments) {
 		lobbyMode = arguments.Equals("new game") ? LobbyMode.NEW_GAME :
 			arguments.Contains("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
-		profile = new GameProfile().Serialize();
 		if (lobbyMode == LobbyMode.LOAD_GAME)
-			allProfiles = arguments.Split('|')[2].Split('&');
+			allProfiles = arguments.Split('|')[2].Split(new []{'&'}, StringSplitOptions.RemoveEmptyEntries);
 		else {
+			profile = new GameProfile().Serialize();
 			profileName = "Player " + GameManager.rnd.Next();
 		}
 		
@@ -53,10 +54,11 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 				}
 			}
 
-			if (GUILayout.Button(ready ? "Не готов" : "Готов")) {
-				ready = !ready;
-				MessageManager.SetReadyLobbyServerMessage.SendToServer(new StringMessage(ready+""));
-			}
+			if (lobbyMode == LobbyMode.NEW_GAME || profile != null)
+				if (GUILayout.Button(ready ? "Не готов" : "Готов")) {
+					ready = !ready;
+					MessageManager.SetReadyLobbyServerMessage.SendToServer(new StringMessage(ready+""));
+				}
 		}
 	}
 

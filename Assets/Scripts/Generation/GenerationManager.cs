@@ -97,6 +97,9 @@ public static class GenerationManager {
 	private static GameObject SpawnRoom(RoomLoader.Room room, RoomInfo position, Transform parent, bool onServer) {
 		GameObject spawnedRoom = RoomLoader.SpawnRoom(room, new Vector3(position.Position.x * 495, position.Position.y * 277, 0), onServer);
 		spawnedRoom.GetComponent<Room>().Position = position.Position;
+		if (NetworkManagerCustom.IsServer && SerializationManager.World != null &&
+		    SerializationManager.World.Objects[position.Position.x, position.Position.y] != null)
+			spawnedRoom.GetComponent<Room>().Initialized = true;
 		spawnedRoom.transform.parent = parent;
 		List<GameObject> gates = Utils.GetComponentsRecursive<GateObject>(spawnedRoom).ConvertAll(x => x.gameObject);
 		gates.ForEach(x =>
@@ -120,11 +123,9 @@ public static class GenerationManager {
 	private static void OnGateEnter(GameObject player, GameObject gateObject) {
 		Vector2Int localPosition = GateInfo.RoomObjectToLocalPosition(gateObject.transform.localPosition);
 		Vector2Int nextCoord = GateInfo.LocalPositionToVector(localPosition) + currentRoomCoords;
-		if (spawnedRooms != null && nextCoord.x >= 0 && nextCoord.x < spawnedRooms.GetLength(0) && nextCoord.y >= 0 &&
-		    nextCoord.y < spawnedRooms.GetLength(1)
-		    ) {
-			if (player.GetComponent<NetworkIdentity>().isLocalPlayer)
-				SetCurrentRoom(nextCoord);
+		bool buffer = spawnedRooms != null && nextCoord.x >= 0 && nextCoord.x < spawnedRooms.GetLength(0) &&
+		              nextCoord.y >= 0 && nextCoord.y < spawnedRooms.GetLength(1);
+		if (buffer) {
 			Vector3 toPlayerCoords =
 				localPosition.x == 0 ? new Vector3(0, -55f) :
 				localPosition.x == 1 ? new Vector3(0, 55f) :
@@ -136,6 +137,9 @@ public static class GenerationManager {
 		}
 
 		ApplyActiveRooms();
+		
+		if (buffer && player.GetComponent<NetworkIdentity>().isLocalPlayer)
+			SetCurrentRoom(nextCoord);
 	}
 
 	public static void TeleportPlayerToStart(GameObject player) {
@@ -273,7 +277,7 @@ public static class GenerationManager {
 			List<List<string>> data = new List<List<string>>();
 			Transform parent0 = room.transform.Find("Objects");
 			for (int i = 0; i < parent0.childCount; i++) {
-				if (parent0.GetChild(i).GetComponent<NetworkIdentity>() != null && parent0.GetChild(i).GetComponent<ISerializableObject>() != null ) {
+				if (parent0.GetChild(i).GetComponent<ISerializableObject>() != null) {
 					networkIds.Add(parent0.transform.GetChild(i).GetComponent<NetworkIdentity>().netId.ToString());
 					data.Add(SerializationManager.SerializeObject(parent0.GetChild(i).gameObject));
 				}
@@ -281,7 +285,7 @@ public static class GenerationManager {
 			MessageManager.SetActiveRoomClientMessage.SendToAllClients(new ActiveRoomMessage(room.GetComponent<Room>().Position, networkIds, data));
 		}
 		else {
-			SerializationManager.MarkDirtySave = true;
+			SerializationManager.SaveWorld();
 			Transform parent = room.transform.Find("Objects");
 			for (int i = 0; i < parent.childCount; i++)
 				if (parent.GetChild(i).gameObject.GetComponent<NetworkIdentity>() != null)

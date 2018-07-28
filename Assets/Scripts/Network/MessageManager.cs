@@ -49,6 +49,7 @@ public class MessageManager {
 					string data = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn);
 					player.GetComponent<GameProfile>().Deserialize(data);
 					GenerationManager.TeleportPlayerToStart(player);
+					SerializationManager.InitializeObject(player);
 				}
 				else if (ServerEvents.singleton.StartAgrs.Contains("load game")) {
 					List<string> data = SerializationManager.World.Players.Find(x =>

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
@@ -18,12 +19,12 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 			arguments.Contains("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
 		ServerEvents.Initialize();
 		ServerEvents.singleton.StartAgrs = arguments;
-		profile = new GameProfile().Serialize();
 		if (lobbyMode == LobbyMode.LOAD_GAME) {
-			allProfiles = arguments.Split('|')[2].Split('&');
+			allProfiles = arguments.Split('|')[2].Split(new []{'&'}, StringSplitOptions.RemoveEmptyEntries);
 			loadedGameName = arguments.Split('|')[1];
 		}
 		else {
+			profile = new GameProfile().Serialize();
 			ServerEvents.singleton.NewWorldName = "World " + GameManager.rnd.Next();
 			ServerEvents.singleton.SeedToGenerate = "0";
 			ServerEvents.singleton.SeedToSpawn = "0";
@@ -76,16 +77,17 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 				}
 				else if (lobbyMode == LobbyMode.LOAD_GAME) {
 					foreach (string current in allProfiles) {
-						if (GUILayout.Button(current.Split(';')[0] + (profile == current ? "Выбран" : "")))
+						if (GUILayout.Button(current.Split(';')[0] + (profile == current ? " Выбран" : "")))
 							profile = current;
 					}
 				}
 			}
 
-			if (GUILayout.Button(ready ? "Не готов" : "Готов")) {
-				ready = !ready;
-				SetReady(NetworkManager.singleton.client.connection, ready);
-			}
+			if (lobbyMode == LobbyMode.NEW_GAME || profile != null)
+				if (GUILayout.Button(ready ? "Не готов" : "Готов")) {
+					ready = !ready;
+					SetReady(NetworkManager.singleton.client.connection, ready);
+				}
 
 			if (readyCount == connectionsCount && GUILayout.Button("Старт!")) {
 				ServerEvents.singleton.InProgress = true;

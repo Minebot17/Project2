@@ -8,14 +8,28 @@ public class Health : NetworkBehaviour, IEventProvider {
 
 	private readonly object[] eventHandlers = {
 		new EventHandler<DamageEvent>(),
-		new EventHandler<HealEvent>()
+		new EventHandler<HealEvent>(),
+		new EventHandler<HealthChangeEvent>() 
 	};
 
-	[SyncVar]
-	public int HealthValue;
+	[SyncVar(hook = nameof(OnHealthChange))]
+	private int healthValue;
+
+	public int HealthValue {
+		set { OnHealthChange(value); }
+		get { return healthValue; }
+	}
 
 	[SyncVar]
 	public Attribute MaxHealth = new Attribute("MaxHealth", 100);
+
+	public void OnHealthChange(int newHealth) {
+		HealthChangeEvent e = GetEventSystem<HealthChangeEvent>()
+			.CallListners(new HealthChangeEvent(gameObject, healthValue, newHealth));
+		if (e.IsCancel)
+			return;
+		healthValue = e.NewHealth;
+	}
 
 	public int Heal(int heal) {
 		if (!isServer)
@@ -69,6 +83,16 @@ public class Health : NetworkBehaviour, IEventProvider {
 		
 		public DamageEvent(GameObject sender, DamageBase damage) : base(sender, true) {
 			Damage = damage;
+		}
+	}
+
+	public class HealthChangeEvent : EventBase {
+		public int OldHealth;
+		public int NewHealth;
+
+		public HealthChangeEvent(GameObject sender, int oldHealth, int newHealth) : base(sender, true) {
+			OldHealth = oldHealth;
+			NewHealth = newHealth;
 		}
 	}
 }
