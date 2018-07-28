@@ -278,7 +278,7 @@ public static class GenerationManager {
 					data.Add(parent0.GetChild(i).GetComponent<ISerializableObject>().Serialize());
 				}
 			}
-			MessageManager.SetActiveRoomClientMessage.SendToAllClients(new MessageManager.ActiveRoomMessage(room.GetComponent<Room>().Position, networkIds, data));
+			MessageManager.SetActiveRoomClientMessage.SendToAllClients(new ActiveRoomMessage(room.GetComponent<Room>().Position, networkIds, data));
 		}
 		else {
 			SerializationManager.MarkDirtySave = true;

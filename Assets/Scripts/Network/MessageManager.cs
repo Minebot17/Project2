@@ -120,97 +120,16 @@ public class MessageManager {
 					parent.GetChild(j).GetComponent<ISerializableObject>().Deserialize(message.Data[i]);
 				}
 	});
-	
-	[System.Serializable]
-	public class StringListMessage : MessageBase {
-		public StringList Value = new StringList();
 
-		public StringListMessage() { }
-
-		public StringListMessage(List<string> value) {
-			Value = new StringList();
-			Value.AddRange(value);
-		}
-		
-		// De-serialize the contents of the reader into this message
-		public override void Deserialize(NetworkReader reader) {
-			int count = reader.ReadInt32();
-			for (int i = 0; i < count; i++)
-				Value.Add(reader.ReadString());
-		}
-
-		// Serialize the contents of this message into the writer
-		public override void Serialize(NetworkWriter writer) {
-			writer.Write(Value.Count);
-			foreach (string value in Value) {
-				writer.Write(value);
-			}
-		}
-	}
-
-	[System.Serializable]
-	public class ActiveRoomMessage : MessageBase {
-		public int PositionX;
-		public int PositionY;
-		public StringList NetworkIDs;
-		public MultyStringList Data;
-
-		public ActiveRoomMessage() { }
-
-		public ActiveRoomMessage(Vector2Int position, List<string> networkIDs, List<List<string>> data) {
-			PositionX = position.x;
-			PositionY = position.y;
-			NetworkIDs = new StringList();
-			Data = new MultyStringList();
-			NetworkIDs.AddRange(networkIDs);
-			Data.AddRange(data);
-		}
-		
-		// De-serialize the contents of the reader into this message
-		public override void Deserialize(NetworkReader reader) {
-			PositionX = reader.ReadInt32();
-			PositionY = reader.ReadInt32();
-			NetworkIDs = new StringList();
-			Data = new MultyStringList();
-			int count = reader.ReadInt32();
-			for (int i = 0; i < count; i++)
-				NetworkIDs.Add(reader.ReadString());
-
-			int count0 = reader.ReadInt32();
-			for (int i = 0; i < count0; i++) {
-				int count1 = reader.ReadInt32();
-				List<string> toAdd = new List<string>();
-				for (int j = 0; j < count1; j++) {
-					toAdd.Add(reader.ReadString());
-				}
-				Data.Add(toAdd);
-			}
-		}
-
-		// Serialize the contents of this message into the writer
-		public override void Serialize(NetworkWriter writer) {
-			writer.Write(PositionX);
-			writer.Write(PositionY);
-			writer.Write(NetworkIDs.Count);
-			foreach (string value in NetworkIDs) {
-				writer.Write(value);
-			}
-			
-			writer.Write(Data.Count);
-			foreach (List<string> list in Data) {
-				writer.Write(list.Count);
-				foreach (string s in list) {
-					writer.Write(s);
-				}
-			}
-		}
-	}
 
 	[System.Serializable]
 	public class StringList : List<string> { }
 
 	[System.Serializable]
 	public class MultyStringList : List<List<string>> { }
+	
+	[System.Serializable]
+	public class Vector3List : List<Vector3> { }
 
 	#endregion
 }

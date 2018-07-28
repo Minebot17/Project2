@@ -11,12 +11,14 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 	public string StartArguments;
 	public string IpAddress;
 	public string Port;
+	private string loadWorldName;
 	private bool _started;
 
 	private void Start() {
 		_started = false;
 		IpAddress = "localhost";
 		Port = "7777";
+		loadWorldName = "test";
 	}
 
 	private void OnGUI() {
@@ -40,13 +42,14 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 				NetworkManager.singleton.networkPort = int.Parse(Port);
 				NetworkManager.singleton.StartHost();
 			}
-			
+
+			loadWorldName = GUILayout.TextField(loadWorldName);
 			if (GUILayout.Button("Load game")) {
 				_started = true;
-				SerializationManager.LoadWorld("test");
+				SerializationManager.LoadWorld(loadWorldName);
 				string result = "";
 				SerializationManager.World.Players.ForEach(x => result += x[0] + "&");
-				StartArguments = "load game|test|" + result;
+				StartArguments = "load game|" + loadWorldName + "|" + result;
 				NetworkManager.singleton.networkPort = int.Parse(Port);
 				NetworkManager.singleton.StartHost();
 			}

@@ -5,10 +5,17 @@ using UnityEngine.Networking;
 
 [AddComponentMenu("NetworkCustom/NetworkSyncScale")]
 public class NetworkSyncScale : NetworkVectors {
-	[SyncVar]
+	
+	[SyncVar(hook = nameof(OnScaleChange))]
 	private Vector3 lastScale;
 
-	private void Update() {
+	private void Start() {
+		if (isServer)
+			lastScale = transform.localScale;
+	}
+	
+	private void OnScaleChange(Vector3 value) {
+		lastScale = value;
 		if (isLocalPlayer)
 			return;
 
@@ -30,13 +37,13 @@ public class NetworkSyncScale : NetworkVectors {
 		return !scale.Equals(lastScale);
 	}
 
-	[Command(channel = Channels.DefaultUnreliable)]
+	[Command(channel = Channels.DefaultReliable)]
 	private void CmdSendScale(Vector3 scale) {
 		lastScale = scale;
 	}
 
 	public override int GetNetworkChannel() {
-		return Channels.DefaultUnreliable;
+		return Channels.DefaultReliable;
 	}
 
 	public override float GetNetworkSendInterval() {

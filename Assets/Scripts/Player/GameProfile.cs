@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class GameProfile : NetworkBehaviour {
 
-	[SyncVar] 
+	[SyncVar(hook = nameof(OnNameChange))] 
 	public string ProfileName;
 
 	private void Awake() {
@@ -46,5 +46,20 @@ public class GameProfile : NetworkBehaviour {
 	public void Deserialize(string data) {
 		string[] list = data.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
 		ProfileName = list[0];
+	}
+
+	public void OnNameChange(string name) {
+		bool inGo;
+		try {
+			Vector3 a = transform.position;
+			inGo = true;
+		}
+		catch (NullReferenceException e) {
+			inGo = false;
+		}
+
+		if (inGo) {
+			transform.Find("NameRender").GetComponent<TextMesh>().text = name;
+		}
 	}
 }
