@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-[AddComponentMenu("NetworkCustom/NetworkSyncScaleChilds")]
+[AddComponentMenu("NetworkCustom/NetworkSyncScaleChild")]
 public class NetworkSyncScaleChild : NetworkBehaviour {
 
 	public List<ChildVector> Childs = new List<ChildVector>();
@@ -38,10 +38,6 @@ public class NetworkSyncScaleChild : NetworkBehaviour {
 	private bool IsScaleChanged(int index) {
 		Vector3 scale = new Vector3(Childs[index].X ? Childs[index].Child.localScale.x : lastScales[index].x, Childs[index].Y ? Childs[index].Child.localScale.y : lastScales[index].y, Childs[index].Z ? Childs[index].Child.localScale.z : lastScales[index].z);
 		return !scale.Equals(lastScales[index]);
-	}
-
-	public void SetLastScale(int index, Vector3 scale) {
-		lastScales[index] = scale;
 	}
 
 	public override int GetNetworkChannel() {
