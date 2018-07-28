@@ -8,6 +8,7 @@ public class GameProfile : NetworkBehaviour {
 
 	[SyncVar(hook = nameof(OnNameChange))] 
 	public string ProfileName;
+	public int Level;
 
 	private void Awake() {
 		GameManager.singleton.Players.Add(gameObject);
@@ -32,6 +33,7 @@ public class GameProfile : NetworkBehaviour {
 		}
 		List<string> list = new List<string>();
 		list.Add(ProfileName);
+		list.Add(Level+"");
 		if (inGo) {
 			transform.Find("NameRender").GetComponent<TextMesh>().text = ProfileName;
 		}
@@ -46,6 +48,7 @@ public class GameProfile : NetworkBehaviour {
 	public void Deserialize(string data) {
 		string[] list = data.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
 		ProfileName = list[0];
+		Level = int.Parse(list[1]);
 	}
 
 	public void OnNameChange(string name) {

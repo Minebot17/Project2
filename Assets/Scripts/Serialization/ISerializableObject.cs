@@ -5,5 +5,5 @@ using UnityEngine;
 public interface ISerializableObject {
 	void Initialize(); // вызывается до первого вызова Serialize вообще в сохранении
 	List<string> Serialize();
-	void Deserialize(List<string> data);
+	int Deserialize(List<string> data); // return type - количество десериализованных линий
 }

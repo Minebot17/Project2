@@ -1,45 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Stamina : MonoBehaviour, IEventProvider {
-	public const int MaxProcent = 10100;
+public class Stamina : NetworkBehaviour, IEventProvider {
 	
 	private readonly object[] eventHandlers = {
 		new EventHandler<SpendStaminaEvent>()
 	};
 
-	[SerializeField] 
-	private int procent;
-
-	public int Procent {
-		get { return procent; }
-	}
-
-	[SerializeField] 
-	private int regeneration;
-
-	public int Regeneration {
-		get { return regeneration; }
-		set { regeneration = value; }
-	}
+	[SyncVar]
+	public int StaminaValue;
+	
+	[SyncVar]
+	public Attribute Regeneration = new Attribute("Regeneration", 100);
+	
+	[SyncVar]
+	public Attribute MaxStamina = new Attribute("MaxHealth", 10100);
 
 	private void FixedUpdate() {
-		if (procent < MaxProcent)
-			procent += regeneration;
+		if (StaminaValue < MaxStamina.GetCalculated())
+			StaminaValue += (int) Regeneration.GetCalculated();
 	}
 
-	public int Spend(int procent) {
-		SpendStaminaEvent e = GetEventSystem<SpendStaminaEvent>().CallListners(new SpendStaminaEvent(gameObject, procent));
+	public int Spend(int value) {
+		SpendStaminaEvent e = GetEventSystem<SpendStaminaEvent>().CallListners(new SpendStaminaEvent(gameObject, value));
 		if (e.IsCancel)
 			return 0;
 		
-		int preProcent = procent;
-		procent -= e.Procent;
-		if (procent <= 0)
-			procent = 0;
+		int preValue = StaminaValue;
+		StaminaValue -= e.Value;
+		if (StaminaValue <= 0)
+			StaminaValue = 0;
 		
-		return this.procent - preProcent;
+		return this.StaminaValue - preValue;
 	}
 
 	public EventHandler<T> GetEventSystem<T>() where T : EventBase {
@@ -47,10 +41,10 @@ public class Stamina : MonoBehaviour, IEventProvider {
 	}
 	
 	public class SpendStaminaEvent : EventBase {
-		public int Procent;
+		public int Value;
 		
-		public SpendStaminaEvent(GameObject sender, int procent) : base(sender, true) {
-			Procent = procent;
+		public SpendStaminaEvent(GameObject sender, int value) : base(sender, true) {
+			Value = value;
 		}
 	}
 }

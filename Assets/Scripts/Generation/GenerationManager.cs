@@ -261,7 +261,7 @@ public static class GenerationManager {
 					GameObject gameObject = ObjectsManager.SpawnGameObject(Utils.FindAssetID(loadedObject.AssetID),
 						Vector2.zero, Vector3.zero, parent, true);
 					NetworkServer.Spawn(gameObject);
-					gameObject.GetComponent<ISerializableObject>().Deserialize(loadedObject.Data);
+					SerializationManager.DeserializeObject(gameObject, loadedObject.Data);
 				}
 			}
 			else {
@@ -275,7 +275,7 @@ public static class GenerationManager {
 			for (int i = 0; i < parent0.childCount; i++) {
 				if (parent0.GetChild(i).GetComponent<NetworkIdentity>() != null && parent0.GetChild(i).GetComponent<ISerializableObject>() != null ) {
 					networkIds.Add(parent0.transform.GetChild(i).GetComponent<NetworkIdentity>().netId.ToString());
-					data.Add(parent0.GetChild(i).GetComponent<ISerializableObject>().Serialize());
+					data.Add(SerializationManager.SerializeObject(parent0.GetChild(i).gameObject));
 				}
 			}
 			MessageManager.SetActiveRoomClientMessage.SendToAllClients(new ActiveRoomMessage(room.GetComponent<Room>().Position, networkIds, data));
@@ -297,7 +297,7 @@ public static class GenerationManager {
 		List<GameObject> objects = RoomLoader.SpawnSerializebleObjects(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(room.GetComponent<Room>().RoomName)), room);
 		foreach (GameObject gameObject in objects) {
 			if (gameObject.GetComponent<ISerializableObject>() != null)
-				gameObject.GetComponent<ISerializableObject>().Initialize();
+				SerializationManager.InitializeObject(gameObject);
 		}
 
 		room.GetComponent<Room>().Initialized = true;

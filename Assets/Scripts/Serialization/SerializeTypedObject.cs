@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SimpleObject), typeof(TypedObject))]
-public class SerializeTypedObject : SerializeSimplyObject {
-
-	public override List<string> Serialize() {
-		List<string> result = base.Serialize();
-		result.AddRange(new [] {
-			GetComponent<TypedObject>().TypeIndex+""
-		});
-		return result;
+public class SerializeTypedObject : MonoBehaviour, ISerializableObject {
+	
+	public void Initialize() {
+		
 	}
 
-	public override void Deserialize(List<string> data) {
-		base.Deserialize(data);
-		
+	public List<string> Serialize() {
+		return new List<string>(){GetComponent<TypedObject>().TypeIndex+""};
+	}
+
+	public int Deserialize(List<string> data) {
 		GetComponent<TypedObject>().TypeIndex = int.Parse(data[0]);
 		TypedObject.Type type = GetComponent<TypedObject>().Types[GetComponent<TypedObject>().TypeIndex];
 		transform.localScale = new Vector3(type.Size.x, type.Size.y, transform.localScale.z);
@@ -33,7 +31,7 @@ public class SerializeTypedObject : SerializeSimplyObject {
 		mesh.RecalculateNormals();
 		mesh.RecalculateTangents();
 		GetComponent<MeshFilter>().mesh = mesh;
-		
-		data.RemoveAt(0);
+
+		return 1;
 	}
 }

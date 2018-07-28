@@ -26,9 +26,9 @@ public class SkeletonTaskHandler : AbstractTaskHandler<SkeletonInfo> {
 	protected override void FixedUpdate() {
 		base.FixedUpdate();
 		
-		if (currentState != FearState && info.Health.Healths < info.ProcentHpToFear * info.Health.MaxHealth.GetCalculated())
+		if (currentState != FearState && info.Health.HealthValue < info.ProcentHpToFear * info.Health.MaxHealth.GetCalculated())
 			SetState(FearState);
-		else if (currentState == FearState && info.Health.Healths > info.ProcentHpToFear * info.Health.MaxHealth.GetCalculated())
+		else if (currentState == FearState && info.Health.HealthValue > info.ProcentHpToFear * info.Health.MaxHealth.GetCalculated())
 			SetState(Utils.IsFreeBetweenPlayer(info.observer.NearestTarget, transform.position)
 				? AggresiveState
 				: CalmState);

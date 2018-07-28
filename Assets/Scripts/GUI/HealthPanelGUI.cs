@@ -9,12 +9,9 @@ public class HealthPanelGUI : MonoBehaviour {
 
 	[SerializeField] 
 	private Stamina stamina;
-
-	[SerializeField] 
-	private Level level;
 	
 	[SerializeField] 
-	private Nickname nick;
+	private GameProfile profile;
 	
 	[SerializeField]
 	private RectTransform hpRect;
@@ -32,17 +29,16 @@ public class HealthPanelGUI : MonoBehaviour {
 	private Text nickText;
 
 	private void FixedUpdate() {
-		hpRect.sizeDelta = new Vector2((int)((health.Healths/health.MaxHealth.GetCalculated())*100f) , 7);
-		hpText.text = health.Healths + "/" + health.MaxHealth.GetCalculated() + " HP";
-		staminaRect.sizeDelta = new Vector2((int) (stamina.Procent / 100), 2);
-		levelText.text = level.Levels + " LVL";
-		nickText.text = nick.Nick;
+		hpRect.sizeDelta = new Vector2((int)((health.HealthValue/health.MaxHealth.GetCalculated())*100f) , 7);
+		hpText.text = health.HealthValue + "/" + health.MaxHealth.GetCalculated() + " HP";
+		staminaRect.sizeDelta = new Vector2((int)((stamina.StaminaValue / stamina.MaxStamina.GetCalculated()) * 101f), 2);
+		levelText.text = profile.Level + " LVL";
+		nickText.text = profile.ProfileName;
 	}
 	
 	public void SetTarget(GameObject gameObject) {
 		health = gameObject.GetComponent<Health>();
 		stamina = gameObject.GetComponent<Stamina>();
-		level = gameObject.GetComponent<Level>();
-		nick = gameObject.GetComponent<Nickname>();
+		profile = gameObject.GetComponent<GameProfile>();
 	}
 }

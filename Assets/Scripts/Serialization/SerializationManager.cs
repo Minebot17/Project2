@@ -95,16 +95,21 @@ public class SerializationManager {
 	}
 
 	public static List<string> SerializePlayer(GameObject player) {
-		return new List<string> {
+		List<string> result = new List<string> {
 			player.GetComponent<GameProfile>().Serialize(),
 			player.transform.position.x+"",
 			player.transform.position.y+""
 		};
+		result.AddRange(SerializeObject(player));
+		return result;
 	}
 
 	public static void DeserializePlayer(GameObject player, List<string> data) {
 		player.GetComponent<GameProfile>().Deserialize(data[0]);
 		player.transform.position = new Vector3(float.Parse(data[1]), float.Parse(data[2]), player.transform.position.z);
+		for (int i = 0; i < 3; i++)
+			data.RemoveAt(0);
+		DeserializeObject(player, data);
 	}
 
 	public static LoadedWorld ConstructLoadedWorld() {
@@ -125,7 +130,7 @@ public class SerializationManager {
 							objectsToAdd[x, y].Add(
 								new LoadedWorld.LoadedObject(
 									objs.GetChild(j).GetComponent<NetworkIdentity>().assetId.ToString(),
-									objs.GetChild(j).GetComponent<ISerializableObject>().Serialize()
+									SerializeObject(objs.GetChild(j).gameObject)
 								)
 							);
 				}
@@ -134,6 +139,29 @@ public class SerializationManager {
 			}
 		
 		return new LoadedWorld(players, objectsToAdd, GenerationManager.currentGeneration.Seed, GameManager.singleton.seedToSpawn, 0);
+	}
+
+	public static void InitializeObject(GameObject roomObject) {
+		ISerializableObject[] modules = roomObject.GetComponents<ISerializableObject>();
+		foreach (ISerializableObject module in modules)
+			module.Initialize();
+	}
+
+	public static List<string> SerializeObject(GameObject roomObject) {
+		ISerializableObject[] modules = roomObject.GetComponents<ISerializableObject>();
+		List<string> result = new List<string>();
+		foreach (ISerializableObject module in modules)
+			result.AddRange(module.Serialize());
+		return result;
+	}
+
+	public static void DeserializeObject(GameObject roomObject, List<string> data) {
+		ISerializableObject[] modules = roomObject.GetComponents<ISerializableObject>();
+		foreach (ISerializableObject module in modules) {
+			int remove = module.Deserialize(data);
+			for (int i = 0; i < remove; i++)
+				data.RemoveAt(0);
+		}
 	}
 
 	public class LoadedWorld {

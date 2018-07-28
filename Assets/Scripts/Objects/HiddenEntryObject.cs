@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(SpawnedData))]
-public class HiddenEntryObject : MonoBehaviour {
+public class HiddenEntryObject : NetworkBehaviour {
 
 	void Start () {
 		NetworkServer.Spawn(transform.GetChild(1).gameObject);

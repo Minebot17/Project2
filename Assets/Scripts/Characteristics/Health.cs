@@ -12,12 +12,7 @@ public class Health : NetworkBehaviour, IEventProvider {
 	};
 
 	[SyncVar]
-	[SerializeField]
-	private int health;
-
-	public int Healths {
-		get { return health; }
-	}
+	public int HealthValue;
 
 	[SyncVar]
 	public Attribute MaxHealth = new Attribute("MaxHealth", 100);
@@ -30,11 +25,11 @@ public class Health : NetworkBehaviour, IEventProvider {
 		if (e.IsCancel)
 			return 0;
 
-		int preHealth = health;
-		health += e.Heal;
-		if (health > (int) MaxHealth.GetCalculated())
-			health = (int) MaxHealth.GetCalculated();
-		return health - preHealth;
+		int preHealth = HealthValue;
+		HealthValue += e.Heal;
+		if (HealthValue > (int) MaxHealth.GetCalculated())
+			HealthValue = (int) MaxHealth.GetCalculated();
+		return HealthValue - preHealth;
 	}
 
 	public int Damage(DamageBase damage) {
@@ -45,16 +40,16 @@ public class Health : NetworkBehaviour, IEventProvider {
 		if (e.IsCancel)
 			return 0;
 
-		int preDamage = health;
-		health -= e.Damage.Value;
-		if (health <= 0) {
-			health = 0;
+		int preDamage = HealthValue;
+		HealthValue -= e.Damage.Value;
+		if (HealthValue <= 0) {
+			HealthValue = 0;
 			if (GetComponent<IDeath>() != null && !GetComponent<IDeath>().Death(damage)) {
-				health = 1;
+				HealthValue = 1;
 				preDamage = 0;
 			}
 		}
-		return health - preDamage;
+		return HealthValue - preDamage;
 	}
 
 	public EventHandler<T> GetEventSystem<T>() where T : EventBase {

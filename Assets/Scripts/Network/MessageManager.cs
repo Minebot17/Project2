@@ -117,7 +117,7 @@ public class MessageManager {
 			for (int j = 0; j < parent.childCount; j++)
 				if (parent.GetChild(j).GetComponent<NetworkIdentity>() != null && parent.GetChild(j)
 						.GetComponent<NetworkIdentity>().netId.ToString().Equals(message.NetworkIDs[i])) {
-					parent.GetChild(j).GetComponent<ISerializableObject>().Deserialize(message.Data[i]);
+					SerializationManager.DeserializeObject(parent.GetChild(j).gameObject, message.Data[i]);
 				}
 	});
 

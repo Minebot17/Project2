@@ -985,8 +985,6 @@ GameObject:
   - component: {fileID: 70055125150232056}
   - component: {fileID: 70792410677505350}
   - component: {fileID: 114332464573094076}
-  - component: {fileID: 114413598664811050}
-  - component: {fileID: 114285466279831458}
   - component: {fileID: 114597850921971000}
   - component: {fileID: 114733178408373108}
   - component: {fileID: 114832489780603792}
@@ -1002,6 +1000,8 @@ GameObject:
   - component: {fileID: 114894585742886490}
   - component: {fileID: 114922912348182132}
   - component: {fileID: 114858262857018682}
+  - component: {fileID: 114152953631597308}
+  - component: {fileID: 114128496244740400}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -3997,7 +3997,7 @@ MonoBehaviour:
   Z: 0
   posLerpRate: 150
   posThreshold: 0.1
---- !u!114 &114285466279831458
+--- !u!114 &114128496244740400
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4005,10 +4005,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1801596076533684}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c86f04e06376a04baeff7661fa2aa5e, type: 3}
+  m_Script: {fileID: 11500000, guid: d50d289de08f57d43ab96e2351f627d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 1
+  ToSerialize: {fileID: 114597850921971000}
+--- !u!114 &114152953631597308
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1801596076533684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6446c50974a0bf8479271c149905168f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToSerialize: {fileID: 114733178408373108}
 --- !u!114 &114332464573094076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4020,18 +4032,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 101ba973220191141b7d42124e44d975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114413598664811050
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1801596076533684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22eb667a74880b34ab57185f751fe865, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nick: Minebot
 --- !u!114 &114559260270058136
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4055,8 +4055,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6bdf0c462c85d48a718bc30de01641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  procent: 0
-  regeneration: 10
+  StaminaValue: 0
+  Regeneration:
+    name: Regeneration
+    originalValue: 100
+    calculatedValue: 100
+    effectProcent: 0
+    effectValue: 0
+  MaxStamina:
+    name: MaxHealth
+    originalValue: 10100
+    calculatedValue: 10100
+    effectProcent: 0
+    effectValue: 0
 --- !u!114 &114686659333377802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4111,7 +4122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02ecc624d238ed845b5bd2f890497bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
+  HealthValue: 0
   MaxHealth:
     name: MaxHealth
     originalValue: 100
@@ -4229,6 +4240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProfileName: 
+  Level: 0
 --- !u!114 &114954186275936196
 MonoBehaviour:
   m_ObjectHideFlags: 1
