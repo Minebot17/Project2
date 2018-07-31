@@ -154,6 +154,9 @@ public class GameManager : NetworkBehaviour {
 	}
 
 	public static GameObject SpawnObjectsDefault(Vector3 position, NetworkHash128 assetId) {
+		if (position.x == 0 && position.y == 0)
+			return null;
+			
 		int x = (int)position.x / 495;
 		int y = (int)position.y / 277;
 		GameObject spawned = Instantiate(Utils.FindAssetID(assetId.ToString()));

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class SpiderWeb : MonoBehaviour {
 	public GameObject Tile;
@@ -39,5 +40,8 @@ public class SpiderWeb : MonoBehaviour {
 		GameObject endWeb = Instantiate(EndWeb, transform);
 		endWeb.transform.localPosition = new Vector3(0, 22 + ray.distance, 0);
 		endWeb.transform.localScale = new Vector3(24, -8, 1);
+		
+		for (int i = 1; i < transform.childCount; i++)
+			NetworkServer.Spawn(transform.GetChild(i).gameObject);
 	}
 }

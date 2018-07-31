@@ -264,8 +264,8 @@ public static class GenerationManager {
 				foreach (SerializationManager.LoadedWorld.LoadedObject loadedObject in SerializationManager.World.Objects[pos.x, pos.y]) {
 					GameObject gameObject = ObjectsManager.SpawnGameObject(Utils.FindAssetID(loadedObject.AssetID),
 						Vector2.zero, Vector3.zero, parent, true);
-					NetworkServer.Spawn(gameObject);
 					SerializationManager.DeserializeObject(gameObject, loadedObject.Data);
+					NetworkServer.Spawn(gameObject);
 				}
 			}
 			else {

@@ -59,6 +59,10 @@ public class Attribute {
 		this.originalValue = originalValue;
 		calculatedValue = (originalValue + effectValue) * (effectProcent + 1);
 	}
+	
+	public void Calculate() {
+		calculatedValue = (originalValue + effectValue) * (effectProcent + 1);
+	}
 
 	/// <summary>
 	/// Сбрасывает модификаторы характеристики
