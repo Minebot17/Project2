@@ -6,6 +6,8 @@ using UnityEngine.Networking;
 [AddComponentMenu("NetworkCustom/NetworkSyncScale")]
 public class NetworkSyncScale : NetworkVectors {
 	
+	[SerializeField]
+	private bool fromLocalPlayer;
 	[SyncVar(hook = nameof(OnScaleChange))]
 	private Vector3 lastScale;
 
@@ -16,18 +18,27 @@ public class NetworkSyncScale : NetworkVectors {
 	
 	private void OnScaleChange(Vector3 value) {
 		lastScale = value;
-		if (isLocalPlayer)
+		if (fromLocalPlayer) {
+			if (isLocalPlayer)
+				return;
+		}
+		else if (isServer)
 			return;
 
 		transform.localScale = new Vector3(X ? lastScale.x : transform.localScale.x, Y ? lastScale.y : transform.localScale.y, Z ? lastScale.z : transform.localScale.z);
 	}
 
 	private void FixedUpdate() {
-		if (!isLocalPlayer)
+		if (fromLocalPlayer) {
+			if (!isLocalPlayer)
+				return;
+		}
+		else if (!isServer)
 			return;
 
 		if (IsScaleChanged()) {
-			CmdSendScale(transform.localScale);
+			if (!isServer)
+				CmdSendScale(transform.localScale);
 			lastScale = transform.localScale;
 		}
 	}

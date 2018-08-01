@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(EntityJumpedInfo))]
 public class PlayerAttackHandler : AttackHandler {

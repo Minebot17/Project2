@@ -8,12 +8,24 @@ public class NetworkSyncRotation : NetworkVectors{
 	private float rotLerpRate = 15;
 	[SerializeField]
 	private float rotThreshold = 0.1f;
+	[SerializeField]
+	private bool fromLocalPlayer;
 	[SyncVar]
 	private Vector3 lastRotation;
 
+	private void Start() {
+		if (isServer)
+			lastRotation = transform.localEulerAngles;
+	}
+	
 	private void Update() {
-		if (isLocalPlayer)
+		if (fromLocalPlayer) {
+			if (isLocalPlayer)
+				return;
+		}
+		else if (isServer)
 			return;
+
 		if (isServer)
 			lastRotation = transform.localEulerAngles;
 
@@ -21,11 +33,16 @@ public class NetworkSyncRotation : NetworkVectors{
 	}
 
 	private void FixedUpdate() {
-		if (!isLocalPlayer)
+		if (fromLocalPlayer) {
+			if (!isLocalPlayer)
+				return;
+		}
+		else if (!isServer)
 			return;
 
 		if (IsRotationChanged()) {
-			CmdSendRotation(transform.localEulerAngles);
+			if (!isServer)
+				CmdSendRotation(transform.localEulerAngles);
 			lastRotation = transform.localEulerAngles;
 		}
 	}

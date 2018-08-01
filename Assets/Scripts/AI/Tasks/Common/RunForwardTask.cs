@@ -46,7 +46,7 @@ public class RunForwardTask : AbstractTask<EntityMovableInfo> {
 		}
 	}
 	
-	protected override void End() {
+	public override void End() {
 		base.End();
 		info.GetEventSystem<EntityMovableInfo.StandEvent>().CallListners(new EntityMovableInfo.StandEvent(gameObject));
 		info.IsRunForward = false;

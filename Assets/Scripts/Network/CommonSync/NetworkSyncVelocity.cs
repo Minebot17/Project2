@@ -9,6 +9,8 @@ public class NetworkSyncVelocity : NetworkVectors {
 	private float velocityLerpRate = 15;
 	[SerializeField]
 	private float velocityThreshold = 0.1f;
+	[SerializeField]
+	private bool fromLocalPlayer;
 	[SyncVar]
 	private Vector3 lastVelocity;
 	private Rigidbody2D rigidbody2D;
@@ -18,18 +20,27 @@ public class NetworkSyncVelocity : NetworkVectors {
 	}
 
 	private void Update() {
-		if (isLocalPlayer)
+		if (fromLocalPlayer) {
+			if (isLocalPlayer)
+				return;
+		}
+		else if (isServer)
 			return;
 
 		InterpolateVelocity();
 	}
 
 	private void FixedUpdate() {
-		if (!isLocalPlayer)
+		if (fromLocalPlayer) {
+			if (!isLocalPlayer)
+				return;
+		}
+		else if (!isServer)
 			return;
 
 		if (IsVelocityChanged()) {
-			CmdSendVelocity(rigidbody2D.velocity);
+			if (!isServer)
+				CmdSendVelocity(rigidbody2D.velocity);
 			lastVelocity = rigidbody2D.velocity;
 		}
 	}

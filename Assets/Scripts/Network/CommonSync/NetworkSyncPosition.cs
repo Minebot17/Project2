@@ -9,6 +9,8 @@ public class NetworkSyncPosition : NetworkVectors {
 	private float posLerpRate = 15;
 	[SerializeField]
 	private float posThreshold = 0.1f;
+	[SerializeField]
+	private bool fromLocalPlayer;
 	[SyncVar]
 	private Vector3 lastPosition;
 
@@ -18,18 +20,27 @@ public class NetworkSyncPosition : NetworkVectors {
 	}
 
 	private void Update() {
-		if (isLocalPlayer)
+		if (fromLocalPlayer) {
+			if (isLocalPlayer)
+				return;
+		}
+		else if (isServer)
 			return;
 
 		InterpolatePosition();
 	}
 
 	private void FixedUpdate() {
-		if (!isLocalPlayer)
+		if (fromLocalPlayer) {
+			if (!isLocalPlayer)
+				return;
+		}
+		else if (!isServer)
 			return;
 
 		if (IsPositionChanged()) {
-			CmdSendPosition(transform.position);
+			if (!isServer)
+				CmdSendPosition(transform.position);
 			lastPosition = transform.position;
 		}
 	}

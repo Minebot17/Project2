@@ -41,6 +41,7 @@ public class PlayerObserver : Observer {
 			new EventHandler<TargetStay>(),
 			new EventHandler<TargetOut>(),
 			new EventHandler<AllTargetsEnd>(), 
+			new EventHandler<FirstTarget>()
 		};
 	}
 

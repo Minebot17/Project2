@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Играет роль датчика. Наблюдает за окружением и отсылает эвенты TaskSender'у при каком-либо изменении
 /// </summary>
-public abstract class Observer : MonoBehaviour, IEventProvider {
+public abstract class Observer : NetworkBehaviour, IEventProvider {
 	private object[] events;
 	private int timer;
 

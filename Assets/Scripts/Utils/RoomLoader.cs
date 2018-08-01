@@ -97,8 +97,9 @@ public static class RoomLoader {
 		foreach (RoomObject obj in room.objects) {
 			GameObject spawned = ObjectsManager.SpawnRoomObject(obj, parent,
 				x => x.GetComponent<NetworkIdentity>() != null && x.GetComponent<ISerializableObject>() != null);
-			if (spawned != null)
+			if (spawned != null) {
 				result.Add(spawned);
+			}
 		}
 
 		return result;

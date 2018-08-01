@@ -31,6 +31,18 @@ public class AttackHandler : NetworkBehaviour, IAttackable {
 			AttackTarget(target, info);
 		}
 	}
+	
+	public virtual void AttackProjectile(Object args) {
+		@switch = !@switch;
+		if (@switch)
+			return;
+		
+		ProjectileAttackInfo info = (ProjectileAttackInfo) args;
+		GameObject projectile = Instantiate(info.Projectile);
+		projectile.transform.position = spawnProjectileObject.position;
+		if (projectile.GetComponent<Rigidbody2D>() != null)
+			projectile.GetComponent<Rigidbody2D>().AddForce(Utils.GetPlayerLook() * info.TrustForce);
+	}
 
 	private void AttackTarget(GameObject target, MeleeAttackInfo info) {
 		if (!isServer)
@@ -50,18 +62,6 @@ public class AttackHandler : NetworkBehaviour, IAttackable {
 	[ClientRpc]
 	private void RpcDamage(GameObject target, MeleeAttackInfo info) {
 		Instantiate(GameManager.singleton.HitObjectParticle).GetComponent<HitObjectParticle>().Initialize(new Vector2(info.Point.x * (int) transform.localScale.x, info.Point.y) + Utils.ToVector2(transform.position), info.Size, target);
-	}
-
-	public virtual void AttackProjectile(Object args) {
-		@switch = !@switch;
-		if (@switch)
-			return;
-		
-		ProjectileAttackInfo info = (ProjectileAttackInfo) args;
-		GameObject projectile = Instantiate(info.Projectile);
-		projectile.transform.position = spawnProjectileObject.position;
-		if (projectile.GetComponent<Rigidbody2D>() != null)
-			projectile.GetComponent<Rigidbody2D>().AddForce(Utils.GetPlayerLook() * info.TrustForce);
 	}
 
 	public virtual void EndAttack() {

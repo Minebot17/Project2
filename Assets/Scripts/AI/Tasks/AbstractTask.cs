@@ -36,7 +36,7 @@ public abstract class AbstractTask<T> : ITask where T : EntityInfo {
 	/// <summary>
 	/// Окончание данной задачи
 	/// </summary>
-	protected virtual void End() {
+	public virtual void End() {
 		removed = true;
 	}
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Центральный обработчик ITast, присланных из ITaskSender. Так же обрабатывает IAnimationTaks

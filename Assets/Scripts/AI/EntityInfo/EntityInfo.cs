@@ -17,6 +17,15 @@ public class EntityInfo : SimpleObject, IEventProvider {
 	
 	void Start () {
 		Initialize();
+		if (!isServer) {
+			foreach (var c in GetComponents<Observer>())
+				c.enabled = false;
+			GetComponent<AbstractTaskHandler<EntityInfo>>().enabled = false;
+			foreach (var c in GetComponents<AbstractTaskSender<AbstractTaskHandler<EntityInfo>, EntityInfo>>())
+				c.enabled = false;
+
+			GetComponent<EntityInfo>().enabled = false;
+		}
 	}
 	
 	/// <summary>

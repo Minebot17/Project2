@@ -9,6 +9,8 @@ public class NetworkSyncRotationChild : NetworkBehaviour {
 	private float posLerpRate = 15;
 	[SerializeField]
 	private float posThreshold = 0.1f;
+	[SerializeField]
+	private bool fromLocalPlayer;
 	public List<ChildVector> Childs = new List<ChildVector>();
 
 	private Vector3[] lastRorations;
@@ -20,7 +22,11 @@ public class NetworkSyncRotationChild : NetworkBehaviour {
 	}
 
 	private void Update() {
-		if (isLocalPlayer)
+		if (fromLocalPlayer) {
+			if (isLocalPlayer)
+				return;
+		}
+		else if (isServer)
 			return;
 
 		for (int i = 0; i < lastRorations.Length; i++) {
@@ -31,7 +37,11 @@ public class NetworkSyncRotationChild : NetworkBehaviour {
 	}
 
 	private void FixedUpdate() {
-		if (!isLocalPlayer)
+		if (fromLocalPlayer) {
+			if (!isLocalPlayer)
+				return;
+		}
+		else if (!isServer)
 			return;
 
 		List<int> toUpdate = new List<int>();
@@ -45,7 +55,8 @@ public class NetworkSyncRotationChild : NetworkBehaviour {
 		if (toUpdate.Count != 0) {
 			List<Vector3> list = new List<Vector3>();
 			toUpdate.ForEach(i => list.Add(Childs[i].Child.localEulerAngles));
-			CmdSendToServer(list.ToArray(), toUpdate.ToArray());
+			if (!isServer)
+				CmdSendToServer(list.ToArray(), toUpdate.ToArray());
 		}
 	}
 

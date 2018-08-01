@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// В Start подписывается на эвенты нужного Observer, и отсылает их методом ITaskHandler#ReceiveEvent обработчику

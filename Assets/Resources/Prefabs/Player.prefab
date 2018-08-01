@@ -4069,7 +4069,8 @@ MonoBehaviour:
   Y: 1
   Z: 0
   posLerpRate: 150
-  posThreshold: 0.1
+  posThreshold: 1
+  fromLocalPlayer: 1
 --- !u!114 &114128496244740400
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4260,6 +4261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e7b54b090e2f0438d66a00a0f77eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fromLocalPlayer: 1
   Childs:
   - Child: {fileID: 4760234102906400}
     X: 1
@@ -4284,7 +4286,8 @@ MonoBehaviour:
   Y: 1
   Z: 0
   velocityLerpRate: 150
-  velocityThreshold: 0.1
+  velocityThreshold: 1
+  fromLocalPlayer: 1
 --- !u!114 &114901018881741284
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4331,3 +4334,4 @@ MonoBehaviour:
   X: 1
   Y: 0
   Z: 0
+  fromLocalPlayer: 1
