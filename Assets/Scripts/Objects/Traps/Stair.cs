@@ -7,6 +7,7 @@ public class Stair : MonoBehaviour {
 	public Material StairMaterial;
 	public int type; // 0 - обычная, 1 - исчезающая, 2 - ломающаяся
 	public float disableTime;
+	public float enableTime;
 	public List<GameObject> childs = new List<GameObject>();
 	
 	private void Start() {
@@ -14,8 +15,9 @@ public class Stair : MonoBehaviour {
 		string[] data = GetComponent<SpawnedData>().spawnedData;
 		type = int.Parse(data[0]);
 		disableTime = float.Parse(data[1]);
-		int stairWidth = int.Parse(data[2]);
-		bool withEnders = bool.Parse(data[3]);
+		enableTime = float.Parse(data[2]);
+		int stairWidth = int.Parse(data[3]);
+		bool withEnders = bool.Parse(data[4]);
 
 		BoxCollider2D col = childs[0].GetComponent<BoxCollider2D>();
 		col.size = new Vector2(stairWidth, col.size.y);
@@ -102,11 +104,11 @@ public class Stair : MonoBehaviour {
 			new ContactFilter2D(), result);
 		if (result.ToList().Exists(x => x != null && x.gameObject == childs[0])) {
 			if (type == 1) {
-				Timer.StartNewTimer("StairDisable", 0.5f, 1, gameObject, x => {
+				Timer.StartNewTimer("StairDisable", disableTime, 1, gameObject, x => {
 					foreach (GameObject child in childs)
 						child.SetActive(false);
 				});
-				Timer.StartNewTimer("StairEnable", disableTime, 1, gameObject, x => {
+				Timer.StartNewTimer("StairEnable", enableTime, 1, gameObject, x => {
 					foreach (GameObject child in childs)
 						child.SetActive(true);
 				});

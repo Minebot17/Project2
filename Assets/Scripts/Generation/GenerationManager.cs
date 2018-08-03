@@ -294,9 +294,9 @@ public static class GenerationManager {
 		}
 	}
 
-	public static void InitializeRoom(GameObject room) {
+	public static List<GameObject> InitializeRoom(GameObject room) {
 		if (!NetworkManagerCustom.IsServer)
-			return;
+			return null;
 		
 		List<GameObject> objects = RoomLoader.SpawnSerializebleObjects(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(room.GetComponent<Room>().RoomName)), room);
 		foreach (GameObject gameObject in objects) {
@@ -305,6 +305,7 @@ public static class GenerationManager {
 		}
 
 		room.GetComponent<Room>().Initialized = true;
+		return objects;
 	}
 
 	public class GenerationData {

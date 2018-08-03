@@ -70,7 +70,7 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 		}
 		else {
 			if (GUILayout.Button("Disconnect")) {
-				string path = Application.dataPath + "/../" + "Build.exe";
+				string path = Application.dataPath + "/../" + "RogueLikeTest.exe";
 				System.Diagnostics.Process.Start(path);
 				_started = false;
 				NetworkManager.singleton.StopHost();

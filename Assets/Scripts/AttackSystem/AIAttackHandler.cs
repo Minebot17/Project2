@@ -8,7 +8,7 @@ public class AIAttackHandler : AttackHandler {
 		@switch = !@switch;
 		if (@switch)
 			return;
-		
-		((AbstractTask<EntityInfo>)GetComponent<AbstractTaskHandler<EntityInfo>>().GetActiveTask()).End();
+		AbstractTask<EntityInfo> macke = ((AbstractTask<EntityInfo>)GetComponent<AbstractTaskHandler<EntityInfo>>().GetActiveTask());
+		macke.End();
 	}
 }

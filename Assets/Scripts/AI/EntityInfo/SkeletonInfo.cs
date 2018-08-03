@@ -14,9 +14,6 @@ public class SkeletonInfo : EntityJumpedInfo {
 	public int MaxAttackDistance;
 	public int MinShootDistance;
 	public int MaxShootDistance;
-	public Collider2D ForwardCollider;
-	public Collider2D ForwarDownCollider;
-	public Collider2D BackDownCollider;
 	public VisibleObserver observer;
 
 	private Health health;

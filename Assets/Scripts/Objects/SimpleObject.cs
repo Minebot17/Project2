@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class SimpleObject : NetworkBehaviour {
-	[SyncVar]
+public class SimpleObject : MonoBehaviour {
 	[SerializeField]
 	private int id;
 

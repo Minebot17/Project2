@@ -130,16 +130,25 @@ public class GameManager : NetworkBehaviour {
 					GenerationManager.VisualizeGeneration(generation);
 			}
 			else if (gui.StartArguments.Equals("test mode")) {
-				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(GameSettings.SettingTestRoomName.Value)), Vector3.zero, true);
+				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(GameSettings.SettingTestRoomName.Value)), Vector3.zero, false);
+				GenerationManager.InitializeRoom(GenerationManager.currentRoom);
 				GameObject player = Instantiate(LocalPlayer);
-				player.transform.position = GameObject.Find("startPosition").transform.position;
+				Vector3 toPos = Vector3.zero;
+				Transform parent = GenerationManager.currentRoom.transform.Find("Objects");
+				for (int i = 0; i < parent.childCount; i++)
+					if (parent.GetChild(i).name.Contains("playerPosition"))
+						toPos = parent.GetChild(i).position;
+				player.transform.position = toPos + new Vector3(18, 25);
 				if (ServerEvents.singleton.ServerOnlyProfile != null)
 					player.GetComponent<GameProfile>().Deserialize(ServerEvents.singleton.ServerOnlyProfile);
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController++);
 			}
 			else if (gui.StartArguments.Equals("room editor")) {
-				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8), Vector3.zero, true);
+				RoomLoader.Room room = RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8);
+				GenerationManager.currentRoom = RoomLoader.SpawnRoom(room, Vector3.zero, false);
+				RoomLoader.loadedRooms.Add(room);
+				GenerationManager.InitializeRoom(GenerationManager.currentRoom);
 				string[] gateInfo = File.ReadAllLines(Application.streamingAssetsPath + "/gate.txt", Encoding.UTF8);
 				GameObject.Find("startPosition").transform.position = new Vector3(int.Parse(gateInfo[0]), int.Parse(gateInfo[1]), -1f);
 				doStartForce = bool.Parse(gateInfo[2]);

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EntityMovableInfo : EntityGroundInfo {
+	public Collider2D ForwardCollider;
+	public Collider2D ForwarDownCollider;
+	public Collider2D BackCollider;
+	public Collider2D BackDownCollider;
 	public bool IsRunForward;
 	public bool IsRunBack;
 	public bool BlockControl;

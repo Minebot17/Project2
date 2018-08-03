@@ -326,6 +326,7 @@ GameObject:
   - component: {fileID: 114192108784167008}
   - component: {fileID: 114944476446058782}
   - component: {fileID: 114539935684413458}
+  - component: {fileID: 114748138045274450}
   m_Layer: 12
   m_Name: dog
   m_TagString: Untagged
@@ -1935,6 +1936,18 @@ MonoBehaviour:
     calculatedValue: 100
     effectProcent: 0
     effectValue: 0
+--- !u!114 &114748138045274450
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1688413763626342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10f98ec9bb5943f489134b065a0189f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnProjectileObject: {fileID: 0}
 --- !u!114 &114793969807680760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1965,15 +1978,16 @@ MonoBehaviour:
   GroundTrigger: {fileID: 61608627659741454}
   OnGround: 0
   MaxFallVelocity: 500
+  ForwardCollider: {fileID: 61915828829945914}
+  ForwarDownCollider: {fileID: 61584367809553416}
+  BackCollider: {fileID: 0}
+  BackDownCollider: {fileID: 61751267248348518}
   IsRunForward: 0
   IsRunBack: 0
   BlockControl: 0
   RunSpeed: 100
   JumpPower: 19000
   MaxAttackDistance: 35
-  ForwardCollider: {fileID: 61915828829945914}
-  ForwarDownCollider: {fileID: 61584367809553416}
-  BackDownCollider: {fileID: 61751267248348518}
   observer: {fileID: 0}
 --- !u!114 &114944476446058782
 MonoBehaviour:

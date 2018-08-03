@@ -7,7 +7,7 @@ public class SkeletonTaskHandler : AbstractTaskHandler<SkeletonInfo> {
 	
 	public EntityState CalmState = new EntityState("Calm", new Type[] {
 		typeof(RotateTask),
-		typeof(RunForwardTask)
+		typeof(RunForwardTask),
 	});
 	
 	public EntityState AggresiveState = new EntityState("Aggresive", new Type[] {

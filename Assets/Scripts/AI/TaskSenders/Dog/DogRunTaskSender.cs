@@ -35,13 +35,13 @@ public class DogRunTaskSender : AbstractTaskSender<DogTaskHandler, DogInfo> {
 						handler.AddTask(new RotateTask(gameObject));
 				}
 				else
-					handler.AddTask(new RunToPlayerTask(gameObject, target, info.ForwardCollider, info.ForwarDownCollider, info.BackDownCollider, playerDistance - info.MaxAttackDistance/1.1f, true));
+					handler.AddTask(new RunToPlayerTask(gameObject, target, info.ForwardCollider, info.ForwarDownCollider, info.BackCollider, info.BackDownCollider, playerDistance - info.MaxAttackDistance/1.1f, true));
 
 			}
 		}
 	}
 	
 	private void AddRandomRun() {
-		handler.AddTask(new RunForwardTask(gameObject, info.ForwardCollider, info.ForwarDownCollider, (int) (GameManager.rnd.NextDouble() * 200f)));
+		handler.AddTask(new RunForwardTask(gameObject, info.ForwardCollider, info.ForwarDownCollider, info.BackCollider, info.BackDownCollider, (int) (GameManager.rnd.NextDouble() * 200f)));
 	}
 }

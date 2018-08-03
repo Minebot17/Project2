@@ -7,12 +7,16 @@ public class RunForwardTask : AbstractTask<EntityMovableInfo> {
 	
 	protected readonly Collider2D forwardCollider;
 	protected readonly Collider2D forwardDownCollider;
+	protected readonly Collider2D backCollider;
+	protected readonly Collider2D backDownCollider;
 	protected readonly Rigidbody2D rigidbody2D;
 	protected float distance;
 
-	public RunForwardTask(GameObject gameObject, Collider2D forwardCollider, Collider2D forwardDownCollider, float distance) : base(gameObject) {
+	public RunForwardTask(GameObject gameObject, Collider2D forwardCollider, Collider2D forwardDownCollider, Collider2D backCollider, Collider2D backDownCollider, float distance) : base(gameObject) {
 		this.forwardCollider = forwardCollider;
 		this.forwardDownCollider = forwardDownCollider;
+		this.backCollider = backCollider;
+		this.backDownCollider = backDownCollider;
 		rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
 		this.distance = distance;
 	}

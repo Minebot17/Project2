@@ -24,7 +24,7 @@ public class SkeletonRunTaskSender : AbstractTaskSender<SkeletonTaskHandler, Ske
 				AddRandomRun();
 		}
 		else if (handler.GetCurrentState() == handler.FearState) {
-			handler.AddTask(new RunToPlayerTask(gameObject, info.observer.NearestTarget, info.ForwardCollider, info.ForwarDownCollider, info.BackDownCollider, 50, false));
+			handler.AddTask(new RunToPlayerTask(gameObject, info.observer.NearestTarget, info.ForwardCollider, info.ForwarDownCollider, info.BackCollider, info.BackDownCollider, 50, false));
 		}
 		else if (handler.GetCurrentState() == handler.AggresiveState) {
 			GameObject target = info.observer.NearestTarget;
@@ -38,20 +38,20 @@ public class SkeletonRunTaskSender : AbstractTaskSender<SkeletonTaskHandler, Ske
 						handler.AddTask(new RotateTask(gameObject));
 				}
 				else if (playerDistance > info.MaxAttackDistance && playerDistance < info.MinShootDistance) {
-					handler.AddTask(new RunToPlayerTask(gameObject, target, info.ForwardCollider, info.ForwarDownCollider, info.BackDownCollider, (info.MaxShootDistance + info.MinShootDistance)/2f - playerDistance, false));
+					handler.AddTask(new RunToPlayerTask(gameObject, target, info.ForwardCollider, info.ForwarDownCollider, info.BackCollider, info.BackDownCollider, (info.MaxShootDistance + info.MinShootDistance)/2f - playerDistance, false));
 				}
 				else if (playerDistance > info.MinShootDistance && playerDistance < info.MaxShootDistance) {
 					if (!Utils.IsRotatedToPlayer(target, transform))
 						handler.AddTask(new RotateTask(gameObject));
 				}
 				else
-					handler.AddTask(new RunToPlayerTask(gameObject, target, info.ForwardCollider, info.ForwarDownCollider, info.BackDownCollider, playerDistance - (info.MaxShootDistance + info.MinShootDistance)/2f, true));
+					handler.AddTask(new RunToPlayerTask(gameObject, target, info.ForwardCollider, info.ForwarDownCollider, info.BackCollider, info.BackDownCollider, playerDistance - (info.MaxShootDistance + info.MinShootDistance)/2f, true));
 
 			}
 		}
 	}
 
 	private void AddRandomRun() {
-		handler.AddTask(new RunForwardTask(gameObject, info.ForwardCollider, info.ForwarDownCollider, (int) (GameManager.rnd.NextDouble() * 200f)));
+		handler.AddTask(new RunForwardTask(gameObject, info.ForwardCollider, info.ForwarDownCollider, info.BackCollider, info.BackDownCollider, (int) (GameManager.rnd.NextDouble() * 200f)));
 	}
 }

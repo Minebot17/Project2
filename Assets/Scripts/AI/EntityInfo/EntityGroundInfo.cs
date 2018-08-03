@@ -30,9 +30,9 @@ public class EntityGroundInfo : EntityInfo, IEventProvider{
 		else if (oldGroundCheck && !OnGround)
 			GetEventSystem<FallEvent>().CallListners(new FallEvent(gameObject));
 
-		if (rigidbody2D.velocity.y > MaxFallVelocity)
-			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, MaxFallVelocity);
-		else if (rigidbody2D.velocity.y < -MaxFallVelocity)
+		/*if (rigidbody2D.velocity.y > MaxFallVelocity)
+			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, MaxFallVelocity);*/
+		if (rigidbody2D.velocity.y < -MaxFallVelocity)
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, -MaxFallVelocity);
 	}
 

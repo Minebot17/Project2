@@ -60,7 +60,7 @@ public abstract class AbstractTaskHandler<T> : MonoBehaviour, ITaskHandler where
 	/// </summary>
 	/// <param name="task"></param>
 	public void AddTask(ITask task) {
-		if (activeTask == null)
+		if (activeTask == null && !taskBuffer.Exists(x => x.GetType() == task.GetType()))
 			taskBuffer.Add(task);
 	}
 

@@ -17,7 +17,7 @@ public class EntityInfo : SimpleObject, IEventProvider {
 	
 	void Start () {
 		Initialize();
-		if (!isServer) {
+		if (!NetworkManagerCustom.IsServer) {
 			foreach (var c in GetComponents<Observer>())
 				c.enabled = false;
 			GetComponent<AbstractTaskHandler<EntityInfo>>().enabled = false;

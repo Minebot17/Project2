@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 4731589140366028}
   - component: {fileID: 61989372788606618}
   m_Layer: 12
-  m_Name: ForwardCollider
+  m_Name: BackCollider
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -275,6 +275,22 @@ GameObject:
   m_Name: RARMOR_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1284430534926292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4944213748287160}
+  - component: {fileID: 61654182562752834}
+  m_Layer: 12
+  m_Name: ForwardCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -597,6 +613,7 @@ GameObject:
   - component: {fileID: 114726643243687204}
   - component: {fileID: 114200029888609250}
   - component: {fileID: 114764254425925380}
+  - component: {fileID: 114400907450422682}
   m_Layer: 12
   m_Name: skeleton
   m_TagString: Untagged
@@ -823,9 +840,10 @@ Transform:
   - {fileID: 4240589965991200}
   - {fileID: 4505807114115990}
   - {fileID: 4431998470780196}
-  - {fileID: 4731589140366028}
+  - {fileID: 4944213748287160}
   - {fileID: 4852024378233194}
   - {fileID: 4726891488389738}
+  - {fileID: 4731589140366028}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1085,12 +1103,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1274248686485274}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -16, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4261778098820354}
-  m_RootOrder: 4
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4783520346578502
 Transform:
@@ -1203,6 +1221,19 @@ Transform:
   m_Father: {fileID: 4028416258667458}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0.0027114917, y: -0.0029986696, z: -16.8734}
+--- !u!4 &4944213748287160
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1284430534926292}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 16, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4261778098820354}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4951051770963800
 Transform:
   m_ObjectHideFlags: 1
@@ -2006,6 +2037,31 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 20, y: 1}
   m_EdgeRadius: 0
+--- !u!61 &61654182562752834
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1284430534926292}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 35}
+  m_EdgeRadius: 0
 --- !u!61 &61906815804750274
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -2169,6 +2225,10 @@ MonoBehaviour:
   GroundTrigger: {fileID: 61439414648171526}
   OnGround: 0
   MaxFallVelocity: 500
+  ForwardCollider: {fileID: 61654182562752834}
+  ForwarDownCollider: {fileID: 61279259892747016}
+  BackCollider: {fileID: 61989372788606618}
+  BackDownCollider: {fileID: 61362770525598742}
   IsRunForward: 0
   IsRunBack: 0
   BlockControl: 0
@@ -2184,10 +2244,20 @@ MonoBehaviour:
   MaxAttackDistance: 50
   MinShootDistance: 150
   MaxShootDistance: 300
-  ForwardCollider: {fileID: 61989372788606618}
-  ForwarDownCollider: {fileID: 61279259892747016}
-  BackDownCollider: {fileID: 61362770525598742}
   observer: {fileID: 0}
+--- !u!114 &114400907450422682
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1846697255404516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14e6556d785bd174483ec7e7485c1b7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnProjectileObject: {fileID: 4139018402707866, guid: 2fcc2ab829098ec4abb4d9413653cf28,
+    type: 2}
 --- !u!114 &114490237191980006
 MonoBehaviour:
   m_ObjectHideFlags: 1

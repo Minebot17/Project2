@@ -11,7 +11,7 @@ public class SpiderWeb : MonoBehaviour {
 	
 	private void Start() {
 		Vector2Int currentPosition = new Vector2Int((int)transform.position.x / 495, (int)transform.position.y / 277);
-		float rayDistance = transform.parent.parent.gameObject.GetComponent<Room>().Size.y * 277 - (transform.position - GenerationManager.spawnedRooms[currentPosition.x, currentPosition.y].transform.position).y;
+		float rayDistance = transform.parent.parent.gameObject.GetComponent<Room>().Size.y * 277 - transform.localPosition.y;
 		RaycastHit2D ray = Physics2D.Raycast(Utils.ToVector2(transform.position) + new Vector2(10, 22), Vector2.up,
 			rayDistance, GameManager.singleton.RoomLayerMask);
 		if (ray.collider == null) {
