@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - RoomObject
+  - Gate
   layers:
   - Default
   - TransparentFX

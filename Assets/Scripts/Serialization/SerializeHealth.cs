@@ -19,6 +19,6 @@ public class SerializeHealth : MonoBehaviour, ISerializableObject {
 		ToSerialize.MaxHealth.Calculate(float.Parse(data[1]));
 		if (ToSerialize.HealthValue < 0 && ToSerialize.GetComponent<IDeath>() != null)
 			ToSerialize.GetComponent<IDeath>().Death(null);
-		return 1;
+		return 2;
 	}
 }

@@ -104,7 +104,7 @@ public static class GenerationManager {
 		List<GameObject> gates = Utils.GetComponentsRecursive<GateObject>(spawnedRoom).ConvertAll(x => x.gameObject);
 		gates.ForEach(x =>
 			x.transform.Find("trigger").GetComponent<GateTrigger>().GetEventSystem<GateTrigger.EnterGateEvent>()
-				.SubcribeEvent(y => OnGateEnter(y.Player, y.Sender)));
+				.SubcribeEvent(y => OnGateEnter(y.Player, y.Sender, false)));
 				
 		foreach (GameObject gateObject in gates) {
 			Vector2Int localPosition = GateInfo.RoomObjectToLocalPosition(gateObject.transform.localPosition);
@@ -120,7 +120,10 @@ public static class GenerationManager {
 		return spawnedRoom;
 	}
 
-	private static void OnGateEnter(GameObject player, GameObject gateObject) {
+	public static void OnGateEnter(GameObject player, GameObject gateObject, bool fromMessage) {
+		if (!fromMessage && !NetworkManagerCustom.IsServer)
+			return;
+		
 		Vector2Int localPosition = GateInfo.RoomObjectToLocalPosition(gateObject.transform.localPosition);
 		Vector2Int nextCoord = GateInfo.LocalPositionToVector(localPosition) + currentRoomCoords;
 		bool buffer = spawnedRooms != null && nextCoord.x >= 0 && nextCoord.x < spawnedRooms.GetLength(0) &&
@@ -140,6 +143,8 @@ public static class GenerationManager {
 		
 		if (buffer && player.GetComponent<NetworkIdentity>().isLocalPlayer)
 			SetCurrentRoom(nextCoord);
+		if (!fromMessage)
+			MessageManager.ClientGateEnter.SendToClient(player.GetComponent<NetworkIdentity>().connectionToClient, new StringMessage(localPosition.x + ";" + localPosition.y));
 	}
 
 	public static void TeleportPlayerToStart(GameObject player) {

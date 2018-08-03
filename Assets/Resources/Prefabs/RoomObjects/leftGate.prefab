@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 61885218003520210}
   m_Layer: 8
   m_Name: leftGate
-  m_TagString: Untagged
+  m_TagString: Gate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

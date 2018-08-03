@@ -122,6 +122,17 @@ public class MessageManager {
 				}
 	});
 
+	public static readonly GameMessage ClientGateEnter = new GameMessage(msg => {
+		string[] splitted = msg.ReadMessage<StringMessage>().value.Split(';');
+		Vector2Int localPosition = new Vector2Int(int.Parse(splitted[0]), int.Parse(splitted[1]));
+		Transform parent = GenerationManager.currentRoom.transform.Find("Objects");
+		for (int i = 0; i < parent.childCount; i++)
+			if (parent.GetChild(i).tag.Equals("Gate") &&
+			    GateInfo.RoomObjectToLocalPosition(new Vector3(parent.GetChild(i).position.x % 495, parent.GetChild(i).position.y % 277)) == localPosition) {
+				GenerationManager.OnGateEnter(GameManager.singleton.LocalPlayer, parent.GetChild(i).gameObject, true);
+				break;
+			}
+	});
 
 	[System.Serializable]
 	public class StringList : List<string> { }
