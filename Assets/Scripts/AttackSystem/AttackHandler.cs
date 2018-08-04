@@ -4,13 +4,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class AttackHandler : NetworkBehaviour, IAttackable {
+public class AttackHandler : NetworkBehaviour {
 	
 	[SerializeField] 
 	private Transform spawnProjectileObject;
 	protected bool @switch;
 
 	public virtual void AttackMelee(Object args) {
+		if (!isServer)
+			return;
+		
 		@switch = !@switch;
 		if (@switch)
 			return;
@@ -33,6 +36,8 @@ public class AttackHandler : NetworkBehaviour, IAttackable {
 	}
 	
 	public virtual void AttackProjectile(Object args) {
+		if (!isServer)
+			return;
 		@switch = !@switch;
 		if (@switch)
 			return;
@@ -42,6 +47,7 @@ public class AttackHandler : NetworkBehaviour, IAttackable {
 		projectile.transform.position = spawnProjectileObject.position;
 		if (projectile.GetComponent<Rigidbody2D>() != null)
 			projectile.GetComponent<Rigidbody2D>().AddForce(Utils.GetPlayerLook() * info.TrustForce);
+		NetworkServer.Spawn(projectile);
 	}
 
 	private void AttackTarget(GameObject target, MeleeAttackInfo info) {
@@ -50,7 +56,8 @@ public class AttackHandler : NetworkBehaviour, IAttackable {
 		
 		if (target.GetComponent<Health>() != null) {
 			target.GetComponent<Health>().Damage(new DamageBase(gameObject, info.Damage));
-			RpcDamage(target, info);
+			ObjectMaterial objectMaterial = target.GetComponent<ObjectMaterial>();
+			RpcDamage(target, info, objectMaterial.HitParticleColorMin, objectMaterial.HitParticleColorMax);
 		}
 
 		if (target.GetComponent<Kickable>() != null) {
@@ -60,8 +67,8 @@ public class AttackHandler : NetworkBehaviour, IAttackable {
 	}
 	
 	[ClientRpc]
-	private void RpcDamage(GameObject target, MeleeAttackInfo info) {
-		Instantiate(GameManager.singleton.HitObjectParticle).GetComponent<HitObjectParticle>().Initialize(new Vector2(info.Point.x * (int) transform.localScale.x, info.Point.y) + Utils.ToVector2(transform.position), info.Size, target);
+	private void RpcDamage(GameObject target, MeleeAttackInfo info, Color min, Color max) {
+		Instantiate(GameManager.singleton.HitObjectParticle).GetComponent<HitObjectParticle>().Initialize(new Vector2(info.Point.x * (int) transform.localScale.x, info.Point.y) + Utils.ToVector2(transform.position), info.Size, target, min, max);
 	}
 
 	public virtual void EndAttack() {

@@ -134,17 +134,6 @@ public class MessageManager {
 			}
 	});
 
-	public static readonly GameMessage SpawnChildClientMessage = new GameMessage(msg => {
-		StringList list = msg.ReadMessage<StringListMessage>().Value; // parent netID and child netID
-		GameObject parent = NetworkServer.FindLocalObject(new NetworkInstanceId(uint.Parse(list[0])));
-		NetworkServer.FindLocalObject(new NetworkInstanceId(uint.Parse(list[1]))).transform.parent = parent.transform;
-	});
-
-	public static readonly GameMessage CallStartClientMessage = new GameMessage(msg => {
-		NetworkInstanceId id = new NetworkInstanceId(uint.Parse(msg.ReadMessage<StringMessage>().value));
-		NetworkServer.FindLocalObject(id).Get
-	});
-
 	[System.Serializable]
 	public class StringList : List<string> { }
 

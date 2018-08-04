@@ -13,8 +13,12 @@ public class DeathStandart : MonoBehaviour, IDeath, IEventProvider {
 		DeathEvent result = GetEventSystem<DeathEvent>().CallListners(new DeathEvent(gameObject, lastDamage));
 		
 		if (!result.IsCancel)
-			Destroy(gameObject);
+			OnDeath(lastDamage);
 		return !result.IsCancel;
+	}
+
+	protected virtual void OnDeath(DamageBase lastDamage) {
+		Destroy(gameObject);
 	}
 
 	public EventHandler<T> GetEventSystem<T>() where T : EventBase {

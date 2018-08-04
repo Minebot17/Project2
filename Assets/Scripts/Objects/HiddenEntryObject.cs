@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Networking.NetworkSystem;
 
 [RequireComponent(typeof(SpawnedData))]
 public class HiddenEntryObject : NetworkBehaviour {
+	private void Awake() {
+		if (NetworkManagerCustom.IsServer) {
+			GameObject hitBox = transform.Find("HitBox").gameObject;
+			hitBox.GetComponent<DeathDisableColliderHealth>().GetEventSystem<DeathStandart.DeathEvent>().SubcribeEvent(e => {
+				RpcDeadBorder();
+			});
+		}
+	}
 
 	void Start () {
-		if (isServer) {
-			NetworkServer.Spawn(transform.GetChild(1).gameObject);
-			MessageManager.SpawnChildClientMessage.SendToAllClients(new StringListMessage(
-				new List<string>{GetComponent<NetworkIdentity>().netId.ToString(), transform.GetChild(1).GetComponent<NetworkIdentity>().netId.ToString()}
-			));
-		}
-
 		string[] data = GetComponent<SpawnedData>().spawnedData;
 		int length = int.Parse(data[0]);
 		bool horizontal = bool.Parse(data[1]);
@@ -47,9 +49,17 @@ public class HiddenEntryObject : NetworkBehaviour {
 		meshShadow.RecalculateBounds();
 		meshShadow.RecalculateNormals();
 		meshShadow.RecalculateTangents();
-		
+
+		if (isServer) {
+			GameObject hitBox = transform.Find("HitBox").gameObject;
+			hitBox.GetComponent<BoxCollider2D>().offset =
+				new Vector2(length / 2f, hitBox.GetComponent<BoxCollider2D>().offset.y);
+			hitBox.GetComponent<BoxCollider2D>().size =
+				new Vector2(length, hitBox.GetComponent<BoxCollider2D>().size.y);
+		}
+
 		GameObject border = transform.Find("Border").gameObject;
-		border.GetComponent<MeshFilter>().mesh= meshBorder;
+		border.GetComponent<MeshFilter>().mesh = meshBorder;
 		border.GetComponent<BoxCollider2D>().offset = new Vector2(length/2f, border.GetComponent<BoxCollider2D>().offset.y);
 		border.GetComponent<BoxCollider2D>().size = new Vector2(length, border.GetComponent<BoxCollider2D>().size.y);
 
@@ -69,5 +79,10 @@ public class HiddenEntryObject : NetworkBehaviour {
 
 		if (!horizontal)
 			transform.localEulerAngles = new Vector3(0, 0, -90);
+	}
+
+	[ClientRpc]
+	private void RpcDeadBorder() {
+		transform.Find("Border").gameObject.SetActive(false);
 	}
 }

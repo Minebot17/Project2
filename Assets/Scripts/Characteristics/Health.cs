@@ -47,7 +47,7 @@ public class Health : NetworkBehaviour, IEventProvider {
 	}
 
 	public int Damage(DamageBase damage) {
-		if (!isServer)
+		if (!NetworkManagerCustom.IsServer)
 			return 0;
 		
 		DamageEvent e = GetEventSystem<DamageEvent>().CallListners(new DamageEvent(gameObject, damage));

@@ -143,7 +143,7 @@ public static class GenerationManager {
 		
 		if (buffer && player.GetComponent<NetworkIdentity>().isLocalPlayer)
 			SetCurrentRoom(nextCoord);
-		if (!fromMessage)
+		if (!fromMessage && (!NetworkManagerCustom.IsServer || !player.GetComponent<NetworkIdentity>().isLocalPlayer))
 			MessageManager.GateEnterClientMessage.SendToClient(player.GetComponent<NetworkIdentity>().connectionToClient, new StringMessage(localPosition.x + ";" + localPosition.y));
 	}
 
