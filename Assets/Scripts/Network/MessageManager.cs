@@ -122,7 +122,7 @@ public class MessageManager {
 				}
 	});
 
-	public static readonly GameMessage ClientGateEnter = new GameMessage(msg => {
+	public static readonly GameMessage GateEnterClientMessage = new GameMessage(msg => {
 		string[] splitted = msg.ReadMessage<StringMessage>().value.Split(';');
 		Vector2Int localPosition = new Vector2Int(int.Parse(splitted[0]), int.Parse(splitted[1]));
 		Transform parent = GenerationManager.currentRoom.transform.Find("Objects");
@@ -132,6 +132,17 @@ public class MessageManager {
 				GenerationManager.OnGateEnter(GameManager.singleton.LocalPlayer, parent.GetChild(i).gameObject, true);
 				break;
 			}
+	});
+
+	public static readonly GameMessage SpawnChildClientMessage = new GameMessage(msg => {
+		StringList list = msg.ReadMessage<StringListMessage>().Value; // parent netID and child netID
+		GameObject parent = NetworkServer.FindLocalObject(new NetworkInstanceId(uint.Parse(list[0])));
+		NetworkServer.FindLocalObject(new NetworkInstanceId(uint.Parse(list[1]))).transform.parent = parent.transform;
+	});
+
+	public static readonly GameMessage CallStartClientMessage = new GameMessage(msg => {
+		NetworkInstanceId id = new NetworkInstanceId(uint.Parse(msg.ReadMessage<StringMessage>().value));
+		NetworkServer.FindLocalObject(id).Get
 	});
 
 	[System.Serializable]

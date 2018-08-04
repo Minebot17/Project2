@@ -7,7 +7,13 @@ using UnityEngine.Networking;
 public class HiddenEntryObject : NetworkBehaviour {
 
 	void Start () {
-		NetworkServer.Spawn(transform.GetChild(1).gameObject);
+		if (isServer) {
+			NetworkServer.Spawn(transform.GetChild(1).gameObject);
+			MessageManager.SpawnChildClientMessage.SendToAllClients(new StringListMessage(
+				new List<string>{GetComponent<NetworkIdentity>().netId.ToString(), transform.GetChild(1).GetComponent<NetworkIdentity>().netId.ToString()}
+			));
+		}
+
 		string[] data = GetComponent<SpawnedData>().spawnedData;
 		int length = int.Parse(data[0]);
 		bool horizontal = bool.Parse(data[1]);

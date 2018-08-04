@@ -144,7 +144,7 @@ public static class GenerationManager {
 		if (buffer && player.GetComponent<NetworkIdentity>().isLocalPlayer)
 			SetCurrentRoom(nextCoord);
 		if (!fromMessage)
-			MessageManager.ClientGateEnter.SendToClient(player.GetComponent<NetworkIdentity>().connectionToClient, new StringMessage(localPosition.x + ";" + localPosition.y));
+			MessageManager.GateEnterClientMessage.SendToClient(player.GetComponent<NetworkIdentity>().connectionToClient, new StringMessage(localPosition.x + ";" + localPosition.y));
 	}
 
 	public static void TeleportPlayerToStart(GameObject player) {
