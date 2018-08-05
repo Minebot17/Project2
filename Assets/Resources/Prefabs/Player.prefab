@@ -1003,6 +1003,7 @@ GameObject:
   - component: {fileID: 114034211461320964}
   - component: {fileID: 114152953631597308}
   - component: {fileID: 114128496244740400}
+  - component: {fileID: 114977851306173566}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -4225,8 +4226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0412ad59df7a10f4db1f3b0abbb201ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  NotMirrorChildrensOnSpawn: 0
   EnableAI: 1
   GroundTrigger: {fileID: 61638456105078708}
   OnGround: 0
@@ -4352,3 +4351,16 @@ MonoBehaviour:
   Y: 0
   Z: 0
   fromLocalPlayer: 1
+--- !u!114 &114977851306173566
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1801596076533684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836f38f2d0ecf82488365f91fec39a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  NotMirrorChildrensOnSpawn: 0

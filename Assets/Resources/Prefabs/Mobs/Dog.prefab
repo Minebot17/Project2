@@ -327,6 +327,7 @@ GameObject:
   - component: {fileID: 114944476446058782}
   - component: {fileID: 114539935684413458}
   - component: {fileID: 114748138045274450}
+  - component: {fileID: 114222059500138620}
   m_Layer: 12
   m_Name: dog
   m_TagString: Untagged
@@ -1783,6 +1784,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03f2c7ad775aaa4989208b1c5d205af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114222059500138620
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1688413763626342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836f38f2d0ecf82488365f91fec39a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  NotMirrorChildrensOnSpawn: 0
 --- !u!114 &114263263101416308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1972,8 +1986,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e71a09f5a86df459d62cdcbfdc20b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  NotMirrorChildrensOnSpawn: 0
   EnableAI: 1
   GroundTrigger: {fileID: 61608627659741454}
   OnGround: 0

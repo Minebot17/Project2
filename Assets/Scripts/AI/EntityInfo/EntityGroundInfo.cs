@@ -16,7 +16,7 @@ public class EntityGroundInfo : EntityInfo, IEventProvider{
 		addEvent(new EventHandler<LandingEvent>());
 	}
 
-	protected override void Start() {	
+	public override void Start() {	
 		base.Start();
 		rigidbody2D = GetComponent<Rigidbody2D>();
 	}

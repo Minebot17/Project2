@@ -5,7 +5,7 @@ using UnityEngine;
 public class EntityJumpedInfo : EntityMovableInfo {
 	public float JumpPower;
 	
-	protected override void Start() {
+	public override void Start() {
 		base.Start();
 		
 		addEvent(new EventHandler<JumpEvent>());

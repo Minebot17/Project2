@@ -22,7 +22,7 @@ public class SkeletonInfo : EntityJumpedInfo {
 		get { return health; }
 	}
 
-	protected override void Start() {
+	public override void Start() {
 		base.Start();
 		observer = GetComponent<VisibleObserver>();
 		health = GetComponent<Health>();

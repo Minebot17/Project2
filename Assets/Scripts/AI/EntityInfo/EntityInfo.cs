@@ -7,7 +7,7 @@ using UnityEngine;
 /// Так же от сюда вы можете брать/записывать информацию из любого места архитектуры. Информация может быть модифицированная эффектами TODO проперти вместо переменных для эффектов
 /// Отсюда происходит регулирование анимаций, путем поимки эвентов. Например так GetEventSystem(RunEvent)().SubcribeEvent(x => animator.SetBool("Run", true));
 /// </summary>
-public class EntityInfo : SimpleObject, IEventProvider {
+public class EntityInfo : MonoBehaviour, IEventProvider {
 	protected readonly List<object> eventHandlers = new List<object>();
 	
 	/// <summary>
@@ -15,17 +15,8 @@ public class EntityInfo : SimpleObject, IEventProvider {
 	/// </summary>
 	public bool EnableAI = true;
 	
-	protected virtual void Start () {
-		Initialize();
-		/*if (!NetworkManagerCustom.IsServer) {
-			foreach (var c in GetComponents<Observer>())
-				c.enabled = false;
-			GetComponent<AbstractTaskHandler<EntityInfo>>().enabled = false;
-			foreach (var c in GetComponents<AbstractTaskSender<AbstractTaskHandler<EntityInfo>, EntityInfo>>())
-				c.enabled = false;
-
-			GetComponent<EntityInfo>().enabled = false;
-		}*/
+	public virtual void Start () {
+		GetComponent<SimpleObject>().Initialize();
 	}
 	
 	/// <summary>

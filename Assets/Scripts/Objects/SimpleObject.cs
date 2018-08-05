@@ -12,7 +12,7 @@ public class SimpleObject : MonoBehaviour {
 		get { return id; }
 		set { id = value; }
 	}
-
+	
 	public void Initialize() {
 		id = GameManager.rnd.Next();
 	}

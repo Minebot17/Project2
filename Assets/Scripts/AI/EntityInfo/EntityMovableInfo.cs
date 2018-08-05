@@ -12,7 +12,7 @@ public class EntityMovableInfo : EntityGroundInfo {
 	public bool BlockControl;
 	public float RunSpeed;
 	
-	protected override void Start() {
+	public override void Start() {
 		base.Start();
 		
 		addEvent(new EventHandler<RunEvent>());

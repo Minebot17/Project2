@@ -614,6 +614,7 @@ GameObject:
   - component: {fileID: 114200029888609250}
   - component: {fileID: 114764254425925380}
   - component: {fileID: 114400907450422682}
+  - component: {fileID: 114052710165426786}
   m_Layer: 12
   m_Name: skeleton
   m_TagString: Untagged
@@ -2145,6 +2146,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114052710165426786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1846697255404516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836f38f2d0ecf82488365f91fec39a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  NotMirrorChildrensOnSpawn: 0
 --- !u!114 &114170225835496648
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2175,7 +2189,7 @@ MonoBehaviour:
     i13: 119
     i14: 244
     i15: 177
-  m_ServerOnly: 0
+  m_ServerOnly: 1
   m_LocalPlayerAuthority: 0
 --- !u!114 &114200029888609250
 MonoBehaviour:
@@ -2219,8 +2233,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229e54692fb31d144a20ed74ecefb44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  NotMirrorChildrensOnSpawn: 0
   EnableAI: 1
   GroundTrigger: {fileID: 61439414648171526}
   OnGround: 0

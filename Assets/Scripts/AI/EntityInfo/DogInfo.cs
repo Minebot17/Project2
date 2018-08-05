@@ -7,7 +7,7 @@ public class DogInfo : EntityJumpedInfo {
 	public int MaxAttackDistance;
 	public VisibleObserver observer;
 
-	protected override void Start() {
+	public override void Start() {
 		base.Start();
 		observer = GetComponent<VisibleObserver>();
 		Animator animator = GetComponent<Animator>();
