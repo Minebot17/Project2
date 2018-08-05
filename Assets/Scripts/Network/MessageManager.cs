@@ -45,25 +45,25 @@ public class MessageManager {
 					continue;
 				
 				GameObject player = MonoBehaviour.Instantiate(GameManager.singleton.LocalPlayer);
-				if (ServerEvents.singleton.StartAgrs.Equals("new game")) {
-					string data = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn);
+				if (ServerEvents.singleton.StartAgrs[0].Equals("new game")) {
+					List<string> data = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn);
 					player.GetComponent<GameProfile>().Deserialize(data);
 					GenerationManager.TeleportPlayerToStart(player);
 					SerializationManager.InitializeObject(player);
 				}
-				else if (ServerEvents.singleton.StartAgrs.Contains("load game")) {
+				else if (ServerEvents.singleton.StartAgrs[0].Equals("load game")) {
 					List<string> data = SerializationManager.World.Players.Find(x =>
-						x.Count != 0 && x[0].Equals(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn)));
+						x.Count != 0 && x.Equals(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>().GetClientProfile(conn)));
 					if (data == null) {
 						conn.Disconnect();
 						continue;
 					}
 
-					SerializationManager.DeserializePlayer(player, data);
+					SerializationManager.DeserializeObject(player, data);
 				}
 				
 				NetworkServer.AddPlayerForConnection(conn, player, GameManager.singleton.indexController++);
-				SendPlayerDataClientMessage.SendToClient(conn, new StringListMessage(SerializationManager.SerializePlayer(player)));
+				SendPlayerDataClientMessage.SendToClient(conn, new StringListMessage(SerializationManager.SerializeObject(player)));
 			}
 			
 			GenerationManager.ApplyActiveRooms();
@@ -72,12 +72,12 @@ public class MessageManager {
 	});
 	
 	public static readonly GameMessage RequestLobbyModeServerMessage = new GameMessage(msg => {
-		ResponseLobbyModeClientMessage.SendToClient(msg.conn, new StringMessage(GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>().StartArguments));
+		ResponseLobbyModeClientMessage.SendToClient(msg.conn, new StringListMessage(GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>().StartArguments));
 	});
 	
 	public static readonly GameMessage ResponseLobbyModeClientMessage = new GameMessage(msg => {
 		MonoBehaviour.Destroy(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyCommon>());
-		GameObject.Find("LobbyManager").AddComponent<NetworkLobbyClientHUD>().Initialize(msg.ReadMessage<StringMessage>().value);
+		GameObject.Find("LobbyManager").AddComponent<NetworkLobbyClientHUD>().Initialize(msg.ReadMessage<StringListMessage>().Value);
 	});
 	
 	public static readonly GameMessage SetReadyLobbyServerMessage = new GameMessage(msg => {
@@ -86,17 +86,17 @@ public class MessageManager {
 	});
 	
 	public static readonly GameMessage RequestProfileClientMessage = new GameMessage(msg => {
-		ResponseProfileServerMessage.SendToServer(new StringMessage(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyClientHUD>().GetProfile()));
+		ResponseProfileServerMessage.SendToServer(new StringListMessage(GameObject.Find("LobbyManager").GetComponent<NetworkLobbyClientHUD>().GetProfile()));
 	});
 	
 	public static readonly GameMessage ResponseProfileServerMessage = new GameMessage(msg => {
 		NetworkLobbyServerHUD hud = GameObject.Find("LobbyManager").GetComponent<NetworkLobbyServerHUD>();
-		hud.AddNewProfile(msg.conn, msg.ReadMessage<StringMessage>().value);
+		hud.AddNewProfile(msg.conn, msg.ReadMessage<StringListMessage>().Value);
 	});
 
 	public static readonly GameMessage SendPlayerDataClientMessage = new GameMessage(msg => {
 		List<string> data = msg.ReadMessage<StringListMessage>().Value;
-		SerializationManager.DeserializePlayer(GameManager.singleton.Players.Find(x => x.GetComponent<NetworkIdentity>().isLocalPlayer), data);
+		SerializationManager.DeserializeObject(GameManager.singleton.Players.Find(x => x.GetComponent<NetworkIdentity>().isLocalPlayer), data);
 		MonoBehaviour.Destroy(GameObject.Find("LobbyManager"));
 	});
 

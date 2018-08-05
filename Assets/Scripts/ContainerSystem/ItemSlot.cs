@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IItemRender {
+public class ItemSlot : MonoBehaviour {
 
-	void InitializeRender(GameObject prefab);
+	public void OnClick() {
+		
+	}
 }

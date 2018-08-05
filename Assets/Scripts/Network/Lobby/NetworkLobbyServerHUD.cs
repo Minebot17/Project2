@@ -10,18 +10,22 @@ using UnityEngine.Networking.NetworkSystem;
 public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 
 	private Dictionary<NetworkConnection, bool> readyMap = new Dictionary<NetworkConnection, bool>();
-	private Dictionary<NetworkConnection, string> profilesMap = new Dictionary<NetworkConnection, string>();
+	private Dictionary<NetworkConnection, List<string>> profilesMap = new Dictionary<NetworkConnection, List<string>>();
 	private int lastConnections;
 	private string loadedGameName;
 	
-	public override void Initialize(string arguments) {
-		lobbyMode = arguments.Equals("new game") ? LobbyMode.NEW_GAME :
-			arguments.Contains("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
+	public override void Initialize(List<string> arguments) {
+		lobbyMode = arguments[0].Equals("new game") ? LobbyMode.NEW_GAME :
+			arguments[0].Equals("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
 		ServerEvents.Initialize();
 		ServerEvents.singleton.StartAgrs = arguments;
 		if (lobbyMode == LobbyMode.LOAD_GAME) {
-			allProfiles = arguments.Split('|')[2].Split(new []{'&'}, StringSplitOptions.RemoveEmptyEntries);
-			loadedGameName = arguments.Split('|')[1];
+			for (int i = 2; i < arguments.Count; i++) {
+				List<string> toAdd = new List<string>();
+				toAdd.AddRange(arguments[i].Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries));
+				allProfiles.Add(toAdd);
+			}
+			loadedGameName = arguments[1];
 		}
 		else {
 			profile = new GameProfile().Serialize();
@@ -76,8 +80,8 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 					profileName = GUILayout.TextField(profileName);
 				}
 				else if (lobbyMode == LobbyMode.LOAD_GAME) {
-					foreach (string current in allProfiles) {
-						if (GUILayout.Button(current.Split(';')[0] + (profile == current ? " Выбран" : "")))
+					foreach (List<string> current in allProfiles) {
+						if (GUILayout.Button(current[0] + (profile == current ? "Выбран" : "")))
 							profile = current;
 					}
 				}
@@ -105,7 +109,7 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 		readyMap.Remove(conn);
 	}
 
-	public void AddNewProfile(NetworkConnection conn, string data) {
+	public void AddNewProfile(NetworkConnection conn, List<string> data) {
 		profilesMap.Add(conn, data);
 		lastConnections--;
 		if (lastConnections == 0) {
@@ -113,11 +117,11 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 		}
 	}
 
-	public string GetClientProfile(NetworkConnection conn) {
+	public List<string> GetClientProfile(NetworkConnection conn) {
 		return profilesMap[conn];
 	}
 
-	public override string GetProfile() {
+	public override List<string> GetProfile() {
 		if (lobbyMode == LobbyMode.NEW_GAME) {
 			GameProfile prf = new GameProfile();
 			prf.ProfileName = profileName;

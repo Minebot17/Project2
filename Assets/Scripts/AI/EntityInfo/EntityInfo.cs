@@ -15,9 +15,9 @@ public class EntityInfo : SimpleObject, IEventProvider {
 	/// </summary>
 	public bool EnableAI = true;
 	
-	void Start () {
+	protected virtual void Start () {
 		Initialize();
-		if (!NetworkManagerCustom.IsServer) {
+		/*if (!NetworkManagerCustom.IsServer) {
 			foreach (var c in GetComponents<Observer>())
 				c.enabled = false;
 			GetComponent<AbstractTaskHandler<EntityInfo>>().enabled = false;
@@ -25,7 +25,7 @@ public class EntityInfo : SimpleObject, IEventProvider {
 				c.enabled = false;
 
 			GetComponent<EntityInfo>().enabled = false;
-		}
+		}*/
 	}
 	
 	/// <summary>

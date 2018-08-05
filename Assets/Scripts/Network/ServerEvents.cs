@@ -5,11 +5,11 @@ using UnityEngine.Networking;
 
 public class ServerEvents : IEventProvider {
 	public static ServerEvents singleton;
-	public string StartAgrs;
+	public List<string> StartAgrs;
 	public string SeedToGenerate;
 	public string SeedToSpawn;
 	public bool ServerOnly;
-	public string ServerOnlyProfile;
+	public List<string> ServerOnlyProfile;
 	public string NewWorldName;
 	public bool InProgress;
 	public int GenerationReady;

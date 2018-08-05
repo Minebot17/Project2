@@ -998,8 +998,9 @@ GameObject:
   - component: {fileID: 114954186275936196}
   - component: {fileID: 114901018881741284}
   - component: {fileID: 114894585742886490}
-  - component: {fileID: 114922912348182132}
   - component: {fileID: 114858262857018682}
+  - component: {fileID: 114922912348182132}
+  - component: {fileID: 114034211461320964}
   - component: {fileID: 114152953631597308}
   - component: {fileID: 114128496244740400}
   m_Layer: 11
@@ -4071,6 +4072,17 @@ MonoBehaviour:
   posLerpRate: 150
   posThreshold: 1
   fromLocalPlayer: 1
+--- !u!114 &114034211461320964
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1801596076533684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d03f2c7ad775aaa4989208b1c5d205af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114128496244740400
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4219,6 +4231,10 @@ MonoBehaviour:
   GroundTrigger: {fileID: 61638456105078708}
   OnGround: 0
   MaxFallVelocity: 500
+  ForwardCollider: {fileID: 0}
+  ForwarDownCollider: {fileID: 0}
+  BackCollider: {fileID: 0}
+  BackDownCollider: {fileID: 0}
   IsRunForward: 0
   IsRunBack: 0
   BlockControl: 0
@@ -4320,6 +4336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProfileName: 
   Level: 0
+  Inventory: []
 --- !u!114 &114954186275936196
 MonoBehaviour:
   m_ObjectHideFlags: 1

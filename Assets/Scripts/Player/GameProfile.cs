@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class GameProfile : NetworkBehaviour {
+public class GameProfile : NetworkBehaviour, ISerializableObject {
 
 	[SyncVar(hook = nameof(OnNameChange))] 
 	public string ProfileName;
 	public int Level;
+	public List<string> Inventory = new List<string>();
 
 	private void Awake() {
 		GameManager.singleton.Players.Add(gameObject);
@@ -29,7 +30,27 @@ public class GameProfile : NetworkBehaviour {
 			GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
 	}
 
-	public string Serialize() {
+	private void Update() {
+		if (Input.GetKeyDown(GameSettings.SettingOpenInventoryKey.Value)) {
+			ContainerManager.OpenContainer(GameManager.singleton.PlayerInventoryPrefab, null);
+		}
+	}
+
+	public void Initialize() {
+		
+	}
+
+	public List<string> Serialize() {
+		List<string> result = new List<string>();
+		result.Add(ProfileName);
+		result.Add(Level+"");
+		result.AddRange(Inventory);
+		result.Add("endInventory");
+
+		return result;
+	}
+
+	public int Deserialize(List<string> data) {
 		bool inGo;
 		try {
 			Vector3 a = transform.position;
@@ -38,24 +59,22 @@ public class GameProfile : NetworkBehaviour {
 		catch (NullReferenceException e) {
 			inGo = false;
 		}
-		List<string> list = new List<string>();
-		list.Add(ProfileName);
-		list.Add(Level+"");
+		ProfileName = data[0];
+		Level = int.Parse(data[1]);
+		Inventory = new List<string>();
+		int count = 0;
+		for (int i = 2; i < data.Count; i++) {
+			count++;
+			if (data[i].Equals("endInventory"))
+				break;
+			Inventory.Add(data[i]);
+		}
+
 		if (inGo) {
 			transform.Find("NameRender").GetComponent<TextMesh>().text = ProfileName;
 		}
-		string result = "";
-		foreach (string data in list) {
-			result += data + ";";
-		}
 
-		return result;
-	}
-
-	public void Deserialize(string data) {
-		string[] list = data.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
-		ProfileName = list[0];
-		Level = int.Parse(list[1]);
+		return 2 + count;
 	}
 
 	public void OnNameChange(string name) {

@@ -26,6 +26,8 @@ public class SkeletonInfo : EntityJumpedInfo {
 		base.Start();
 		observer = GetComponent<VisibleObserver>();
 		health = GetComponent<Health>();
+		observer = GetComponent<VisibleObserver>();
+		health = GetComponent<Health>();
 		Animator animator = GetComponent<Animator>();
 		
 		addEvent(new EventHandler<AttackEvent>());

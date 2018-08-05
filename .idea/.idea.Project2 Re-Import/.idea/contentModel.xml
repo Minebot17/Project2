@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Jeny\.Rider2018.1\system\resharper-host\Local\Transient\ReSharperHost\v12\SolutionCaches\_Project2 Re-Import.-985787856.00" t="ExcludeRecursive" />
+    <e p="D:\Project2 Re-Import" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Debug" t="Include">
+          <e p="NormalTest.shader" t="Include" />
+        </e>
+        <e p="Editor" t="Include">
+          <e p="Actions" t="Include">
+            <e p="ActionBlock.cs" t="Include" />
+            <e p="ActionEditor.cs" t="Include" />
+            <e p="EffectsHandlerActions.cs" t="Include" />
+            <e p="HealthActions.cs" t="Include" />
+            <e p="KickableActions.cs" t="Include" />
+            <e p="StaminaActions.cs" t="Include" />
+          </e>
+          <e p="LangTextEditor.cs" t="Include" />
+          <e p="PlayerImporter.cs" t="Include" />
+          <e p="TimerEditor.cs" t="Include" />
+          <e p="Utils" t="Include">
+            <e p="EditorUtilsWindow.cs" t="Include" />
+            <e p="FixAnimationEventsBlock.cs" t="Include" />
+            <e p="GenerateMeshBlock.cs" t="Include" />
+            <e p="IUtilBlock.cs" t="Include" />
+            <e p="PlayerSetupBlock.cs" t="Include" />
+            <e p="TypesSetupBlock.cs" t="Include" />
+          </e>
+          <e p="YandexDiskSharp" t="Include">
+            <e p="DiskException.cs" t="Include" />
+            <e p="MediaTypes.cs" t="Include" />
+            <e p="Models" t="Include">
+              <e p="CommentIds.cs" t="Include" />
+              <e p="Disk.cs" t="Include" />
+              <e p="Exception.cs" t="Include" />
+              <e p="Exif.cs" t="Include" />
+              <e p="FilesResourceList.cs" t="Include" />
+              <e p="LastUploadedResourceList.cs" t="Include" />
+              <e p="Link.cs" t="Include" />
+              <e p="Operation.cs" t="Include" />
+              <e p="Resource.cs" t="Include" />
+              <e p="ResourceList.cs" t="Include" />
+              <e p="ShareInfo.cs" t="Include" />
+              <e p="SystemFolders.cs" t="Include" />
+              <e p="UserPublicInformation.cs" t="Include" />
+            </e>
+            <e p="OperationStatus.cs" t="Include" />
+            <e p="RestClient.cs" t="Include" />
+            <e p="Type.cs" t="Include" />
+            <e p="Utilities" t="Include">
+              <e p="Extensions.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Resources" t="Include">
+          <e p="Lang" t="Include">
+            <e p="en.txt" t="Include" />
+            <e p="ru.txt" t="Include" />
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="AI" t="Include">
+            <e p="AnimationTasks" t="Include">
+              <e p="AbstractAnimationTask.cs" t="Include" />
+              <e p="IAnimationTask.cs" t="Include" />
+              <e p="Skeleton" t="Include">
+                <e p="HeadAnimationTask.cs" t="Include" />
+                <e p="SpineAnimationTask.cs" t="Include" />
+              </e>
+              <e p="TemporarilyAnimationTask.cs" t="Include" />
+            </e>
+            <e p="EntityInfo" t="Include">
+              <e p="DogInfo.cs" t="Include" />
+              <e p="EntityGroundInfo.cs" t="Include" />
+              <e p="EntityInfo.cs" t="Include" />
+              <e p="EntityJumpedInfo.cs" t="Include" />
+              <e p="EntityMovableInfo.cs" t="Include" />
+              <e p="SkeletonInfo.cs" t="Include" />
+            </e>
+            <e p="Observers" t="Include">
+              <e p="Observer.cs" t="Include" />
+              <e p="PlayerObserver.cs" t="Include" />
+              <e p="VisibleObserver.cs" t="Include" />
+            </e>
+            <e p="TaskHandlers" t="Include">
+              <e p="AbstractTaskHandler.cs" t="Include" />
+              <e p="DogTaskHandler.cs" t="Include" />
+              <e p="EntityState.cs" t="Include" />
+              <e p="ITaskHandler.cs" t="Include" />
+              <e p="SkeletonTaskHandler.cs" t="Include" />
+            </e>
+            <e p="Tasks" t="Include">
+              <e p="AbstractTask.cs" t="Include" />
+              <e p="Common" t="Include">
+                <e p="RotateTask.cs" t="Include" />
+                <e p="RunForwardTask.cs" t="Include" />
+                <e p="RunToPlayerTask.cs" t="Include" />
+              </e>
+              <e p="Dog" t="Include">
+                <e p="DogAttackTask.cs" t="Include" />
+              </e>
+              <e p="ITask.cs" t="Include" />
+              <e p="Skeleton" t="Include">
+                <e p="SkeletonAttackTask.cs" t="Include" />
+                <e p="SkeletonShootTask.cs" t="Include" />
+              </e>
+            </e>
+            <e p="TaskSenders" t="Include">
+              <e p="AbstractTaskSender.cs" t="Include" />
+              <e p="Dog" t="Include">
+                <e p="DogAttackTaskSender.cs" t="Include" />
+                <e p="DogRunTaskSender.cs" t="Include" />
+              </e>
+              <e p="ITaskSender.cs" t="Include" />
+              <e p="Skeleton" t="Include">
+                <e p="SkeletonAttackTaskSender.cs" t="Include" />
+                <e p="SkeletonRunTaskSender.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="AttackSystem" t="Include">
+            <e p="AIAttackHandler.cs" t="Include" />
+            <e p="AttackHandler.cs" t="Include" />
+            <e p="MeleeAttackInfo.cs" t="Include" />
+            <e p="ProjectileAttackInfo.cs" t="Include" />
+            <e p="SkeletonAttackHandler.cs" t="Include" />
+          </e>
+          <e p="Characteristics" t="Include">
+            <e p="DeathDisableColliderHealth.cs" t="Include" />
+            <e p="DeathStandart.cs" t="Include" />
+            <e p="Health.cs" t="Include" />
+            <e p="IDeath.cs" t="Include" />
+            <e p="Kickable.cs" t="Include" />
+            <e p="ObjectMaterial.cs" t="Include" />
+            <e p="Stamina.cs" t="Include" />
+          </e>
+          <e p="ContainerSystem" t="Include">
+            <e p="ContainerManager.cs" t="Include" />
+            <e p="ItemContainer.cs" t="Include" />
+            <e p="ItemInfo.cs" t="Include" />
+            <e p="ItemSlot.cs" t="Include" />
+            <e p="ItemStack.cs" t="Include" />
+            <e p="old" t="Include">
+              <e p="EntityItemInfo.cs" t="Include" />
+              <e p="ItemManager.cs" t="Include" />
+              <e p="TextureItemRender.cs" t="Include" />
+            </e>
+          </e>
+          <e p="EffectSystem" t="Include">
+            <e p="Attribute.cs" t="Include" />
+            <e p="AttributeEffect.cs" t="Include" />
+            <e p="Effects" t="Include">
+              <e p="BurnEffect.cs" t="Include" />
+              <e p="InvulnerabilityEffect.cs" t="Include" />
+              <e p="UnconsciousEffect.cs" t="Include" />
+            </e>
+            <e p="Handlers" t="Include">
+              <e p="BlackListEffectHandler.cs" t="Include" />
+              <e p="EffectHandler.cs" t="Include" />
+              <e p="WhiteListEffectHandler.cs" t="Include" />
+            </e>
+            <e p="LeveledEffect.cs" t="Include" />
+            <e p="TimeEffect.cs" t="Include" />
+          </e>
+          <e p="Generation" t="Include">
+            <e p="GateInfo.cs" t="Include" />
+            <e p="GenerationInfo.cs" t="Include" />
+            <e p="GenerationManager.cs" t="Include" />
+            <e p="RoomInfo.cs" t="Include" />
+          </e>
+          <e p="GUI" t="Include">
+            <e p="HealthPanelGUI.cs" t="Include" />
+          </e>
+          <e p="Network" t="Include">
+            <e p="CommonSync" t="Include">
+              <e p="ChildVector.cs" t="Include" />
+              <e p="NetworkSyncPosition.cs" t="Include" />
+              <e p="NetworkSyncPositionChild.cs" t="Include" />
+              <e p="NetworkSyncRotation.cs" t="Include" />
+              <e p="NetworkSyncRotationChild.cs" t="Include" />
+              <e p="NetworkSyncScale.cs" t="Include" />
+              <e p="NetworkSyncScaleChild.cs" t="Include" />
+              <e p="NetworkSyncVelocity.cs" t="Include" />
+            </e>
+            <e p="GameMessage.cs" t="Include" />
+            <e p="Lobby" t="Include">
+              <e p="NetworkLobbyClientHUD.cs" t="Include" />
+              <e p="NetworkLobbyCommon.cs" t="Include" />
+              <e p="NetworkLobbyServerHUD.cs" t="Include" />
+            </e>
+            <e p="MessageManager.cs" t="Include" />
+            <e p="Messages" t="Include">
+              <e p="ActiveRoomMessage.cs" t="Include" />
+              <e p="StringListMessage.cs" t="Include" />
+            </e>
+            <e p="NetworkManagerCustom.cs" t="Include" />
+            <e p="NetworkManagerCustomGUI.cs" t="Include" />
+            <e p="NetworkVectors.cs" t="Include" />
+            <e p="ServerEvents.cs" t="Include" />
+          </e>
+          <e p="Objects" t="Include">
+            <e p="Effects" t="Include">
+              <e p="HitObjectParticle.cs" t="Include" />
+            </e>
+            <e p="GateObject.cs" t="Include" />
+            <e p="GateTrigger.cs" t="Include" />
+            <e p="HiddenEntryEnterTrigger.cs" t="Include" />
+            <e p="HiddenEntryObject.cs" t="Include" />
+            <e p="HiddenEntryOutTrigger.cs" t="Include" />
+            <e p="Projectiles" t="Include">
+              <e p="ProjectileDamage.cs" t="Include" />
+              <e p="ProjectileDeleteTimer.cs" t="Include" />
+              <e p="ProjectileKick.cs" t="Include" />
+            </e>
+            <e p="Room.cs" t="Include" />
+            <e p="SimpleObject.cs" t="Include" />
+            <e p="SpawnedData.cs" t="Include" />
+            <e p="Traps" t="Include">
+              <e p="Banana.cs" t="Include" />
+              <e p="BarrelOfBananas.cs" t="Include" />
+              <e p="Bulava.cs" t="Include" />
+              <e p="BulavaEnd.cs" t="Include" />
+              <e p="JumpPoint.cs" t="Include" />
+              <e p="SpiderWeb.cs" t="Include" />
+              <e p="Spike.cs" t="Include" />
+              <e p="Stair.cs" t="Include" />
+            </e>
+            <e p="TypedObject.cs" t="Include" />
+          </e>
+          <e p="Player" t="Include">
+            <e p="CameraFollower.cs" t="Include" />
+            <e p="GameProfile.cs" t="Include" />
+            <e p="JumpedEntityController.cs" t="Include" />
+            <e p="PlayerAttackHandler.cs" t="Include" />
+          </e>
+          <e p="Serialization" t="Include">
+            <e p="ISerializableObject.cs" t="Include" />
+            <e p="SerializationManager.cs" t="Include" />
+            <e p="SerializationSpawnedData.cs" t="Include" />
+            <e p="SerializeHealth.cs" t="Include" />
+            <e p="SerializeSimplyObject.cs" t="Include" />
+            <e p="SerializeStamina.cs" t="Include" />
+            <e p="SerializeTypedObject.cs" t="Include" />
+            <e p="SpecialSerialization" t="Include">
+              <e p="SerializeHiddenBorder.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Utils" t="Include">
+            <e p="Damages" t="Include">
+              <e p="DamageBase.cs" t="Include" />
+              <e p="DamageMelee.cs" t="Include" />
+              <e p="DamageProjectile.cs" t="Include" />
+            </e>
+            <e p="Events" t="Include">
+              <e p="EventBase.cs" t="Include" />
+              <e p="EventHandler.cs" t="Include" />
+              <e p="EventPriority.cs" t="Include" />
+              <e p="IEventProvider.cs" t="Include" />
+            </e>
+            <e p="GameManager.cs" t="Include" />
+            <e p="InputManager.cs" t="Include" />
+            <e p="LanguageManager.cs" t="Include" />
+            <e p="LanguageText.cs" t="Include" />
+            <e p="NearestObjects.cs" t="Include" />
+            <e p="ObjectsManager.cs" t="Include" />
+            <e p="RoomLoader.cs" t="Include" />
+            <e p="RoomSerializeHelper.cs" t="Include" />
+            <e p="Settings" t="Include">
+              <e p="BoolSettingValue.cs" t="Include" />
+              <e p="FloatSettingValue.cs" t="Include" />
+              <e p="GameSettings.cs" t="Include" />
+              <e p="IntSettingValue.cs" t="Include" />
+              <e p="KeySettingValue.cs" t="Include" />
+              <e p="SettingValue.cs" t="Include" />
+              <e p="StringSettingValue.cs" t="Include" />
+            </e>
+            <e p="Timer.cs" t="Include" />
+            <e p="Utils.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Project2 Re-Import.sln" t="IncludeFlat" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
+    </e>
+  </component>
+</project>

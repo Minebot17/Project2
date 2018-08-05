@@ -11,16 +11,21 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 
 	protected LobbyMode lobbyMode = LobbyMode.NONE;
 	protected bool ready;
-	protected string profile;
-	protected string[] allProfiles;
+	protected List<string> profile;
+	protected List<List<string>> allProfiles;
 
 	protected string profileName;
 
-	public virtual void Initialize(string arguments) {
-		lobbyMode = arguments.Equals("new game") ? LobbyMode.NEW_GAME :
-			arguments.Contains("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
-		if (lobbyMode == LobbyMode.LOAD_GAME)
-			allProfiles = arguments.Split('|')[2].Split(new []{'&'}, StringSplitOptions.RemoveEmptyEntries);
+	public virtual void Initialize(List<string> arguments) {
+		lobbyMode = arguments[0].Equals("new game") ? LobbyMode.NEW_GAME :
+			arguments[0].Equals("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
+		if (lobbyMode == LobbyMode.LOAD_GAME) {
+			for (int i = 2; i < arguments.Count; i++) {
+				List<string> toAdd = new List<string>();
+				toAdd.AddRange(arguments[i].Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries));
+				allProfiles.Add(toAdd);
+			}
+		}
 		else {
 			profile = new GameProfile().Serialize();
 			profileName = "Player " + GameManager.rnd.Next();
@@ -47,8 +52,8 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 					// TODO полная кастомизация
 				}
 				else if (lobbyMode == LobbyMode.LOAD_GAME) {
-					foreach (string current in allProfiles) {
-						if (GUILayout.Button(current.Split(';')[0] + (profile == current ? "Выбран" : "")))
+					foreach (List<string> current in allProfiles) {
+						if (GUILayout.Button(current[0] + (profile == current ? "Выбран" : "")))
 							profile = current;
 					}
 				}
@@ -62,7 +67,7 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 		}
 	}
 
-	public virtual string GetProfile() {
+	public virtual List<string> GetProfile() {
 		if (lobbyMode == LobbyMode.NEW_GAME) {
 			GameProfile prf = new GameProfile();
 			prf.ProfileName = profileName;

@@ -11,12 +11,13 @@ public class EntityGroundInfo : EntityInfo, IEventProvider{
 
 	protected Rigidbody2D rigidbody2D;
 
-	private void Awake() {
+	protected virtual void Awake() {
 		addEvent(new EventHandler<FallEvent>());
 		addEvent(new EventHandler<LandingEvent>());
 	}
 
-	protected virtual void Start() {	
+	protected override void Start() {	
+		base.Start();
 		rigidbody2D = GetComponent<Rigidbody2D>();
 	}
 

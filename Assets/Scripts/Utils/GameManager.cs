@@ -13,7 +13,6 @@ using UnityEngine.Networking.NetworkSystem;
 public class GameManager : NetworkBehaviour {
 	public static GameManager singleton;
 	public static System.Random rnd = new System.Random();
-	public GameSettings Settings;
 	public GameObject LocalPlayer;
 	public List<GameObject> Players;
 	public Mesh OnePlane;
@@ -28,6 +27,7 @@ public class GameManager : NetworkBehaviour {
 	public GameObject PlayerHead;
 	public GameObject HitObjectParticle;
 	public GameObject FireObjectParticle;
+	public GameObject PlayerInventoryPrefab;
 	public int seedToSpawn;
 	public int seedToGeneration;
 	public bool doStartForce;
@@ -37,7 +37,6 @@ public class GameManager : NetworkBehaviour {
 	
 	public void Awake() {
 		singleton = this;
-		Settings = new GameSettings();
 		GameSettings.Load();
 		Timer.InitializeCreate();
 		LanguageManager.Initialize();
@@ -111,7 +110,7 @@ public class GameManager : NetworkBehaviour {
 	private void Start() {
 		if (isServer) {
 			NetworkManagerCustomGUI gui = GameObject.Find("Manager").GetComponent<NetworkManagerCustomGUI>();
-			if (gui.StartArguments.Equals("new game")) {
+			if (gui.StartArguments[0].Equals("new game")) {
 				seedToGeneration = int.Parse(ServerEvents.singleton.SeedToGenerate);
 				seedToSpawn = int.Parse(ServerEvents.singleton.SeedToSpawn);
 				GenerationInfo generation = GetGeneration(seedToGeneration == 0 ? rnd.Next() : seedToGeneration);
@@ -121,15 +120,15 @@ public class GameManager : NetworkBehaviour {
 				if (GameSettings.SettingVisualizeTestGeneration.Value)
 					GenerationManager.VisualizeGeneration(generation);
 			}
-			else if (gui.StartArguments.Contains("load game")) {
-				SerializationManager.LoadWorld(gui.StartArguments.Split('|')[1]);
+			else if (gui.StartArguments[0].Equals("load game")) {
+				SerializationManager.LoadWorld(gui.StartArguments[1]);
 				GenerationInfo generation = GetGeneration(SerializationManager.World.Info.SeedToGenerate);
 				GenerationManager.SpawnGeneration(RoomLoader.loadedRooms, generation, SerializationManager.World.Info.SeedToSpawn, false);
 				MessageManager.GetGenServerMessage.SendToServer(new EmptyMessage());
 				if (GameSettings.SettingVisualizeTestGeneration.Value)
 					GenerationManager.VisualizeGeneration(generation);
 			}
-			else if (gui.StartArguments.Equals("test mode")) {
+			else if (gui.StartArguments[0].Equals("test mode")) {
 				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(GameSettings.SettingTestRoomName.Value)), Vector3.zero, false);
 				GenerationManager.InitializeRoom(GenerationManager.currentRoom);
 				GameObject player = Instantiate(LocalPlayer);
@@ -144,7 +143,7 @@ public class GameManager : NetworkBehaviour {
 				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController++);
 			}
-			else if (gui.StartArguments.Equals("room editor")) {
+			else if (gui.StartArguments[0].Equals("room editor")) {
 				RoomLoader.Room room = RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8);
 				GenerationManager.currentRoom = RoomLoader.SpawnRoom(room, Vector3.zero, false);
 				RoomLoader.loadedRooms.Add(room);

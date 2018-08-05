@@ -8,7 +8,7 @@ using UnityEngine.Networking.NetworkSystem;
 [AddComponentMenu("NetworkCustom/NetworkManagerCustomGUI")]
 [RequireComponent(typeof(NetworkManagerCustom))]
 public class NetworkManagerCustomGUI : MonoBehaviour {
-	public string StartArguments;
+	public List<string> StartArguments;
 	public string IpAddress;
 	public string Port;
 	private string loadWorldName;
@@ -38,7 +38,7 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 
 			if (GUILayout.Button("New game")) {
 				_started = true;
-				StartArguments = "new game";
+				StartArguments = new List<string>() {"new game"};
 				NetworkManager.singleton.networkPort = int.Parse(Port);
 				NetworkManager.singleton.StartHost();
 			}
@@ -47,23 +47,28 @@ public class NetworkManagerCustomGUI : MonoBehaviour {
 			if (GUILayout.Button("Load game")) {
 				_started = true;
 				SerializationManager.LoadWorld(loadWorldName);
-				string result = "";
-				SerializationManager.World.Players.ForEach(x => result += x[0] + "&");
-				StartArguments = "load game|" + loadWorldName + "|" + result;
+				List<string> result = new List<string>();
+				SerializationManager.World.Players.ForEach(x => {
+					string toResult = "";
+					x.ForEach(y => toResult += y + "|");
+					result.Add(toResult);
+				});
+				StartArguments = new List<string>() {"load game", loadWorldName};
+				StartArguments.AddRange(result);
 				NetworkManager.singleton.networkPort = int.Parse(Port);
 				NetworkManager.singleton.StartHost();
 			}
 
 			if (GUILayout.Button("Start test room")) {
 				_started = true;
-				StartArguments = "test mode";
+				StartArguments = new List<string>() {"test mode"};
 				NetworkManager.singleton.networkPort = int.Parse(Port);
 				NetworkManager.singleton.StartHost();
 			}
 			
 			if (GUILayout.Button("ROOM EDITOR TEST")) {
 				_started = true;
-				StartArguments = "room editor";
+				StartArguments = new List<string>() {"room editor"};
 				NetworkManager.singleton.networkPort = int.Parse(Port);
 				NetworkManager.singleton.StartHost();
 			}

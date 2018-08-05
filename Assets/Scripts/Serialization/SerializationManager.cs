@@ -95,30 +95,12 @@ public class SerializationManager {
 		World = new LoadedWorld(players, loadedObjects, seedToGeneration, seedToSpawn, 0);
 	}
 
-	public static List<string> SerializePlayer(GameObject player) {
-		List<string> result = new List<string> {
-			player.GetComponent<GameProfile>().Serialize(),
-			player.transform.position.x+"",
-			player.transform.position.y+""
-		};
-		result.AddRange(SerializeObject(player));
-		return result;
-	}
-
-	public static void DeserializePlayer(GameObject player, List<string> data) {
-		player.GetComponent<GameProfile>().Deserialize(data[0]);
-		player.transform.position = new Vector3(float.Parse(data[1]), float.Parse(data[2]), player.transform.position.z);
-		for (int i = 0; i < 3; i++)
-			data.RemoveAt(0);
-		DeserializeObject(player, data);
-	}
-
 	public static LoadedWorld ConstructLoadedWorld() {
 		List<List<string>> players = new List<List<string>>();
 		List<LoadedWorld.LoadedObject>[,] objectsToAdd = new List<LoadedWorld.LoadedObject>[GameManager.DefGenerationSize.x, GameManager.DefGenerationSize.y];
 		
 		foreach (GameObject player in GameManager.singleton.Players)
-			players.Add(SerializePlayer(player));
+			players.Add(SerializeObject(player));
 
 		for(int x = 0; x < GenerationManager.currentGeneration.size.x; x++)
 			for(int y = 0; y < GenerationManager.currentGeneration.size.y; y++) {
