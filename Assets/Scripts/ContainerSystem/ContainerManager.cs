@@ -5,21 +5,18 @@ using UnityEngine;
 public class ContainerManager {
 	public static GameObject CurrentContainer;
 
-	public static void OpenContainer(GameObject container, List<string> data) {
+	public static void OpenContainer(GameObject container, IStorage storage) {
 		if (CurrentContainer == null) {
 			CurrentContainer = MonoBehaviour.Instantiate(container);
-			CurrentContainer.GetComponent<ItemContainer>().OnOpen(data);
+			CurrentContainer.GetComponent<ItemContainer>().OnOpen(storage);
 		}
 	}
 
-	public static List<string> CloseContainer() {
+	public static void CloseContainer() {
 		if (CurrentContainer != null) {
-			List<string> result = CurrentContainer.GetComponent<ItemContainer>().OnClose();
+			CurrentContainer.GetComponent<ItemContainer>().OnClose();
 			CurrentContainer = null;
-			return result;
 		}
-
-		return null;
 	}
 
 	public static bool IsOpen() {

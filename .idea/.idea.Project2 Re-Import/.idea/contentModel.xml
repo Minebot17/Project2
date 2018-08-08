@@ -143,6 +143,7 @@
           </e>
           <e p="ContainerSystem" t="Include">
             <e p="ContainerManager.cs" t="Include" />
+            <e p="DefaultStorage.cs" t="Include" />
             <e p="IStorage.cs" t="Include" />
             <e p="ItemContainer.cs" t="Include" />
             <e p="ItemInfo.cs" t="Include" />
@@ -150,7 +151,6 @@
             <e p="ItemSlot.cs" t="Include" />
             <e p="ItemStack.cs" t="Include" />
             <e p="PlayerInventory" t="Include">
-              <e p="DefaultStorage.cs" t="Include" />
               <e p="InventoryContainer.cs" t="Include" />
             </e>
           </e>
@@ -199,6 +199,7 @@
             <e p="MessageManager.cs" t="Include" />
             <e p="Messages" t="Include">
               <e p="ActiveRoomMessage.cs" t="Include" />
+              <e p="NetworkIdentityMessage.cs" t="Include" />
               <e p="StringListMessage.cs" t="Include" />
             </e>
             <e p="NetworkManagerCustom.cs" t="Include" />

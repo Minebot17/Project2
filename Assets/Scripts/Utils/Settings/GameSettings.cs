@@ -17,6 +17,7 @@ public class GameSettings {
 	public static readonly StringSettingValue SettingLanguageCode = new StringSettingValue("LanguageCode", "en");
 	public static readonly StringSettingValue SettingTestRoomName = new StringSettingValue("TestRoomName", "test");
 	public static readonly KeySettingValue SettingOpenInventoryKey = new KeySettingValue("SettingOpenInventoryKey", KeyCode.I);
+	public static readonly KeySettingValue SettingUseItemKey = new KeySettingValue("SettingUseItemKey", KeyCode.E);
 
 	public static void Save() {
 		values.ForEach(val => val.Save());

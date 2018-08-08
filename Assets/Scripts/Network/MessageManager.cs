@@ -134,6 +134,10 @@ public class MessageManager {
 			}
 	});
 
+	public static readonly GameMessage DestroyServerMessage = new GameMessage(msg => {
+		NetworkServer.Destroy(msg.ReadMessage<NetworkIdentityMessage>().Value.gameObject);
+	});
+
 	[System.Serializable]
 	public class StringList : List<string> { }
 

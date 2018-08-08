@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class InventoryContainer : ItemContainer {
 	
-	public override void OnOpen(List<string> data) {
+	public override void OnOpen(IStorage storage) {
 		GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+		// spawn and initialize slots
 	}
 
-	public override List<string> OnClose() {
+	public override void OnClose() {
 		Destroy(gameObject);
 		InputManager.DisponseTimers();
-		return null;
 	}
 }

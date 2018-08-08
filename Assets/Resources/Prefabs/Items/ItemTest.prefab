@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb78674c27754c469773c0e84652ffef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemName: testitem
+  ItemName: testItem
   MaxStackSize: 1
   Icon: {fileID: 2800000, guid: bfcbc0b003407e844996c1104dd45476, type: 3}
   ColliderSize: {x: 1, y: 1}

@@ -16,4 +16,16 @@ public class KeySettingValue : SettingValue {
 	public override void Load() {
 		Value = (KeyCode)PlayerPrefs.GetInt(Name, (int)Value);
 	}
+
+	public bool IsDown() {
+		return Input.GetKeyDown(Value);
+	}
+	
+	public bool IsUp() {
+		return Input.GetKeyUp(Value);
+	}
+	
+	public bool IsPressed() {
+		return Input.GetKey(Value);
+	}
 }

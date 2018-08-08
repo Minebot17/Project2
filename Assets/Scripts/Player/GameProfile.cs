@@ -31,11 +31,19 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 	}
 
 	private void Update() {
-		if (Input.GetKeyDown(GameSettings.SettingOpenInventoryKey.Value)) {
+		if (GameSettings.SettingOpenInventoryKey.IsDown()) {
 			if (!ContainerManager.IsOpen())
 				ContainerManager.OpenContainer(GameManager.singleton.PlayerInventoryPrefab, null);
 			else if (ContainerManager.IsOpen("Inventory"))
 				ContainerManager.CloseContainer();
+		}
+		else if (GameSettings.SettingUseItemKey.IsDown()) {
+			GameObject item = Utils.GetEntityItemOverMouse();
+			if (item != null) {
+				bool success = GetComponent<IStorage>().AddItemStack(item.GetComponent<EntityItemInfo>().Stack);
+				if (success)
+					MessageManager.DestroyServerMessage.SendToServer(new NetworkIdentityMessage(item.GetComponent<NetworkIdentity>()));
+			}
 		}
 	}
 
