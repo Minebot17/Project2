@@ -125,4 +125,22 @@ public static class Utils {
 
 		return null;
 	}
+	
+	public static List<GameObject> GetObjectsOverMouse(int layerMask, Func<GameObject, bool> selector) {
+		return Physics2D
+			.OverlapCircleAll(
+				GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition), 2,
+				layerMask)
+			.Select(x => x.gameObject)
+			.Where(selector).ToList();
+	}
+	
+	public static GameObject GetObjectOverMouse(int layerMask, Func<GameObject, bool> selector) {
+		List<GameObject> objects = GetObjectsOverMouse(layerMask, selector);
+		return objects.Count == 0 ? null : objects[0];
+	}
+
+	public static GameObject GetEntityItemOverMouse() {
+		return GetObjectOverMouse(LayerMask.GetMask("Items"), obj => obj.GetComponent<EntityItemInfo>() != null);
+	}
 }

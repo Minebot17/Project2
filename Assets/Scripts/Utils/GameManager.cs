@@ -41,6 +41,7 @@ public class GameManager : NetworkBehaviour {
 		Timer.InitializeCreate();
 		LanguageManager.Initialize();
 		LanguageManager.SetLanguage(x => x.Code.Equals(GameSettings.SettingLanguageCode.Value));
+		ItemManager.Initialize();
 		//MessageManager.Initialize();
 		
 		ObjectsManager.LoadAllObjectsFromResources();

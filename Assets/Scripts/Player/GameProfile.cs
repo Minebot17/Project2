@@ -32,7 +32,10 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 
 	private void Update() {
 		if (Input.GetKeyDown(GameSettings.SettingOpenInventoryKey.Value)) {
-			ContainerManager.OpenContainer(GameManager.singleton.PlayerInventoryPrefab, null);
+			if (!ContainerManager.IsOpen())
+				ContainerManager.OpenContainer(GameManager.singleton.PlayerInventoryPrefab, null);
+			else if (ContainerManager.IsOpen("Inventory"))
+				ContainerManager.CloseContainer();
 		}
 	}
 

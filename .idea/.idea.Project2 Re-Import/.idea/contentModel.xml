@@ -60,6 +60,9 @@
             <e p="en.txt" t="Include" />
             <e p="ru.txt" t="Include" />
           </e>
+          <e p="Shaders" t="Include">
+            <e p="TextShader.shader" t="Include" />
+          </e>
         </e>
         <e p="Scripts" t="Include">
           <e p="AI" t="Include">
@@ -76,6 +79,7 @@
               <e p="DogInfo.cs" t="Include" />
               <e p="EntityGroundInfo.cs" t="Include" />
               <e p="EntityInfo.cs" t="Include" />
+              <e p="EntityItemInfo.cs" t="Include" />
               <e p="EntityJumpedInfo.cs" t="Include" />
               <e p="EntityMovableInfo.cs" t="Include" />
               <e p="SkeletonInfo.cs" t="Include" />
@@ -139,14 +143,15 @@
           </e>
           <e p="ContainerSystem" t="Include">
             <e p="ContainerManager.cs" t="Include" />
+            <e p="IStorage.cs" t="Include" />
             <e p="ItemContainer.cs" t="Include" />
             <e p="ItemInfo.cs" t="Include" />
+            <e p="ItemManager.cs" t="Include" />
             <e p="ItemSlot.cs" t="Include" />
             <e p="ItemStack.cs" t="Include" />
-            <e p="old" t="Include">
-              <e p="EntityItemInfo.cs" t="Include" />
-              <e p="ItemManager.cs" t="Include" />
-              <e p="TextureItemRender.cs" t="Include" />
+            <e p="PlayerInventory" t="Include">
+              <e p="DefaultStorage.cs" t="Include" />
+              <e p="InventoryContainer.cs" t="Include" />
             </e>
           </e>
           <e p="EffectSystem" t="Include">

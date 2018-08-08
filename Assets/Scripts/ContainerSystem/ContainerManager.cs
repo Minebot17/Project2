@@ -7,8 +7,8 @@ public class ContainerManager {
 
 	public static void OpenContainer(GameObject container, List<string> data) {
 		if (CurrentContainer == null) {
-			CurrentContainer = container;
-			MonoBehaviour.Instantiate(container).GetComponent<ItemContainer>().OnOpen(data);
+			CurrentContainer = MonoBehaviour.Instantiate(container);
+			CurrentContainer.GetComponent<ItemContainer>().OnOpen(data);
 		}
 	}
 
@@ -20,5 +20,14 @@ public class ContainerManager {
 		}
 
 		return null;
+	}
+
+	public static bool IsOpen() {
+		return CurrentContainer != null;
+	}
+
+	public static bool IsOpen(string containerName) {
+		return CurrentContainer != null &&
+		       CurrentContainer.GetComponent<ItemContainer>().ContainerName.Equals(containerName);
 	}
 }

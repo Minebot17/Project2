@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemStack : MonoBehaviour {
+public class ItemStack {
 
-	public int ItemID;
+	public string ItemName;
 	public int StackSize;
 
-	public ItemInfo GetItem() {
-		return ItemManager.Items[ItemID];
+	public ItemStack(string itemName, int stackSize) {
+		ItemName = itemName;
+		StackSize = stackSize;
+	}
+
+	public GameObject GetItem() {
+		return ItemManager.FindItem(ItemName);
 	}
 }

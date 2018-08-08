@@ -61,4 +61,11 @@ public static class InputManager {
 			sitDownTimer = null;
 		return result;
 	}
+
+	public static void DisponseTimers() {
+		fire1DownTimer = null;
+		fire2DownTimer = null;
+		jumpDownTimer = null;
+		sitDownTimer = null;
+	}
 }

@@ -50,6 +50,8 @@ public class JumpedEntityController : NetworkBehaviour {
 			return;
 		if (!info.EnableAI)
 			return;
+		if (ContainerManager.IsOpen())
+			return;
 		
 		int scale = (int)transform.localScale.x;
 		transform.Find("NameRender").transform.localScale = new Vector3(scale, 1, 1);
