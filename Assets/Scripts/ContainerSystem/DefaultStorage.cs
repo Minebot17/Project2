@@ -7,7 +7,8 @@ using UnityEngine;
 /// Дефолтная реализация storage. Содержит указанное кол-во ячеек
 /// </summary>
 public class DefaultStorage : MonoBehaviour, IStorage {
-	public int StorageSize;
+	[SerializeField]
+	protected int StorageSize;
 	protected ItemStack[] storage;
 	
 	public void Initialize() {
@@ -80,6 +81,21 @@ public class DefaultStorage : MonoBehaviour, IStorage {
 		return false;
 	}
 
+	public void SwapItemStacks(int slotIdOne, int slotIdTwo) {
+		if (slotIdOne >= storage.Length || slotIdTwo >= storage.Length)
+			throw new Exception("Вы попытались получить ItemStack, указав несуществующий индекс ячейки");
+		ItemStack buffer = GetItemStack(slotIdOne);
+		SetItemStack(slotIdOne, GetItemStack(slotIdTwo));
+		SetItemStack(slotIdTwo, buffer);
+	}
+
+	public bool SetStackCount(int slotId, int newCount) {
+		if (newCount > ItemManager.FindItemInfo(GetItemStack(slotId).ItemName).MaxStackSize)
+			return false;
+		storage[slotId].StackSize = newCount;
+		return true;
+	}
+
 	public bool IsEmpty(int slotId) {
 		if (slotId >= storage.Length)
 			throw new Exception("Вы попытались проверить ItemStack, указав несуществующий индекс ячейки");
@@ -89,5 +105,9 @@ public class DefaultStorage : MonoBehaviour, IStorage {
 	public void Clear() {
 		for (int i = 0; i < StorageSize; i++)
 			storage[i] = null;
+	}
+
+	public int GetStorageSize() {
+		return StorageSize;
 	}
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EntityItemInfo : EntityGroundInfo {
-	public Material Material;
 	public ItemInfo ItemInfo;
 	public ItemStack Stack;
 
@@ -16,7 +15,7 @@ public class EntityItemInfo : EntityGroundInfo {
 		if (!ItemInfo.SpecialRenderer) {
 			ItemInfo.gameObject.transform.localScale = new Vector3(16, 16, 1);
 			ItemInfo.GetComponent<MeshFilter>().mesh = GameManager.singleton.OnePlaneCenter;
-			ItemInfo.GetComponent<MeshRenderer>().material = new Material(Material) {mainTexture = ItemInfo.Icon};
+			ItemInfo.GetComponent<MeshRenderer>().material = new Material(GameManager.singleton.IconMaterial) {mainTexture = ItemInfo.Icon};
 			ItemInfo.ColliderSize = new Vector2(16, 16);
 		}
 

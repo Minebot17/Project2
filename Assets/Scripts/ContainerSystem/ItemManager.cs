@@ -14,4 +14,8 @@ public class ItemManager : MonoBehaviour {
 	public static GameObject FindItem(string itemName) {
 		return Items.Find(x => x.GetComponent<ItemInfo>().ItemName.Equals(itemName));
 	}
+	
+	public static ItemInfo FindItemInfo(string itemName) {
+		return FindItem(itemName).GetComponent<ItemInfo>();
+	}
 }

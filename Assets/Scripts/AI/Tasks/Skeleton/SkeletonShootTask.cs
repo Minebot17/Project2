@@ -36,9 +36,9 @@ public class SkeletonShootTask : AbstractTask<SkeletonInfo> {
 			
 			Timer.StartNewTimer("ShootBoneRender", 0.4f, 1, gameObject, timer => {
 				info.BoneRender.GetComponent<MeshRenderer>().enabled = false;
-				GameObject bone = (GameObject) MonoBehaviour.Instantiate(info.Projectile, info.BoneRender.transform.position, new Quaternion());
-				bone.GetComponent<Rigidbody2D>().AddForce(vector*(float)(GameManager.rnd.NextDouble()/10f + 0.9f)*30000 + new Vector2(0, 50));
-				bone.GetComponent<Rigidbody2D>().AddTorque(30000f * (float)GameManager.rnd.NextDouble());
+				//GameObject bone = (GameObject) MonoBehaviour.Instantiate(info.Projectile, info.BoneRender.transform.position, new Quaternion());
+				//bone.GetComponent<Rigidbody2D>().AddForce(vector*(float)(GameManager.rnd.NextDouble()/10f + 0.9f)*30000 + new Vector2(0, 50));
+				//bone.GetComponent<Rigidbody2D>().AddTorque(30000f * (float)GameManager.rnd.NextDouble());
 			
 				Timer.StartNewTimer("ShootBoneRenderPost", 0.68f, 1, gameObject,
 					timer1 => {

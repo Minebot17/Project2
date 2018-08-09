@@ -19,6 +19,7 @@ public class GameManager : NetworkBehaviour {
 	public Mesh OnePlaneCenter;
 	public Material DefaultMaterial;
 	public Material GenerationMaterial;
+	public Material IconMaterial;
 	public GameObject PointDebugObject;
 	public GameObject LineDebugObject;
 	public int RoomLayerMask;

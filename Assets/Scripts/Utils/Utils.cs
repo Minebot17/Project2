@@ -143,4 +143,8 @@ public static class Utils {
 	public static GameObject GetEntityItemOverMouse() {
 		return GetObjectOverMouse(LayerMask.GetMask("Items"), obj => obj.GetComponent<EntityItemInfo>() != null);
 	}
+
+	public static Vector3 GetMouseWorldPosition() {
+		return GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+	}
 }

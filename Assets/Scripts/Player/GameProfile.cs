@@ -9,7 +9,7 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 	[SyncVar(hook = nameof(OnNameChange))] 
 	public string ProfileName;
 	public int Level;
-	public List<string> Inventory = new List<string>();
+	//public List<string> Inventory = new List<string>();
 
 	private void Awake() {
 		GameManager.singleton.Players.Add(gameObject);
@@ -33,7 +33,7 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 	private void Update() {
 		if (GameSettings.SettingOpenInventoryKey.IsDown()) {
 			if (!ContainerManager.IsOpen())
-				ContainerManager.OpenContainer(GameManager.singleton.PlayerInventoryPrefab, null);
+				ContainerManager.OpenContainer(GameManager.singleton.PlayerInventoryPrefab, GetComponent<IStorage>());
 			else if (ContainerManager.IsOpen("Inventory"))
 				ContainerManager.CloseContainer();
 		}
@@ -55,8 +55,8 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 		List<string> result = new List<string>();
 		result.Add(ProfileName);
 		result.Add(Level+"");
-		result.AddRange(Inventory);
-		result.Add("endInventory");
+		//result.AddRange(Inventory);
+		//result.Add("endInventory");
 
 		return result;
 	}
@@ -72,20 +72,20 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 		}
 		ProfileName = data[0];
 		Level = int.Parse(data[1]);
-		Inventory = new List<string>();
+		/*Inventory = new List<string>();
 		int count = 0;
 		for (int i = 2; i < data.Count; i++) {
 			count++;
 			if (data[i].Equals("endInventory"))
 				break;
 			Inventory.Add(data[i]);
-		}
+		}*/
 
 		if (inGo) {
 			transform.Find("NameRender").GetComponent<TextMesh>().text = ProfileName;
 		}
 
-		return 2 + count;
+		return 2/* + count*/;
 	}
 
 	public void OnNameChange(string name) {

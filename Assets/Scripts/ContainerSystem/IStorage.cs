@@ -29,6 +29,17 @@ public interface IStorage : ISerializableObject {
 	bool AddItemStack(ItemStack stack);
 
 	/// <summary>
+	/// Меняет местами два ItemStack
+	/// </summary>
+	void SwapItemStacks(int slotIdOne, int slotIdTwo);
+
+	/// <summary>
+	/// Задает ItemStack'у под указанной ячейкой
+	/// </summary>
+	/// <returns></returns>
+	bool SetStackCount(int slotId, int newCount);
+
+	/// <summary>
 	///	Пустая ли указанная ячейка?
 	/// </summary>
 	bool IsEmpty(int slotId);
@@ -37,4 +48,9 @@ public interface IStorage : ISerializableObject {
 	/// Очищает весь инвентарь от всех стаков
 	/// </summary>
 	void Clear();
+
+	/// <summary>
+	/// Получает кол-во слотов в storage
+	/// </summary>
+	int GetStorageSize();
 }
