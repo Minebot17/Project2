@@ -1,16 +1,28 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Дефолтная реализация storage. Содержит указанное кол-во ячеек
 /// </summary>
-public class DefaultStorage : MonoBehaviour, IStorage {
+public class DefaultStorage : NetworkBehaviour, IStorage {
 	[SerializeField]
 	protected int StorageSize;
 	protected ItemStack[] storage;
-	
+	protected bool markDirty;
+
+	private void FixedUpdate() {
+		if (markDirty) {
+			if (ContainerManager.IsOpen(this))
+				ContainerManager.UpdateSlots();
+			RpcSendDataToClients(Serialize().ToArray());
+			markDirty = false;
+		}
+	}
+
 	public void Initialize() {
 		storage = new ItemStack[StorageSize];
 	}
@@ -23,9 +35,7 @@ public class DefaultStorage : MonoBehaviour, IStorage {
 				result.Add("null");
 			else {
 				result.Add("not null");
-				ItemStack stack = GetItemStack(i);
-				result.Add(stack.ItemName);
-				result.Add(stack.StackSize+"");
+				result.AddRange(GetItemStack(i).Serialize());
 			}
 		}
 
@@ -44,8 +54,11 @@ public class DefaultStorage : MonoBehaviour, IStorage {
 			}
 			else if (data[i].Equals("not null")) {
 				result += 3;
-				storage[slot] = new ItemStack(data[i + 1], int.Parse(data[i + 2]));
-				i += 2;
+				storage[slot] = new ItemStack();
+				List<string> subList = new List<string>(data);
+				for (int j = 0; j < i + 1; j++)
+					subList.RemoveAt(0);
+				i += storage[slot].Deserialize(subList);
 				slot++;
 			}
 		}
@@ -54,15 +67,25 @@ public class DefaultStorage : MonoBehaviour, IStorage {
 	}
 
 	public void SetItemStack(int slotId, ItemStack stack) {
-		if (slotId >= storage.Length)
-			throw new Exception("Вы попытались задать ItemStack, указав несуществующий индекс ячейки");
-		storage[slotId] = stack;
+		if (isServer) {
+			if (slotId >= storage.Length)
+				throw new Exception("Вы попытались задать ItemStack, указав несуществующий индекс ячейки");
+			storage[slotId] = stack;
+			MarkDirty();
+		}
+		else
+			CmdSetItemStack(slotId, stack.Serialize().ToArray());
 	}
 
 	public void RemoveItemStack(int slotId) {
-		if (slotId >= storage.Length)
-			throw new Exception("Вы попытались удалить ItemStack, указав несуществующий индекс ячейки");
-		storage[slotId] = null;
+		if (isServer) {
+			if (slotId >= storage.Length)
+				throw new Exception("Вы попытались удалить ItemStack, указав несуществующий индекс ячейки");
+			storage[slotId] = null;
+			MarkDirty();
+		}
+		else
+			CmdRemoveItemStack(slotId);
 	}
 
 	public ItemStack GetItemStack(int slotId) {
@@ -90,10 +113,43 @@ public class DefaultStorage : MonoBehaviour, IStorage {
 	}
 
 	public bool SetStackCount(int slotId, int newCount) {
-		if (newCount > ItemManager.FindItemInfo(GetItemStack(slotId).ItemName).MaxStackSize)
-			return false;
-		storage[slotId].StackSize = newCount;
+		if (isServer) {
+			if (newCount > ItemManager.FindItemInfo(GetItemStack(slotId).ItemName).MaxStackSize)
+				return false;
+			storage[slotId].StackSize = newCount;
+			MarkDirty();
+		}
+		else
+			CmdSetStackCount(slotId, newCount);
+
 		return true;
+	}
+	
+	public void SlotsInteraction(int slotFrom, int slotTo) {
+		if (isServer) {
+			ItemStack stackFrom = GetItemStack(slotFrom);
+			ItemStack stackTo = GetItemStack(slotTo);
+			if (IsEmpty(slotTo)) {
+				SetItemStack(slotTo, stackFrom);
+				RemoveItemStack(slotFrom);
+			}
+			else if (!stackFrom.ItemName.Equals(stackTo.ItemName))
+				SwapItemStacks(slotFrom, slotTo);
+			else {
+				int maxSize = ItemManager.FindItemInfo(stackFrom.ItemName).MaxStackSize;
+				int residue = stackFrom.StackSize + stackTo.StackSize - maxSize;
+				if (residue > 0) {
+					SetStackCount(slotFrom, residue);
+					SetStackCount(slotTo, maxSize);
+				}
+				else {
+					RemoveItemStack(slotFrom);
+					SetItemStack(slotTo, new ItemStack(stackFrom.ItemName, stackFrom.StackSize + stackTo.StackSize));
+				}
+			}
+		}
+		else
+			CmdSlotsInteraction(slotFrom, slotTo);
 	}
 
 	public bool IsEmpty(int slotId) {
@@ -109,5 +165,42 @@ public class DefaultStorage : MonoBehaviour, IStorage {
 
 	public int GetStorageSize() {
 		return StorageSize;
+	}
+
+	public void MarkDirty() {
+		markDirty = true;
+	}
+	
+	[Command]
+	public void CmdSlotsInteraction(int slotFrom, int slotTo) {
+		SlotsInteraction(slotFrom, slotTo);
+	}
+
+	[Command]
+	public void CmdSetItemStack(int slotId, string[] stackData) {
+		ItemStack stack = new ItemStack();
+		stack.Deserialize(stackData.ToList());
+		SetItemStack(slotId, stack);
+	}
+	
+	[Command]
+	public void CmdRemoveItemStack(int slotId) {
+		RemoveItemStack(slotId);
+	}
+	
+	[Command]
+	public void CmdSetStackCount(int slotId, int newCount) {
+		SetStackCount(slotId, newCount);
+	}
+
+	[ClientRpc]
+	public void RpcSendDataToClients(string[] data) {
+		Deserialize(data.ToList());
+		if (ContainerManager.IsOpen(this))
+			ContainerManager.UpdateSlots();
+	}
+
+	public override int GetNetworkChannel() {
+		return Channels.DefaultReliable;
 	}
 }

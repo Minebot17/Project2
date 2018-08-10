@@ -31,6 +31,9 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 	}
 
 	private void Update() {
+		if (!isLocalPlayer)
+			return;
+		
 		if (GameSettings.SettingOpenInventoryKey.IsDown()) {
 			if (!ContainerManager.IsOpen())
 				ContainerManager.OpenContainer(GameManager.singleton.PlayerInventoryPrefab, GetComponent<IStorage>());

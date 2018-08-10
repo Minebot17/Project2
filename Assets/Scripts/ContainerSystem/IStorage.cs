@@ -40,6 +40,11 @@ public interface IStorage : ISerializableObject {
 	bool SetStackCount(int slotId, int newCount);
 
 	/// <summary>
+	/// Взаимодействие между двумя слотами. Тип взаимодействия зависит от предметов с слотах. Это может быть слияние или перемещение
+	/// </summary>
+	void SlotsInteraction(int slotFrom, int slotTo);
+
+	/// <summary>
 	///	Пустая ли указанная ячейка?
 	/// </summary>
 	bool IsEmpty(int slotId);

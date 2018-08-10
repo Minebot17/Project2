@@ -28,6 +28,9 @@ public class CameraFollower : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
+		if (room == null || target == null)
+			return;
+		
 		Vector2 min = room.transform.position + new Vector3(247.5f, 138.5f);
 		Vector2 max = min + roomSize - new Vector2(247.5f, 138.5f)*2;
 		

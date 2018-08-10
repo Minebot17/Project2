@@ -27,4 +27,12 @@ public class ContainerManager {
 		return CurrentContainer != null &&
 		       CurrentContainer.ContainerName.Equals(containerName);
 	}
+
+	public static bool IsOpen(IStorage storage) {
+		return CurrentContainer != null && CurrentContainer.Storage == storage;
+	}
+
+	public static void UpdateSlots() {
+		CurrentContainer.UpdateSlots();
+	}
 }

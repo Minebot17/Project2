@@ -20,6 +20,7 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 		lobbyMode = arguments[0].Equals("new game") ? LobbyMode.NEW_GAME :
 			arguments[0].Equals("load game") ? LobbyMode.LOAD_GAME : LobbyMode.ONLY_SERVER;
 		if (lobbyMode == LobbyMode.LOAD_GAME) {
+			allProfiles = new List<List<string>>();
 			for (int i = 2; i < arguments.Count; i++) {
 				List<string> toAdd = new List<string>();
 				toAdd.AddRange(arguments[i].Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries));
@@ -53,7 +54,7 @@ public class NetworkLobbyClientHUD : MonoBehaviour {
 				}
 				else if (lobbyMode == LobbyMode.LOAD_GAME) {
 					foreach (List<string> current in allProfiles) {
-						if (GUILayout.Button(current[0] + (profile == current ? "Выбран" : "")))
+						if (GUILayout.Button(current[0] + (profile == current ? " Выбран" : "")))
 							profile = current;
 					}
 				}

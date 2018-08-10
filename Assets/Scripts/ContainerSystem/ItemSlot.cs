@@ -37,9 +37,11 @@ public class ItemSlot : MonoBehaviour {
 	public void SetStack(ItemStack stack) {
 		this.stack = stack;
 		if (transform.childCount != 1) {
-			Destroy(transform.GetChild(1));
+			Destroy(transform.GetChild(1).gameObject);
 			transform.GetChild(0).GetComponent<Text>().text = "";
 		}
+		if (stack == null)
+			return;
 
 		ItemInfo itemInfo = ItemManager.FindItemInfo(stack.ItemName);
 		GameObject itemObject = new GameObject(itemInfo.ItemName);

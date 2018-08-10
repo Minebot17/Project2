@@ -20,6 +20,7 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 		ServerEvents.Initialize();
 		ServerEvents.singleton.StartAgrs = arguments;
 		if (lobbyMode == LobbyMode.LOAD_GAME) {
+			allProfiles = new List<List<string>>();
 			for (int i = 2; i < arguments.Count; i++) {
 				List<string> toAdd = new List<string>();
 				toAdd.AddRange(arguments[i].Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries));
@@ -81,7 +82,7 @@ public class NetworkLobbyServerHUD : NetworkLobbyClientHUD {
 				}
 				else if (lobbyMode == LobbyMode.LOAD_GAME) {
 					foreach (List<string> current in allProfiles) {
-						if (GUILayout.Button(current[0] + (profile == current ? "Выбран" : "")))
+						if (GUILayout.Button(current[0] + (profile == current ? " Выбран" : "")))
 							profile = current;
 					}
 				}
