@@ -102,12 +102,11 @@ public class MessageManager {
 
 	public static readonly GameMessage SetCurrentRoomClientMessage = new GameMessage(msg => {
 		foreach (GameObject player in GameManager.singleton.Players) {
-			int x = (int)player.transform.position.x / 495;
-			int y = (int)player.transform.position.y / 277;
-			GenerationManager.spawnedRooms[x, y].SetActive(true);
+			GameObject current = Utils.GetRoomFromPosition(player.transform.position);
+			current.SetActive(true);
 			
 			if (player.GetComponent<NetworkIdentity>().isLocalPlayer)
-				GenerationManager.SetCurrentRoom(new Vector2Int(x, y));
+				GenerationManager.SetCurrentRoom(current);
 		}
 	});
 

@@ -45,6 +45,11 @@ public interface IStorage : ISerializableObject {
 	void SlotsInteraction(int slotFrom, int slotTo);
 
 	/// <summary>
+	/// Выбрасывает предмет в заданной ячейке, с заданной начальной позицией и вектором силы
+	/// </summary>
+	void DropItemStack(int slotId, Vector3 position, Vector3 force);
+
+	/// <summary>
 	///	Пустая ли указанная ячейка?
 	/// </summary>
 	bool IsEmpty(int slotId);

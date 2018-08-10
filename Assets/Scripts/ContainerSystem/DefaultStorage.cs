@@ -67,24 +67,20 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 	}
 
 	public void SetItemStack(int slotId, ItemStack stack) {
-		if (isServer) {
-			if (slotId >= storage.Length)
-				throw new Exception("Вы попытались задать ItemStack, указав несуществующий индекс ячейки");
-			storage[slotId] = stack;
-			MarkDirty();
-		}
-		else
+		if (slotId >= storage.Length)
+			throw new Exception("Вы попытались задать ItemStack, указав несуществующий индекс ячейки");
+		storage[slotId] = stack;
+		MarkDirty();
+		if (!isServer)
 			CmdSetItemStack(slotId, stack.Serialize().ToArray());
 	}
 
 	public void RemoveItemStack(int slotId) {
-		if (isServer) {
-			if (slotId >= storage.Length)
-				throw new Exception("Вы попытались удалить ItemStack, указав несуществующий индекс ячейки");
-			storage[slotId] = null;
-			MarkDirty();
-		}
-		else
+		if (slotId >= storage.Length)
+			throw new Exception("Вы попытались удалить ItemStack, указав несуществующий индекс ячейки");
+		storage[slotId] = null;
+		MarkDirty();
+		if (!isServer)
 			CmdRemoveItemStack(slotId);
 	}
 
@@ -113,43 +109,49 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 	}
 
 	public bool SetStackCount(int slotId, int newCount) {
-		if (isServer) {
-			if (newCount > ItemManager.FindItemInfo(GetItemStack(slotId).ItemName).MaxStackSize)
-				return false;
-			storage[slotId].StackSize = newCount;
-			MarkDirty();
-		}
-		else
+		if (newCount > ItemManager.FindItemInfo(GetItemStack(slotId).ItemName).MaxStackSize)
+			return false;
+		storage[slotId].StackSize = newCount;
+		MarkDirty();
+		if (!isServer)
 			CmdSetStackCount(slotId, newCount);
 
 		return true;
 	}
 	
 	public void SlotsInteraction(int slotFrom, int slotTo) {
-		if (isServer) {
-			ItemStack stackFrom = GetItemStack(slotFrom);
-			ItemStack stackTo = GetItemStack(slotTo);
-			if (IsEmpty(slotTo)) {
-				SetItemStack(slotTo, stackFrom);
-				RemoveItemStack(slotFrom);
+		ItemStack stackFrom = GetItemStack(slotFrom);
+		ItemStack stackTo = GetItemStack(slotTo);
+		if (IsEmpty(slotTo)) {
+			SetItemStack(slotTo, stackFrom);
+			RemoveItemStack(slotFrom);
+		}
+		else if (!stackFrom.ItemName.Equals(stackTo.ItemName))
+			SwapItemStacks(slotFrom, slotTo);
+		else {
+			int maxSize = ItemManager.FindItemInfo(stackFrom.ItemName).MaxStackSize;
+			int residue = stackFrom.StackSize + stackTo.StackSize - maxSize;
+			if (residue > 0) {
+				SetStackCount(slotFrom, residue);
+				SetStackCount(slotTo, maxSize);
 			}
-			else if (!stackFrom.ItemName.Equals(stackTo.ItemName))
-				SwapItemStacks(slotFrom, slotTo);
 			else {
-				int maxSize = ItemManager.FindItemInfo(stackFrom.ItemName).MaxStackSize;
-				int residue = stackFrom.StackSize + stackTo.StackSize - maxSize;
-				if (residue > 0) {
-					SetStackCount(slotFrom, residue);
-					SetStackCount(slotTo, maxSize);
-				}
-				else {
-					RemoveItemStack(slotFrom);
-					SetItemStack(slotTo, new ItemStack(stackFrom.ItemName, stackFrom.StackSize + stackTo.StackSize));
-				}
+				RemoveItemStack(slotFrom);
+				SetItemStack(slotTo, new ItemStack(stackFrom.ItemName, stackFrom.StackSize + stackTo.StackSize));
 			}
 		}
-		else
+		if (!isServer)
 			CmdSlotsInteraction(slotFrom, slotTo);
+	}
+
+	public void DropItemStack(int slotId, Vector3 position, Vector3 force) {
+		if (!IsEmpty(slotId)) {
+			if (!isServer)
+				CmdDropItemStack(slotId, position, force);
+			else 
+				ItemManager.DropItemStack(GetItemStack(slotId), position, force);
+			RemoveItemStack(slotId);
+		}
 	}
 
 	public bool IsEmpty(int slotId) {
@@ -170,7 +172,12 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 	public void MarkDirty() {
 		markDirty = true;
 	}
-	
+
+	[Command]
+	public void CmdDropItemStack(int slotId, Vector3 position, Vector3 force) {
+		DropItemStack(slotId, position, force);
+	}
+
 	[Command]
 	public void CmdSlotsInteraction(int slotFrom, int slotTo) {
 		SlotsInteraction(slotFrom, slotTo);

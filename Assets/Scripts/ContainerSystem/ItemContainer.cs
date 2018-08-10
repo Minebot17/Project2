@@ -8,7 +8,7 @@ public abstract class ItemContainer : NetworkBehaviour {
 	[SerializeField]
 	protected string containerName;
 	protected IStorage storage;
-	private const float TimerToUngrab = 0.1f;
+	private const float TimerToUngrab = 0.05f;
 
 	public IStorage Storage => storage;
 
@@ -66,7 +66,15 @@ public abstract class ItemContainer : NetworkBehaviour {
 					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.GetComponent<ItemSlot>() != null);
 				if (toSlot != null && toSlot != bufferSlot)
 					storage.SlotsInteraction(bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex, toSlot.GetComponent<ItemSlot>().SlotIndex);
-				Timer.StartNewTimer("UngrabItem", TimerToUngrab, 1, gameObject, x => Ungrab());
+				GameObject dropArea =
+					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.name.Equals("DropArea"));
+				if (dropArea == null)
+					Timer.StartNewTimer("UngrabItem", TimerToUngrab, 1, gameObject, x => Ungrab());
+				else {
+					storage.DropItemStack(bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex,
+						GameManager.singleton.LocalPlayer.transform.position, Utils.RandomPoint(1000));
+					Ungrab();
+				}
 			}
 		}
 	}

@@ -164,14 +164,20 @@ public static class GenerationManager {
 	}
 
 	public static void SetCurrentRoom() {
-		Vector3 position = GameManager.singleton.LocalPlayer.transform.position;
-		SetCurrentRoom(new Vector2Int((int)position.x / 495, (int)position.y / 277));
+		SetCurrentRoom(Utils.GetRoomFromPosition(GameManager.singleton.LocalPlayer.transform.position));
 	}
 
 	public static void SetCurrentRoom(Vector2Int coord) {
 		currentRoomCoords = coord;
 		spawnedRooms[coord.x, coord.y].SetActive(true);
 		currentRoom = spawnedRooms[coord.x, coord.y];
+		GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = currentRoom;
+	}
+	
+	public static void SetCurrentRoom(GameObject go) {
+		currentRoomCoords = new Vector2Int((int)go.transform.position.x / 495, (int)go.transform.position.y / 277);
+		go.SetActive(true);
+		currentRoom = go;
 		GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = currentRoom;
 	}
 

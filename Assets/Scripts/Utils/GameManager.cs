@@ -131,7 +131,7 @@ public class GameManager : NetworkBehaviour {
 					GenerationManager.VisualizeGeneration(generation);
 			}
 			else if (gui.StartArguments[0].Equals("test mode")) {
-				GenerationManager.currentRoom = RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(GameSettings.SettingTestRoomName.Value)), Vector3.zero, false);
+				GenerationManager.SetCurrentRoom(RoomLoader.SpawnRoom(RoomLoader.loadedRooms.Find(x => x.fileName.Equals(GameSettings.SettingTestRoomName.Value)), Vector3.zero, false));
 				GenerationManager.InitializeRoom(GenerationManager.currentRoom);
 				GameObject player = Instantiate(LocalPlayer);
 				Vector3 toPos = Vector3.zero;
@@ -142,12 +142,11 @@ public class GameManager : NetworkBehaviour {
 				player.transform.position = toPos + new Vector3(18, 25);
 				if (ServerEvents.singleton.ServerOnlyProfile != null)
 					player.GetComponent<GameProfile>().Deserialize(ServerEvents.singleton.ServerOnlyProfile);
-				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController++);
 			}
 			else if (gui.StartArguments[0].Equals("room editor")) {
 				RoomLoader.Room room = RoomLoader.LoadRoom(Application.streamingAssetsPath + "/room.json", Encoding.UTF8);
-				GenerationManager.currentRoom = RoomLoader.SpawnRoom(room, Vector3.zero, false);
+				GenerationManager.SetCurrentRoom(RoomLoader.SpawnRoom(room, Vector3.zero, false));
 				RoomLoader.loadedRooms.Add(room);
 				GenerationManager.InitializeRoom(GenerationManager.currentRoom);
 				string[] gateInfo = File.ReadAllLines(Application.streamingAssetsPath + "/gate.txt", Encoding.UTF8);
@@ -155,7 +154,6 @@ public class GameManager : NetworkBehaviour {
 				doStartForce = bool.Parse(gateInfo[2]);
 				GameObject player = Instantiate(LocalPlayer);
 				player.transform.position = GameObject.Find("startPosition").transform.position;
-				GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = GenerationManager.currentRoom;
 				NetworkServer.AddPlayerForConnection(NetworkServer.connections[0], player, indexController++);
 			}
 		}
@@ -167,10 +165,8 @@ public class GameManager : NetworkBehaviour {
 		if (position.x == 0 && position.y == 0)
 			return null;
 			
-		int x = (int)position.x / 495;
-		int y = (int)position.y / 277;
 		GameObject spawned = Instantiate(Utils.FindAssetID(assetId.ToString()));
-		Room room = GenerationManager.spawnedRooms[x, y].GetComponent<Room>();
+		Room room = Utils.GetRoomFromPosition(position).GetComponent<Room>();
 		spawned.transform.parent = room.gameObject.transform.Find("Objects");
 		spawned.transform.position = position;
 

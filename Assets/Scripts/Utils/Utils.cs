@@ -147,4 +147,10 @@ public static class Utils {
 	public static Vector3 GetMouseWorldPosition() {
 		return GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
 	}
+
+	public static GameObject GetRoomFromPosition(Vector3 position) {
+		return GenerationManager.spawnedRooms == null
+			? GenerationManager.currentRoom
+			: GenerationManager.spawnedRooms[(int)position.x / 495, (int)position.y / 277];
+	}
 }
