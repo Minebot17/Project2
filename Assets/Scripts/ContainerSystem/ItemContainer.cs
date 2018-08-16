@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public abstract class ItemContainer : NetworkBehaviour {
+public abstract class ItemContainer : MonoBehaviour {
 
 	[SerializeField]
 	protected string containerName;
 	protected IStorage storage;
-	private const float TimerToUngrab = 0.05f;
 
 	public IStorage Storage => storage;
 
-	protected GameObject bufferSlot;
+	public GameObject bufferSlot;
 	
 	public string ContainerName => containerName;
 
@@ -34,9 +33,9 @@ public abstract class ItemContainer : NetworkBehaviour {
 	/// </summary>
 	/// <param name="slotId">Индекс слота, из которого нужно взять предмет</param>
 	public void GrabFromSlot(int slotId) {
-		if (GetSlot(slotId).transform.childCount == 1)
+		if (GetSlot(slotId).transform.childCount == 0)
 			return;
-		bufferSlot = GetSlot(slotId).transform.GetChild(1).gameObject;
+		bufferSlot = GetSlot(slotId).transform.GetChild(0).gameObject;
 	}
 
 	/// <summary>
@@ -57,23 +56,66 @@ public abstract class ItemContainer : NetworkBehaviour {
 		return bufferSlot != null;
 	}
 
+	private int indexToGrab = -1;
 	private void FixedUpdate() {
+		if (indexToGrab != -1) {
+			if (!storage.IsEmpty(indexToGrab))
+				GrabFromSlot(indexToGrab);
+			indexToGrab = -1;
+		}
+
 		if (bufferSlot != null) {
 			Vector3 pos = Utils.GetMouseWorldPosition();
-			bufferSlot.transform.position = new Vector3(pos.x, pos.y, -171f);
+			bufferSlot.transform.position = new Vector3(pos.x, pos.y, 0);
+			bufferSlot.transform.localPosition = new Vector3(bufferSlot.transform.localPosition.x, bufferSlot.transform.localPosition.y, -174f);
+			
 			if (!Input.GetMouseButton(0)) {
 				GameObject toSlot =
 					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.GetComponent<ItemSlot>() != null);
-				if (toSlot != null && toSlot != bufferSlot)
+				if (toSlot != null && toSlot != bufferSlot.transform.parent.gameObject)
 					storage.SlotsInteraction(bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex, toSlot.GetComponent<ItemSlot>().SlotIndex);
 				GameObject dropArea =
 					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.name.Equals("DropArea"));
-				if (dropArea == null)
-					Timer.StartNewTimer("UngrabItem", TimerToUngrab, 1, gameObject, x => Ungrab());
-				else {
+				if (dropArea != null)
 					storage.DropItemStack(bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex,
 						GameManager.singleton.LocalPlayer.transform.position, Utils.RandomPoint(1000));
+				else if (!storage.IsEmpty(GetBufferIndex()))
 					Ungrab();
+			}
+
+			if (GameSettings.PutStackUnitKey.IsDown()) {
+				GameObject toSlot =
+					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.GetComponent<ItemSlot>() != null);
+				if (toSlot != null && toSlot != bufferSlot.transform.parent.gameObject && (toSlot.GetComponent<ItemSlot>().Stack == null || bufferSlot.transform.parent.GetComponent<ItemSlot>().Stack.EqualsWithoutSize(toSlot.GetComponent<ItemSlot>().Stack))) {
+					int slotOne = bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex;
+					int slotTwo = toSlot.GetComponent<ItemSlot>().SlotIndex;
+					if (storage.IsEmpty(slotTwo))
+						storage.SetItemStack(slotTwo, new ItemStack(storage.GetItemStack(slotOne).ItemName, 1));
+					else
+						storage.SetStackCount(slotTwo, storage.GetItemStack(slotTwo).StackSize + 1);
+					storage.SetStackCount(slotOne, storage.GetItemStack(slotOne).StackSize - 1);
+				}
+				
+				GameObject dropArea =
+					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.name.Equals("DropArea"));
+				if (dropArea != null) {
+					storage.DropItemStack(bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex,
+						1, GameManager.singleton.LocalPlayer.transform.position, Utils.RandomPoint(1000));
+				}
+			}
+			
+			if (GameSettings.TakeStackUnitKey.IsDown()) {
+				GameObject toSlot =
+					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.GetComponent<ItemSlot>() != null);
+				if (toSlot != null && toSlot != bufferSlot.transform.parent.gameObject && (toSlot.GetComponent<ItemSlot>().Stack != null && bufferSlot.transform.parent.GetComponent<ItemSlot>().Stack.EqualsWithoutSize(toSlot.GetComponent<ItemSlot>().Stack))) {
+					int slotOne = bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex;
+					int slotTwo = toSlot.GetComponent<ItemSlot>().SlotIndex;
+					int count = storage.GetItemStack(slotOne).StackSize;
+					int maxCount = ItemManager.FindItemInfo(storage.GetItemStack(slotOne).ItemName).MaxStackSize;
+					if (count < maxCount) {
+						storage.SetStackCount(slotOne, count + 1);
+						storage.SetStackCount(slotTwo, toSlot.GetComponent<ItemSlot>().Stack.StackSize - 1);
+					}
 				}
 			}
 		}
@@ -84,8 +126,23 @@ public abstract class ItemContainer : NetworkBehaviour {
 	/// </summary>
 	public abstract GameObject GetSlot(int id);
 
+	protected int GetBufferIndex() {
+		return bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex;
+	}
+
 	public void UpdateSlots() {
-		for (int i = 0; i < storage.GetStorageSize(); i++)
+		for (int i = 0; i < storage.GetStorageSize(); i++) {
+			bool isBufferSlot = false;
+			if (IsGrabed()) {
+				int index = bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex;
+				if (i == index)
+					isBufferSlot = true;
+			}
+
 			GetSlot(i).GetComponent<ItemSlot>().SetStack(storage.GetItemStack(i));
+			if (isBufferSlot) {
+				indexToGrab = i;
+			}
+		}
 	}
 }

@@ -18,7 +18,7 @@ GameObject:
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4351283259837778}
+  - component: {fileID: 224246675400454114}
   - component: {fileID: 23050836599626602}
   - component: {fileID: 33895080188766030}
   - component: {fileID: 114992329539856408}
@@ -29,19 +29,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4351283259837778
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1448050040599776}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7539.677, y: 8109.276, z: -0.07}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23050836599626602
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -96,7 +83,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemName: testItem
-  MaxStackSize: 1
+  MaxStackSize: 3
   Icon: {fileID: 2800000, guid: bfcbc0b003407e844996c1104dd45476, type: 3}
   ColliderSize: {x: 1, y: 1}
   SpecialRenderer: 0
+--- !u!224 &224246675400454114
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1448050040599776}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.07}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 7539.677, y: 8109.276}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}

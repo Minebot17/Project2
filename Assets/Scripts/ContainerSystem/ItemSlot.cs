@@ -36,9 +36,13 @@ public class ItemSlot : MonoBehaviour {
 	/// <param name="stack">Предмет, который будет в слоте</param>
 	public void SetStack(ItemStack stack) {
 		this.stack = stack;
-		if (transform.childCount != 1) {
-			Destroy(transform.GetChild(1).gameObject);
-			transform.GetChild(0).GetComponent<Text>().text = "";
+		bool isBuffered = false;
+		if (transform.childCount != 0) {
+			if (ContainerManager.CurrentContainer.bufferSlot == transform.GetChild(0).gameObject) {
+				isBuffered = true;
+			}
+
+			Destroy(transform.GetChild(0).gameObject);
 		}
 		if (stack == null)
 			return;
@@ -52,23 +56,36 @@ public class ItemSlot : MonoBehaviour {
 
 		itemObject.AddComponent<MeshRenderer>().material = new Material(GameManager.singleton.IconMaterial){ mainTexture = itemInfo.Icon };
 		itemObject.AddComponent<MeshFilter>().mesh = GameManager.singleton.OnePlaneCenter;
+		itemObject.AddComponent<Canvas>();
+		if (itemInfo.MaxStackSize != 1) {
+			GameObject text = new GameObject("stackSize");
+			text.transform.parent = itemObject.transform;
+			text.transform.localPosition = new Vector3(0, 0, -2);
+			text.AddComponent<RectTransform>().sizeDelta = new Vector2(slotSize.x, slotSize.y);
+			text.GetComponent<RectTransform>().localScale = new Vector3(1/slotSize.x, 1/slotSize.y, 1);
+			text.AddComponent<Text>().text = stack.StackSize + "";
+			text.GetComponent<Text>().alignment = TextAnchor.LowerRight;
+			text.GetComponent<Text>().font = Font.CreateDynamicFontFromOSFont("Arial", 20);
+		}
 
-		if (itemInfo.MaxStackSize != 1)
-			transform.GetChild(0).GetComponent<Text>().text = stack.StackSize+"";
+		if (isBuffered) {
+			ContainerManager.CurrentContainer.bufferSlot = itemObject;
+			Vector3 pos = Utils.GetMouseWorldPosition();
+			itemObject.transform.position = new Vector3(pos.x, pos.y, 0);
+			itemObject.transform.localPosition = new Vector3(itemObject.transform.localPosition.x, itemObject.transform.localPosition.y, -174f);
+		}
 	}
 
 	// Ниже идет система переноса предметов из слотов
-	private bool toTransfer;
 	private Vector3 lastMousePosition;
 	private float sumDelta = 0;
 	private void OnMouseDrag() {
-		if (stack == null || !toTransfer || ContainerManager.CurrentContainer.IsGrabed())
+		if (stack == null|| ContainerManager.CurrentContainer.IsGrabed())
 			return;
 		
 		if (sumDelta > DeltaForTransfer) {
 			sumDelta = 0;
 			lastMousePosition = Vector3.zero;
-			toTransfer = false;
 			ContainerManager.CurrentContainer.GrabFromSlot(slotIndex);
 		}
 
@@ -79,21 +96,13 @@ public class ItemSlot : MonoBehaviour {
 		lastMousePosition = Utils.GetMouseWorldPosition();
 	}
 
-	private void OnMouseDown() {
-		sumDelta = 0;
-		lastMousePosition = Vector3.zero;
-		toTransfer = true;
-	}
-
 	private void OnMouseExit() {
 		sumDelta = 0;
 		lastMousePosition = Vector3.zero;
-		toTransfer = false;
 	}
 
 	private void OnMouseUp() {
 		sumDelta = 0;
 		lastMousePosition = Vector3.zero;
-		toTransfer = false;
 	}
 }

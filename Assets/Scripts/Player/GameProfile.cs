@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class GameProfile : NetworkBehaviour, ISerializableObject {
 
+	private const float UseItemDistace = 100;
 	[SyncVar(hook = nameof(OnNameChange))] 
 	public string ProfileName;
 	public int Level;
@@ -30,7 +32,7 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 			GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
 	}
 
-	private void Update() {
+	private void FixedUpdate() {
 		if (!isLocalPlayer)
 			return;
 		
@@ -42,11 +44,22 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 		}
 		else if (GameSettings.SettingUseItemKey.IsDown()) {
 			GameObject item = Utils.GetEntityItemOverMouse();
-			if (item != null) {
-				bool success = GetComponent<IStorage>().AddItemStack(item.GetComponent<EntityItemInfo>().Stack);
-				if (success)
-					MessageManager.DestroyServerMessage.SendToServer(new NetworkIdentityMessage(item.GetComponent<NetworkIdentity>()));
-			}
+			if (item == null)
+				return;
+			
+			float distance = Vector3.Distance(item.transform.position, transform.position);
+			if (distance > UseItemDistace)
+				return;
+			
+			RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position,
+				(item.transform.position - transform.position).normalized,
+				distance, LayerMask.GetMask("Room"));
+			if (hit.Any(x => x.collider.name.Equals("Wall")))
+				return;
+			
+			bool success = GetComponent<IStorage>().AddItemStack(item.GetComponent<EntityItemInfo>().Stack);
+			if (success)
+				MessageManager.DestroyServerMessage.SendToServer(new NetworkIdentityMessage(item.GetComponent<NetworkIdentity>()));
 		}
 	}
 

@@ -33,4 +33,12 @@ public class ItemStack : ISerializableObject {
 		StackSize = int.Parse(data[1]);
 		return 2;
 	}
+
+	public bool EqualsWithoutSize(ItemStack stack) {
+		return stack.ItemName.Equals(ItemName);
+	}
+
+	public ItemStack Copy() {
+		return new ItemStack(ItemName, StackSize);
+	}
 }

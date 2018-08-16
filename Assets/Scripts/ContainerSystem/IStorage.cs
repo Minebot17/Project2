@@ -47,6 +47,7 @@ public interface IStorage : ISerializableObject {
 	/// <summary>
 	/// Выбрасывает предмет в заданной ячейке, с заданной начальной позицией и вектором силы
 	/// </summary>
+	void DropItemStack(int slotId, int count, Vector3 position, Vector3 force);
 	void DropItemStack(int slotId, Vector3 position, Vector3 force);
 
 	/// <summary>

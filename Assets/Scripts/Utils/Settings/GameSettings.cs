@@ -16,9 +16,11 @@ public class GameSettings {
 	public static readonly FloatSettingValue SettingTraectoryTracingFrequency = new FloatSettingValue("TraectoryTracingFrequency", 10);
 	public static readonly StringSettingValue SettingLanguageCode = new StringSettingValue("LanguageCode", "en");
 	public static readonly StringSettingValue SettingTestRoomName = new StringSettingValue("TestRoomName", "test");
-	public static readonly KeySettingValue SettingOpenInventoryKey = new KeySettingValue("SettingOpenInventoryKey", KeyCode.I);
-	public static readonly KeySettingValue SettingUseItemKey = new KeySettingValue("SettingUseItemKey", KeyCode.E);
-
+	public static readonly KeySettingValue SettingOpenInventoryKey = new KeySettingValue("SettingOpenInventoryKey", KeyCode.E);
+	public static readonly KeySettingValue SettingUseItemKey = new KeySettingValue("SettingUseItemKey", KeyCode.F);
+	public static readonly KeySettingValue PutStackUnitKey = new KeySettingValue("PutStackUnitKey", KeyCode.W);
+	public static readonly KeySettingValue TakeStackUnitKey = new KeySettingValue("TakeStackUnitKey", KeyCode.S);
+	
 	public static void Save() {
 		values.ForEach(val => val.Save());
 	}

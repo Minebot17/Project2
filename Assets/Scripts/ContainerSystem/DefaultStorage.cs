@@ -16,8 +16,6 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 
 	private void FixedUpdate() {
 		if (markDirty) {
-			if (ContainerManager.IsOpen(this))
-				ContainerManager.UpdateSlots();
 			RpcSendDataToClients(Serialize().ToArray());
 			markDirty = false;
 		}
@@ -111,8 +109,12 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 	public bool SetStackCount(int slotId, int newCount) {
 		if (newCount > ItemManager.FindItemInfo(GetItemStack(slotId).ItemName).MaxStackSize)
 			return false;
-		storage[slotId].StackSize = newCount;
-		MarkDirty();
+		if (newCount <= 0)
+			RemoveItemStack(slotId);
+		else {
+			storage[slotId].StackSize = newCount;
+			MarkDirty();
+		}
 		if (!isServer)
 			CmdSetStackCount(slotId, newCount);
 
@@ -120,13 +122,16 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 	}
 	
 	public void SlotsInteraction(int slotFrom, int slotTo) {
+		if (slotFrom == slotTo)
+			return;
+		
 		ItemStack stackFrom = GetItemStack(slotFrom);
 		ItemStack stackTo = GetItemStack(slotTo);
 		if (IsEmpty(slotTo)) {
 			SetItemStack(slotTo, stackFrom);
 			RemoveItemStack(slotFrom);
 		}
-		else if (!stackFrom.ItemName.Equals(stackTo.ItemName))
+		else if (CanSwap(stackFrom, stackTo))
 			SwapItemStacks(slotFrom, slotTo);
 		else {
 			int maxSize = ItemManager.FindItemInfo(stackFrom.ItemName).MaxStackSize;
@@ -144,13 +149,26 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 			CmdSlotsInteraction(slotFrom, slotTo);
 	}
 
+	protected bool CanSwap(ItemStack one, ItemStack two) {
+		int maxSize = ItemManager.FindItemInfo(one.ItemName).MaxStackSize;
+		return !(one.ItemName.Equals(two.ItemName)) || one.StackSize == maxSize || two.StackSize == maxSize;
+	}
+
 	public void DropItemStack(int slotId, Vector3 position, Vector3 force) {
+		DropItemStack(slotId, GetItemStack(slotId).StackSize, position, force);
+	}
+
+	public void DropItemStack(int slotId, int count, Vector3 position, Vector3 force) {
 		if (!IsEmpty(slotId)) {
-			if (!isServer)
+			if (!isServer) 
 				CmdDropItemStack(slotId, position, force);
-			else 
-				ItemManager.DropItemStack(GetItemStack(slotId), position, force);
-			RemoveItemStack(slotId);
+			else {
+				ItemStack stack = GetItemStack(slotId).Copy();
+				stack.StackSize = count;
+				ItemManager.DropItemStack(stack, position, force);
+			}
+
+			SetStackCount(slotId, GetItemStack(slotId).StackSize - count);
 		}
 	}
 
