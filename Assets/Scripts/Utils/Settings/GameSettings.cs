@@ -20,6 +20,7 @@ public class GameSettings {
 	public static readonly KeySettingValue SettingUseItemKey = new KeySettingValue("SettingUseItemKey", KeyCode.F);
 	public static readonly KeySettingValue PutStackUnitKey = new KeySettingValue("PutStackUnitKey", KeyCode.W);
 	public static readonly KeySettingValue TakeStackUnitKey = new KeySettingValue("TakeStackUnitKey", KeyCode.S);
+	public static readonly KeySettingValue ChangeWeaponKey = new KeySettingValue("ChangeWeaponKey", KeyCode.R);
 	
 	public static void Save() {
 		values.ForEach(val => val.Save());

@@ -22,7 +22,7 @@ public class SkeletonShootTask : AbstractTask<SkeletonInfo> {
 		if (!Utils.IsRotatedToPlayer(target, gameObject.transform))
 			gameObject.transform.localScale = new Vector3(-gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
 
-		if (angle > 45) {
+		if (Mathf.Abs(angle) > 30) {
 			AddAnimation(new HeadAnimationTask(gameObject, 50));
 			return false;
 		}

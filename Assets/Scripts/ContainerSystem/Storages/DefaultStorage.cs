@@ -14,18 +14,18 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 	protected ItemStack[] storage;
 	protected bool markDirty;
 
-	private void FixedUpdate() {
+	protected virtual void FixedUpdate() {
 		if (markDirty) {
 			RpcSendDataToClients(Serialize().ToArray());
 			markDirty = false;
 		}
 	}
 
-	public void Initialize() {
+	public virtual void Initialize() {
 		storage = new ItemStack[StorageSize];
 	}
 
-	public List<string> Serialize() {
+	public virtual List<string> Serialize() {
 		List<string> result = new List<string>();
 		result.Add(StorageSize+"");
 		for (int i = 0; i < StorageSize; i++) {
@@ -40,7 +40,7 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 		return result;
 	}
 
-	public int Deserialize(List<string> data) {
+	public virtual int Deserialize(List<string> data) {
 		int result = 1;
 		int slot = 0;
 		StorageSize = int.Parse(data[0]);
@@ -64,16 +64,21 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 		return result;
 	}
 
-	public void SetItemStack(int slotId, ItemStack stack) {
+	public virtual void SetItemStack(int slotId, ItemStack stack) {
 		if (slotId >= storage.Length)
 			throw new Exception("Вы попытались задать ItemStack, указав несуществующий индекс ячейки");
+		if (!IsValidForSet(slotId, stack)) {
+			Debug.LogWarning("Вы попытались задать ItemStack, указав неподходящую ячейку");
+			return;
+		}
+
 		storage[slotId] = stack;
 		MarkDirty();
 		if (!isServer)
 			CmdSetItemStack(slotId, stack.Serialize().ToArray());
 	}
 
-	public void RemoveItemStack(int slotId) {
+	public virtual void RemoveItemStack(int slotId) {
 		if (slotId >= storage.Length)
 			throw new Exception("Вы попытались удалить ItemStack, указав несуществующий индекс ячейки");
 		storage[slotId] = null;
@@ -82,31 +87,47 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 			CmdRemoveItemStack(slotId);
 	}
 
-	public ItemStack GetItemStack(int slotId) {
+	public virtual ItemStack GetItemStack(int slotId) {
 		if (slotId >= storage.Length)
 			throw new Exception("Вы попытались получить ItemStack, указав несуществующий индекс ячейки");
 		return storage[slotId];
 	}
 
-	public bool AddItemStack(ItemStack stack) {
-		for (int i = 0; i < StorageSize; i++)
+	public virtual bool AddItemStack(ItemStack stack) {
+		for (int i = 0; i < StorageSize; i++) {
+			if (!IsValidForSet(i, stack))
+				continue;
+			
 			if (IsEmpty(i)) {
 				SetItemStack(i, stack);
 				return true;
 			}
+			else if (GetItemStack(i).EqualsWithoutSize(stack)) {
+				int maxStack = ItemManager.FindItemInfo(GetItemStack(i).ItemName).MaxStackSize;
+				if (maxStack >= GetItemStack(i).StackSize + stack.StackSize) {
+					SetStackCount(i, GetItemStack(i).StackSize + stack.StackSize);
+					return true;
+				}
+			}
+		}
 
 		return false;
 	}
 
-	public void SwapItemStacks(int slotIdOne, int slotIdTwo) {
+	public virtual void SwapItemStacks(int slotIdOne, int slotIdTwo) {
 		if (slotIdOne >= storage.Length || slotIdTwo >= storage.Length)
 			throw new Exception("Вы попытались получить ItemStack, указав несуществующий индекс ячейки");
+		if (!IsValidForSet(slotIdOne, GetItemStack(slotIdTwo)) || !IsValidForSet(slotIdTwo, GetItemStack(slotIdOne))) {
+			Debug.LogWarning("Вы попытались задать ItemStack, указав неподходящую ячейку");
+			return;
+		}
+
 		ItemStack buffer = GetItemStack(slotIdOne);
 		SetItemStack(slotIdOne, GetItemStack(slotIdTwo));
 		SetItemStack(slotIdTwo, buffer);
 	}
 
-	public bool SetStackCount(int slotId, int newCount) {
+	public virtual bool SetStackCount(int slotId, int newCount) {
 		if (newCount > ItemManager.FindItemInfo(GetItemStack(slotId).ItemName).MaxStackSize)
 			return false;
 		if (newCount <= 0)
@@ -121,19 +142,22 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 		return true;
 	}
 	
-	public void SlotsInteraction(int slotFrom, int slotTo) {
+	public virtual void SlotsInteraction(int slotFrom, int slotTo) {
 		if (slotFrom == slotTo)
 			return;
 		
 		ItemStack stackFrom = GetItemStack(slotFrom);
 		ItemStack stackTo = GetItemStack(slotTo);
+		if (!IsValidForSet(slotTo, stackFrom))
+			return;
+		
 		if (IsEmpty(slotTo)) {
 			SetItemStack(slotTo, stackFrom);
 			RemoveItemStack(slotFrom);
 		}
 		else if (CanSwap(stackFrom, stackTo))
 			SwapItemStacks(slotFrom, slotTo);
-		else {
+		else if (stackFrom.EqualsWithoutSize(stackTo)) {
 			int maxSize = ItemManager.FindItemInfo(stackFrom.ItemName).MaxStackSize;
 			int residue = stackFrom.StackSize + stackTo.StackSize - maxSize;
 			if (residue > 0) {
@@ -149,16 +173,16 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 			CmdSlotsInteraction(slotFrom, slotTo);
 	}
 
-	protected bool CanSwap(ItemStack one, ItemStack two) {
+	protected virtual bool CanSwap(ItemStack one, ItemStack two) {
 		int maxSize = ItemManager.FindItemInfo(one.ItemName).MaxStackSize;
-		return !(one.ItemName.Equals(two.ItemName)) || one.StackSize == maxSize || two.StackSize == maxSize;
+		return (!(one.ItemName.Equals(two.ItemName)) || one.StackSize == maxSize || two.StackSize == maxSize);
 	}
 
-	public void DropItemStack(int slotId, Vector3 position, Vector3 force) {
+	public virtual void DropItemStack(int slotId, Vector3 position, Vector3 force) {
 		DropItemStack(slotId, GetItemStack(slotId).StackSize, position, force);
 	}
 
-	public void DropItemStack(int slotId, int count, Vector3 position, Vector3 force) {
+	public virtual void DropItemStack(int slotId, int count, Vector3 position, Vector3 force) {
 		if (!IsEmpty(slotId)) {
 			if (!isServer) 
 				CmdDropItemStack(slotId, position, force);
@@ -172,19 +196,23 @@ public class DefaultStorage : NetworkBehaviour, IStorage {
 		}
 	}
 
-	public bool IsEmpty(int slotId) {
+	public virtual bool IsEmpty(int slotId) {
 		if (slotId >= storage.Length)
 			throw new Exception("Вы попытались проверить ItemStack, указав несуществующий индекс ячейки");
 		return storage[slotId] == null;
 	}
 
-	public void Clear() {
+	public virtual void Clear() {
 		for (int i = 0; i < StorageSize; i++)
 			storage[i] = null;
 	}
 
-	public int GetStorageSize() {
+	public virtual int GetStorageSize() {
 		return StorageSize;
+	}
+
+	public virtual bool IsValidForSet(int slotId, ItemStack stack) {
+		return true;
 	}
 
 	public void MarkDirty() {

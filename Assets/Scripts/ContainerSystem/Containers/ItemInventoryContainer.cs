@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InventoryContainer : ItemContainer {
+public class ItemInventoryContainer : ItemContainer {
 	protected List<GameObject> slots = new List<GameObject>();
 	
 	public override void OnOpen(IStorage storage) {

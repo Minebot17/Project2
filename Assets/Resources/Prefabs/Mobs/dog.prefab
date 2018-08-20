@@ -326,7 +326,6 @@ GameObject:
   - component: {fileID: 114192108784167008}
   - component: {fileID: 114944476446058782}
   - component: {fileID: 114539935684413458}
-  - component: {fileID: 114748138045274450}
   - component: {fileID: 114222059500138620}
   m_Layer: 12
   m_Name: dog
@@ -1950,18 +1949,6 @@ MonoBehaviour:
     calculatedValue: 100
     effectProcent: 0
     effectValue: 0
---- !u!114 &114748138045274450
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1688413763626342}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10f98ec9bb5943f489134b065a0189f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnProjectileObject: {fileID: 0}
 --- !u!114 &114793969807680760
 MonoBehaviour:
   m_ObjectHideFlags: 1

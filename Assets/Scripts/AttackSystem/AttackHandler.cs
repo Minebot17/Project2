@@ -7,16 +7,16 @@ using UnityEngine.Networking;
 public class AttackHandler : NetworkBehaviour {
 	
 	[SerializeField] 
-	private Transform spawnProjectileObject;
+	protected Transform spawnProjectileObject;
 	protected bool @switch;
 
 	public virtual void AttackMelee(Object args) {
 		if (!isServer)
 			return;
 		
-		@switch = !@switch;
+		/*@switch = !@switch;
 		if (@switch)
-			return;
+			return;*/
 
 		MeleeAttackInfo info = (MeleeAttackInfo) args;
 		List<GameObject> gos = Physics2D
@@ -38,9 +38,9 @@ public class AttackHandler : NetworkBehaviour {
 	public virtual void AttackProjectile(Object args) {
 		if (!isServer)
 			return;
-		@switch = !@switch;
+		/*@switch = !@switch;
 		if (@switch)
-			return;
+			return;*/
 		
 		ProjectileAttackInfo info = (ProjectileAttackInfo) args;
 		GameObject projectile = Instantiate(info.Projectile);

@@ -8,9 +8,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8626152fb31f7b94c8bea109740f7ddd, type: 3}
-  m_Name: Attack0_0_R
+  m_Script: {fileID: 11500000, guid: 1c88b8f0ae0f9154c94210f813150675, type: 3}
+  m_Name: Attack_0_M
   m_EditorClassIdentifier: 
   Index: 0
-  Projectile: {fileID: 1020922337752466, guid: 2fcc2ab829098ec4abb4d9413653cf28, type: 2}
-  TrustForce: 140
+  Damage: 10
+  Kick: {x: -3000, y: 1000}
+  Point: {x: 26, y: 13}
+  Size: {x: 8, y: 8}
+  Splash: 1

@@ -64,4 +64,9 @@ public interface IStorage : ISerializableObject {
 	/// Получает кол-во слотов в storage
 	/// </summary>
 	int GetStorageSize();
+
+	/// <summary>
+	/// Можно ли установить данный предмет в данный слот?
+	/// </summary>
+	bool IsValidForSet(int slotId, ItemStack stack);
 }

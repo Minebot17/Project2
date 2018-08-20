@@ -9,32 +9,32 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1448050040599776}
+  m_RootGameObject: {fileID: 1351568913679164}
   m_IsPrefabAsset: 1
---- !u!1 &1448050040599776
+--- !u!1 &1351568913679164
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 224246675400454114}
-  - component: {fileID: 23050836599626602}
-  - component: {fileID: 33895080188766030}
-  - component: {fileID: 114992329539856408}
+  - component: {fileID: 224177142180889360}
+  - component: {fileID: 23909790039649558}
+  - component: {fileID: 33505708255844782}
+  - component: {fileID: 114324513839263092}
   m_Layer: 19
-  m_Name: ItemTest
+  m_Name: bowWood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!23 &23050836599626602
+--- !u!23 &23909790039649558
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1448050040599776}
+  m_GameObject: {fileID: 1351568913679164}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -64,35 +64,37 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33895080188766030
+--- !u!33 &33505708255844782
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1448050040599776}
+  m_GameObject: {fileID: 1351568913679164}
   m_Mesh: {fileID: 0}
---- !u!114 &114992329539856408
+--- !u!114 &114324513839263092
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1448050040599776}
+  m_GameObject: {fileID: 1351568913679164}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb78674c27754c469773c0e84652ffef, type: 3}
+  m_Script: {fileID: 11500000, guid: 180630ed447264745b0340207b8ff12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemName: testItem
-  MaxStackSize: 3
-  Icon: {fileID: 2800000, guid: bfcbc0b003407e844996c1104dd45476, type: 3}
+  ItemName: bowWood
+  MaxStackSize: 1
+  Icon: {fileID: 2800000, guid: ae2b5abf4af17f548b9234522bdf8363, type: 3}
   ColliderSize: {x: 1, y: 1}
   SpecialRenderer: 0
---- !u!224 &224246675400454114
+  WeaponIndex: 2
+  OnSpine: 1
+--- !u!224 &224177142180889360
 RectTransform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1448050040599776}
+  m_GameObject: {fileID: 1351568913679164}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}

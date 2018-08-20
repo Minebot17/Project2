@@ -28,6 +28,8 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 		if (!isLocalPlayer)
 			return;
 		Utils.SetLocalPlayer(gameObject);
+		GameManager.singleton.PlayerHead =
+			transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetChild(1).gameObject;
 		if (GameManager.singleton.doStartForce)
 			GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
 	}
@@ -42,7 +44,11 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 			else if (ContainerManager.IsOpen("Inventory"))
 				ContainerManager.CloseContainer();
 		}
-		else if (GameSettings.SettingUseItemKey.IsDown()) {
+		
+		if (ContainerManager.IsOpen())
+			return;
+		
+		if (GameSettings.SettingUseItemKey.IsDown()) {
 			GameObject item = Utils.GetEntityItemOverMouse();
 			if (item == null)
 				return;
