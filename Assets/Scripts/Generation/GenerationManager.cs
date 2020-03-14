@@ -125,18 +125,21 @@ public static class GenerationManager {
 			return;
 		
 		Vector2Int localPosition = GateInfo.RoomObjectToLocalPosition(gateObject.transform.localPosition);
-		Vector2Int nextCoord = GateInfo.LocalPositionToVector(localPosition) + currentRoomCoords;
+		Vector2Int nextCoord = GateInfo.LocalPositionToVector(localPosition) + currentRoomCoords + 
+		                       (localPosition.x == 1 ? new Vector2Int(0, currentRoom.GetComponent<Room>().Size.y - 1) : 
+			                   localPosition.x == 3 ? new Vector2Int(currentRoom.GetComponent<Room>().Size.x - 1, 0) : 
+			                   Vector2Int.zero);
 		bool buffer = spawnedRooms != null && nextCoord.x >= 0 && nextCoord.x < spawnedRooms.GetLength(0) &&
 		              nextCoord.y >= 0 && nextCoord.y < spawnedRooms.GetLength(1);
 		if (buffer) {
 			Vector3 toPlayerCoords =
-				localPosition.x == 0 ? new Vector3(0, -55f) :
-				localPosition.x == 1 ? new Vector3(0, 55f) :
+				localPosition.x == 0 ? new Vector3(0, -85f) :
+				localPosition.x == 1 ? new Vector3(0, 85f) :
 				localPosition.x == 2 ? new Vector3(-45f, 0) :
 				new Vector3(45f, 0);
 			player.transform.position += toPlayerCoords;
 			if (localPosition.x == 1)
-				player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000f));
+				player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 15000f));
 		}
 
 		ApplyActiveRooms();
@@ -168,8 +171,8 @@ public static class GenerationManager {
 	}
 
 	public static void SetCurrentRoom(Vector2Int coord) {
-		currentRoomCoords = coord;
 		spawnedRooms[coord.x, coord.y].SetActive(true);
+		currentRoomCoords = currentGeneration.rooms[coord.x, coord.y].Position;
 		currentRoom = spawnedRooms[coord.x, coord.y];
 		GameObject.Find("Main Camera").GetComponent<CameraFollower>().Room = currentRoom;
 	}

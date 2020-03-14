@@ -123,7 +123,7 @@ public static class RoomLoader {
 			generateBordersX(concat, size, -0.003f),
 			generateBordersY(concat, size, -0.002f),
 			generateHiddenBackground(hiddenCorners, -0.001f),
-			generateWall(hiddenInvertedCuttedCornersBarierr, -0.008f, true),
+			generateWall(hiddenInvertedCuttedCornersBarierr, -0.08f, true),
 			generateShadowMeshX(concat, size),
 			generateShadowMeshY(concat, size),
 			generateCornerShadowMeshX(concat, size),

@@ -31,7 +31,7 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 		GameManager.singleton.PlayerHead =
 			transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetChild(1).gameObject;
 		if (GameManager.singleton.doStartForce)
-			GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 30000)); // tODO;
+			GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 15000)); // tODO;
 	}
 
 	private void FixedUpdate() {

@@ -327,6 +327,7 @@ GameObject:
   - component: {fileID: 114944476446058782}
   - component: {fileID: 114539935684413458}
   - component: {fileID: 114222059500138620}
+  - component: {fileID: 114122278499785260}
   m_Layer: 12
   m_Name: dog
   m_TagString: Untagged
@@ -1746,6 +1747,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114122278499785260
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1688413763626342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f3916a0f96fc449b2220f20440eb85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnProjectileObject: {fileID: 0}
 --- !u!114 &114137383801965912
 MonoBehaviour:
   m_ObjectHideFlags: 1

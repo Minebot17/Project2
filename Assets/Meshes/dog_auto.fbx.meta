@@ -1,116 +1,344 @@
 fileFormatVersion: 2
 guid: 2b90278efdd99d34ca6545aed04d63ce
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: BL1
-    100002: BL2
-    100004: BL3
-    100006: Body1
-    100008: Body2
-    100010: BR1
-    100012: BR2
-    100014: BR3
-    100016: //RootNode
-    100018: FL1
-    100020: FL2
-    100022: FL2_2
-    100024: FL3
-    100026: FL4
-    100028: FR1
-    100030: FR3
-    100032: FR4
-    100034: Head
-    100036: Neck
-    100038: Tail
-    400000: BL1
-    400002: BL2
-    400004: BL3
-    400006: Body1
-    400008: Body2
-    400010: BR1
-    400012: BR2
-    400014: BR3
-    400016: //RootNode
-    400018: FL1
-    400020: FL2
-    400022: FL2_2
-    400024: FL3
-    400026: FL4
-    400028: FR1
-    400030: FR3
-    400032: FR4
-    400034: Head
-    400036: Neck
-    400038: Tail
-    2100000: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B"
-    2300000: BL1
-    2300002: BL2
-    2300004: BL3
-    2300006: Body1
-    2300008: Body2
-    2300010: BR1
-    2300012: BR2
-    2300014: BR3
-    2300016: FL1
-    2300018: FL2
-    2300020: FL2_2
-    2300022: FL3
-    2300024: FL4
-    2300026: FR1
-    2300028: FR3
-    2300030: FR4
-    2300032: Head
-    2300034: Neck
-    2300036: Tail
-    3300000: BL1
-    3300002: BL2
-    3300004: BL3
-    3300006: Body1
-    3300008: Body2
-    3300010: BR1
-    3300012: BR2
-    3300014: BR3
-    3300016: FL1
-    3300018: FL2
-    3300020: FL2_2
-    3300022: FL3
-    3300024: FL4
-    3300026: FR1
-    3300028: FR3
-    3300030: FR4
-    3300032: Head
-    3300034: Neck
-    3300036: Tail
-    4300000: Body1
-    4300002: BR1
-    4300004: BR2
-    4300006: BR3
-    4300008: BL1
-    4300010: BL2
-    4300012: BL3
-    4300014: Tail
-    4300016: Body2
-    4300018: FL1
-    4300020: FL2
-    4300022: FL3
-    4300024: FL4
-    4300026: FR1
-    4300028: FL2_2
-    4300030: FR3
-    4300032: FR4
-    4300034: Neck
-    4300036: Head
-    7400000: Run
-    7400002: 1
-    7400004: 2
-    7400006: 3
-    7400008: Attack
-    7400010: Stand
-    7400012: Fall
-    7400014: Attack
-    9500000: //RootNode
-    2186277476908879412: ImportLogs
+  serializedVersion: 19300
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: BL1
+  - first:
+      1: 100002
+    second: BL2
+  - first:
+      1: 100004
+    second: BL3
+  - first:
+      1: 100006
+    second: Body1
+  - first:
+      1: 100008
+    second: Body2
+  - first:
+      1: 100010
+    second: BR1
+  - first:
+      1: 100012
+    second: BR2
+  - first:
+      1: 100014
+    second: BR3
+  - first:
+      1: 100016
+    second: //RootNode
+  - first:
+      1: 100018
+    second: FL1
+  - first:
+      1: 100020
+    second: FL2
+  - first:
+      1: 100022
+    second: FL2_2
+  - first:
+      1: 100024
+    second: FL3
+  - first:
+      1: 100026
+    second: FL4
+  - first:
+      1: 100028
+    second: FR1
+  - first:
+      1: 100030
+    second: FR3
+  - first:
+      1: 100032
+    second: FR4
+  - first:
+      1: 100034
+    second: Head
+  - first:
+      1: 100036
+    second: Neck
+  - first:
+      1: 100038
+    second: Tail
+  - first:
+      4: 400000
+    second: BL1
+  - first:
+      4: 400002
+    second: BL2
+  - first:
+      4: 400004
+    second: BL3
+  - first:
+      4: 400006
+    second: Body1
+  - first:
+      4: 400008
+    second: Body2
+  - first:
+      4: 400010
+    second: BR1
+  - first:
+      4: 400012
+    second: BR2
+  - first:
+      4: 400014
+    second: BR3
+  - first:
+      4: 400016
+    second: //RootNode
+  - first:
+      4: 400018
+    second: FL1
+  - first:
+      4: 400020
+    second: FL2
+  - first:
+      4: 400022
+    second: FL2_2
+  - first:
+      4: 400024
+    second: FL3
+  - first:
+      4: 400026
+    second: FL4
+  - first:
+      4: 400028
+    second: FR1
+  - first:
+      4: 400030
+    second: FR3
+  - first:
+      4: 400032
+    second: FR4
+  - first:
+      4: 400034
+    second: Head
+  - first:
+      4: 400036
+    second: Neck
+  - first:
+      4: 400038
+    second: Tail
+  - first:
+      21: 2100000
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B"
+  - first:
+      23: 2300000
+    second: BL1
+  - first:
+      23: 2300002
+    second: BL2
+  - first:
+      23: 2300004
+    second: BL3
+  - first:
+      23: 2300006
+    second: Body1
+  - first:
+      23: 2300008
+    second: Body2
+  - first:
+      23: 2300010
+    second: BR1
+  - first:
+      23: 2300012
+    second: BR2
+  - first:
+      23: 2300014
+    second: BR3
+  - first:
+      23: 2300016
+    second: FL1
+  - first:
+      23: 2300018
+    second: FL2
+  - first:
+      23: 2300020
+    second: FL2_2
+  - first:
+      23: 2300022
+    second: FL3
+  - first:
+      23: 2300024
+    second: FL4
+  - first:
+      23: 2300026
+    second: FR1
+  - first:
+      23: 2300028
+    second: FR3
+  - first:
+      23: 2300030
+    second: FR4
+  - first:
+      23: 2300032
+    second: Head
+  - first:
+      23: 2300034
+    second: Neck
+  - first:
+      23: 2300036
+    second: Tail
+  - first:
+      33: 3300000
+    second: BL1
+  - first:
+      33: 3300002
+    second: BL2
+  - first:
+      33: 3300004
+    second: BL3
+  - first:
+      33: 3300006
+    second: Body1
+  - first:
+      33: 3300008
+    second: Body2
+  - first:
+      33: 3300010
+    second: BR1
+  - first:
+      33: 3300012
+    second: BR2
+  - first:
+      33: 3300014
+    second: BR3
+  - first:
+      33: 3300016
+    second: FL1
+  - first:
+      33: 3300018
+    second: FL2
+  - first:
+      33: 3300020
+    second: FL2_2
+  - first:
+      33: 3300022
+    second: FL3
+  - first:
+      33: 3300024
+    second: FL4
+  - first:
+      33: 3300026
+    second: FR1
+  - first:
+      33: 3300028
+    second: FR3
+  - first:
+      33: 3300030
+    second: FR4
+  - first:
+      33: 3300032
+    second: Head
+  - first:
+      33: 3300034
+    second: Neck
+  - first:
+      33: 3300036
+    second: Tail
+  - first:
+      43: 4300000
+    second: Body1
+  - first:
+      43: 4300002
+    second: BR1
+  - first:
+      43: 4300004
+    second: BR2
+  - first:
+      43: 4300006
+    second: BR3
+  - first:
+      43: 4300008
+    second: BL1
+  - first:
+      43: 4300010
+    second: BL2
+  - first:
+      43: 4300012
+    second: BL3
+  - first:
+      43: 4300014
+    second: Tail
+  - first:
+      43: 4300016
+    second: Body2
+  - first:
+      43: 4300018
+    second: FL1
+  - first:
+      43: 4300020
+    second: FL2
+  - first:
+      43: 4300022
+    second: FL3
+  - first:
+      43: 4300024
+    second: FL4
+  - first:
+      43: 4300026
+    second: FR1
+  - first:
+      43: 4300028
+    second: FL2_2
+  - first:
+      43: 4300030
+    second: FR3
+  - first:
+      43: 4300032
+    second: FR4
+  - first:
+      43: 4300034
+    second: Neck
+  - first:
+      43: 4300036
+    second: Head
+  - first:
+      74: 7400000
+    second: Run
+  - first:
+      74: 7400002
+    second: 1
+  - first:
+      74: 7400004
+    second: 2
+  - first:
+      74: 7400006
+    second: 3
+  - first:
+      74: 7400008
+    second: Attack
+  - first:
+      74: 7400010
+    second: Stand
+  - first:
+      74: 7400012
+    second: Fall
+  - first:
+      74: 7400014
+    second: Attack
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
+  - first:
+      74: 5522812681064789136
+    second: Run
+  - first:
+      74: 6720303635017113406
+    second: Attack
+  - first:
+      74: 9150686684125865913
+    second: Stand
+  - first:
+      74: 5917537482288442099
+    second: Fall
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -118,7 +346,7 @@ ModelImporter:
       name: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B"
     second: {fileID: 2100000, guid: b0dd1e051101b8a408d2abab0ea949fa, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -147,6 +375,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Run
       takeName: 3
+      internalID: 5522812681064789136
       firstFrame: 1
       lastFrame: 23
       wrapMode: 0
@@ -175,6 +404,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Attack
       takeName: 3
+      internalID: 7400014
       firstFrame: 24
       lastFrame: 36
       wrapMode: 0
@@ -218,6 +448,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Stand
       takeName: 3
+      internalID: 9150686684125865913
       firstFrame: 37
       lastFrame: 76
       wrapMode: 0
@@ -246,6 +477,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Fall
       takeName: 3
+      internalID: 5917537482288442099
       firstFrame: 77
       lastFrame: 90
       wrapMode: 0
@@ -277,6 +509,8 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -284,27 +518,31 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -314,14 +552,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

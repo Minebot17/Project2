@@ -1,284 +1,878 @@
 fileFormatVersion: 2
 guid: 595dcb4ba95ab044d99e9230b5dd98aa
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: 0
-    100002: 1
-    100004: 2
-    100006: 3
-    100008: 4
-    100010: 5
-    100012: 6
-    100014: BODY
-    100016: BODY_armor
-    100018: BODY_MixB
-    100020: BODY_MixYX
-    100022: Bow1
-    100024: Bow1_quiver
-    100026: EAELIDS
-    100028: GG_RIG
-    100030: HEAD
-    100032: HEAD_RIG
-    100034: HEADDRESS
-    100036: Hummer1
-    100038: L_1_ARM
-    100040: L_1_ARM_armor
-    100042: L_1_LEG
-    100044: L_1_LEG_armor
-    100046: L_2__RM_armor
-    100048: L_2_ARM
-    100050: L_2_ARM_RIG
-    100052: L_2_LEG
-    100054: L_2_LEG_armor
-    100056: L_2_LEG_RIG
-    100058: L_3_LEG
-    100060: L_3_LEG_RIG
-    100062: L_ARM_RIG
-    100064: L_LEG_RIG
-    100066: L_WEAPON_RIG
-    100068: LARMOR_1
-    100070: LARMOR_1_2
-    100072: LARMOR_2
-    100074: LARMOR_3
-    100076: LARMOR_3_2
-    100078: NA_WEAPON_belt
-    100080: NA_WEAPON_belt_RIG
-    100082: NA_WEAPON_spine
-    100084: NA_WEAPON_spine_RIG
-    100086: NA_WEAPON_spine_RIG_2
-    100088: //RootNode
-    100090: R_1_ARM
-    100092: R_1_ARM_armor
-    100094: R_1_LEG_lower
-    100096: R_1_LEG_top
-    100098: R_1_LEG_top_armor
-    100100: R_2_ARM
-    100102: R_2_ARM_armor
-    100104: R_2_ARM_RIG
-    100106: R_2_LEG
-    100108: R_2_LEG_armor
-    100110: R_2_LEG_RIG
-    100112: R_3_LEG
-    100114: R_3_LEG_RIG
-    100116: R_ARM_RIG
-    100118: R_LEG_RIG
-    100120: R_WEAPON_RIG
-    100122: R_WEAPON_RIG_2
-    100124: RARMOR_1
-    100126: RARMOR_2
-    100128: RARMOR_2_2
-    100130: RARMOR_3
-    100132: STAFF
-    100134: "\u0414\u043B\u044F_\u0441\u043F\u0438\u043D\u044B"
-    100136: "\u0420\u0418\u0413"
-    400000: 0
-    400002: 1
-    400004: 2
-    400006: 3
-    400008: 4
-    400010: 5
-    400012: 6
-    400014: BODY
-    400016: BODY_armor
-    400018: BODY_MixB
-    400020: BODY_MixYX
-    400022: Bow1
-    400024: Bow1_quiver
-    400026: EAELIDS
-    400028: GG_RIG
-    400030: HEAD
-    400032: HEAD_RIG
-    400034: HEADDRESS
-    400036: Hummer1
-    400038: L_1_ARM
-    400040: L_1_ARM_armor
-    400042: L_1_LEG
-    400044: L_1_LEG_armor
-    400046: L_2__RM_armor
-    400048: L_2_ARM
-    400050: L_2_ARM_RIG
-    400052: L_2_LEG
-    400054: L_2_LEG_armor
-    400056: L_2_LEG_RIG
-    400058: L_3_LEG
-    400060: L_3_LEG_RIG
-    400062: L_ARM_RIG
-    400064: L_LEG_RIG
-    400066: L_WEAPON_RIG
-    400068: LARMOR_1
-    400070: LARMOR_1_2
-    400072: LARMOR_2
-    400074: LARMOR_3
-    400076: LARMOR_3_2
-    400078: NA_WEAPON_belt
-    400080: NA_WEAPON_belt_RIG
-    400082: NA_WEAPON_spine
-    400084: NA_WEAPON_spine_RIG
-    400086: NA_WEAPON_spine_RIG_2
-    400088: //RootNode
-    400090: R_1_ARM
-    400092: R_1_ARM_armor
-    400094: R_1_LEG_lower
-    400096: R_1_LEG_top
-    400098: R_1_LEG_top_armor
-    400100: R_2_ARM
-    400102: R_2_ARM_armor
-    400104: R_2_ARM_RIG
-    400106: R_2_LEG
-    400108: R_2_LEG_armor
-    400110: R_2_LEG_RIG
-    400112: R_3_LEG
-    400114: R_3_LEG_RIG
-    400116: R_ARM_RIG
-    400118: R_LEG_RIG
-    400120: R_WEAPON_RIG
-    400122: R_WEAPON_RIG_2
-    400124: RARMOR_1
-    400126: RARMOR_2
-    400128: RARMOR_2_2
-    400130: RARMOR_3
-    400132: STAFF
-    400134: "\u0414\u043B\u044F_\u0441\u043F\u0438\u043D\u044B"
-    400136: "\u0420\u0418\u0413"
-    2100000: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.7"
-    2100002: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B"
-    2100004: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.1"
-    2100006: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.2"
-    2100008: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.5"
-    2100010: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.6"
-    2100012: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.9"
-    2100014: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.3"
-    2100016: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.4"
-    2100018: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.8"
-    2300000: 0
-    2300002: 1
-    2300004: 2
-    2300006: 3
-    2300008: 4
-    2300010: 5
-    2300012: 6
-    2300014: BODY
-    2300016: BODY_armor
-    2300018: Bow1_quiver
-    2300020: EAELIDS
-    2300022: HEAD
-    2300024: HEADDRESS
-    2300026: Hummer1
-    2300028: L_1_ARM
-    2300030: L_1_ARM_armor
-    2300032: L_1_LEG
-    2300034: L_1_LEG_armor
-    2300036: L_2__RM_armor
-    2300038: L_2_ARM
-    2300040: L_2_LEG
-    2300042: L_2_LEG_armor
-    2300044: L_3_LEG
-    2300046: NA_WEAPON_belt
-    2300048: NA_WEAPON_spine
-    2300050: R_1_ARM
-    2300052: R_1_ARM_armor
-    2300054: R_1_LEG_lower
-    2300056: R_1_LEG_top
-    2300058: R_1_LEG_top_armor
-    2300060: R_2_ARM
-    2300062: R_2_ARM_armor
-    2300064: R_2_LEG
-    2300066: R_2_LEG_armor
-    2300068: R_3_LEG
-    2300070: STAFF
-    3300000: 0
-    3300002: 1
-    3300004: 2
-    3300006: 3
-    3300008: 4
-    3300010: 5
-    3300012: 6
-    3300014: BODY
-    3300016: BODY_armor
-    3300018: Bow1_quiver
-    3300020: EAELIDS
-    3300022: HEAD
-    3300024: HEADDRESS
-    3300026: Hummer1
-    3300028: L_1_ARM
-    3300030: L_1_ARM_armor
-    3300032: L_1_LEG
-    3300034: L_1_LEG_armor
-    3300036: L_2__RM_armor
-    3300038: L_2_ARM
-    3300040: L_2_LEG
-    3300042: L_2_LEG_armor
-    3300044: L_3_LEG
-    3300046: NA_WEAPON_belt
-    3300048: NA_WEAPON_spine
-    3300050: R_1_ARM
-    3300052: R_1_ARM_armor
-    3300054: R_1_LEG_lower
-    3300056: R_1_LEG_top
-    3300058: R_1_LEG_top_armor
-    3300060: R_2_ARM
-    3300062: R_2_ARM_armor
-    3300064: R_2_LEG
-    3300066: R_2_LEG_armor
-    3300068: R_3_LEG
-    3300070: STAFF
-    4300000: NA_WEAPON_spine
-    4300002: NA_WEAPON_belt
-    4300004: BODY
-    4300006: BODY_armor
-    4300008: L_1_ARM
-    4300010: L_1_ARM_armor
-    4300012: L_2_ARM
-    4300014: L_2__RM_armor
-    4300016: STAFF
-    4300018: Hummer1
-    4300020: HEAD
-    4300022: HEADDRESS
-    4300024: EAELIDS
-    4300026: R_1_ARM
-    4300028: R_1_ARM_armor
-    4300030: R_2_ARM
-    4300032: R_2_ARM_armor
-    4300034: 0
-    4300036: 3
-    4300038: 4
-    4300040: 6
-    4300042: 2
-    4300044: 1
-    4300046: 5
-    4300048: L_1_LEG
-    4300050: L_1_LEG_armor
-    4300052: L_2_LEG
-    4300054: L_2_LEG_armor
-    4300056: L_3_LEG
-    4300058: R_1_LEG_top
-    4300060: R_1_LEG_top_armor
-    4300062: R_1_LEG_lower
-    4300064: R_2_LEG
-    4300066: R_2_LEG_armor
-    4300068: R_3_LEG
-    4300070: Bow1_quiver
-    7400000: CINEMA_4D_________ _____
-    7400002: __
-    7400004: ______
-    7400006: ______.1
-    7400008: Stand
-    7400010: RunForward
-    7400012: Fall
-    7400014: Weapon_Hammer_AttackPower
-    7400016: Weapon_Hammer_Attack0
-    7400018: RunBack
-    7400020: Weapon_Arrow_Attack0_S
-    7400022: Weapon_Arrow_Attack0_B
-    7400024: WeaponChange_S
-    7400026: WeaponChange_B
-    7400028: Weapon_Wand_Attack0
-    7400030: Weapon_Wand_Attack1
-    7400032: Weapon_Wand_Attack2
-    7400034: Weapon_Wand_AttackPower
-    9500000: //RootNode
-    2186277476908879412: ImportLogs
+  serializedVersion: 19300
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: 0
+  - first:
+      1: 100002
+    second: 1
+  - first:
+      1: 100004
+    second: 2
+  - first:
+      1: 100006
+    second: 3
+  - first:
+      1: 100008
+    second: 4
+  - first:
+      1: 100010
+    second: 5
+  - first:
+      1: 100012
+    second: 6
+  - first:
+      1: 100014
+    second: BODY
+  - first:
+      1: 100016
+    second: BODY_armor
+  - first:
+      1: 100018
+    second: BODY_MixB
+  - first:
+      1: 100020
+    second: BODY_MixYX
+  - first:
+      1: 100022
+    second: Bow1
+  - first:
+      1: 100024
+    second: Bow1_quiver
+  - first:
+      1: 100026
+    second: EAELIDS
+  - first:
+      1: 100028
+    second: GG_RIG
+  - first:
+      1: 100030
+    second: HEAD
+  - first:
+      1: 100032
+    second: HEAD_RIG
+  - first:
+      1: 100034
+    second: HEADDRESS
+  - first:
+      1: 100036
+    second: Hummer1
+  - first:
+      1: 100038
+    second: L_1_ARM
+  - first:
+      1: 100040
+    second: L_1_ARM_armor
+  - first:
+      1: 100042
+    second: L_1_LEG
+  - first:
+      1: 100044
+    second: L_1_LEG_armor
+  - first:
+      1: 100046
+    second: L_2__RM_armor
+  - first:
+      1: 100048
+    second: L_2_ARM
+  - first:
+      1: 100050
+    second: L_2_ARM_RIG
+  - first:
+      1: 100052
+    second: L_2_LEG
+  - first:
+      1: 100054
+    second: L_2_LEG_armor
+  - first:
+      1: 100056
+    second: L_2_LEG_RIG
+  - first:
+      1: 100058
+    second: L_3_LEG
+  - first:
+      1: 100060
+    second: L_3_LEG_RIG
+  - first:
+      1: 100062
+    second: L_ARM_RIG
+  - first:
+      1: 100064
+    second: L_LEG_RIG
+  - first:
+      1: 100066
+    second: L_WEAPON_RIG
+  - first:
+      1: 100068
+    second: LARMOR_1
+  - first:
+      1: 100070
+    second: LARMOR_1_2
+  - first:
+      1: 100072
+    second: LARMOR_2
+  - first:
+      1: 100074
+    second: LARMOR_3
+  - first:
+      1: 100076
+    second: LARMOR_3_2
+  - first:
+      1: 100078
+    second: NA_WEAPON_belt
+  - first:
+      1: 100080
+    second: NA_WEAPON_belt_RIG
+  - first:
+      1: 100082
+    second: NA_WEAPON_spine
+  - first:
+      1: 100084
+    second: NA_WEAPON_spine_RIG
+  - first:
+      1: 100086
+    second: NA_WEAPON_spine_RIG_2
+  - first:
+      1: 100088
+    second: //RootNode
+  - first:
+      1: 100090
+    second: R_1_ARM
+  - first:
+      1: 100092
+    second: R_1_ARM_armor
+  - first:
+      1: 100094
+    second: R_1_LEG_lower
+  - first:
+      1: 100096
+    second: R_1_LEG_top
+  - first:
+      1: 100098
+    second: R_1_LEG_top_armor
+  - first:
+      1: 100100
+    second: R_2_ARM
+  - first:
+      1: 100102
+    second: R_2_ARM_armor
+  - first:
+      1: 100104
+    second: R_2_ARM_RIG
+  - first:
+      1: 100106
+    second: R_2_LEG
+  - first:
+      1: 100108
+    second: R_2_LEG_armor
+  - first:
+      1: 100110
+    second: R_2_LEG_RIG
+  - first:
+      1: 100112
+    second: R_3_LEG
+  - first:
+      1: 100114
+    second: R_3_LEG_RIG
+  - first:
+      1: 100116
+    second: R_ARM_RIG
+  - first:
+      1: 100118
+    second: R_LEG_RIG
+  - first:
+      1: 100120
+    second: R_WEAPON_RIG
+  - first:
+      1: 100122
+    second: R_WEAPON_RIG_2
+  - first:
+      1: 100124
+    second: RARMOR_1
+  - first:
+      1: 100126
+    second: RARMOR_2
+  - first:
+      1: 100128
+    second: RARMOR_2_2
+  - first:
+      1: 100130
+    second: RARMOR_3
+  - first:
+      1: 100132
+    second: STAFF
+  - first:
+      1: 100134
+    second: "\u0414\u043B\u044F_\u0441\u043F\u0438\u043D\u044B"
+  - first:
+      1: 100136
+    second: "\u0420\u0418\u0413"
+  - first:
+      4: 400000
+    second: 0
+  - first:
+      4: 400002
+    second: 1
+  - first:
+      4: 400004
+    second: 2
+  - first:
+      4: 400006
+    second: 3
+  - first:
+      4: 400008
+    second: 4
+  - first:
+      4: 400010
+    second: 5
+  - first:
+      4: 400012
+    second: 6
+  - first:
+      4: 400014
+    second: BODY
+  - first:
+      4: 400016
+    second: BODY_armor
+  - first:
+      4: 400018
+    second: BODY_MixB
+  - first:
+      4: 400020
+    second: BODY_MixYX
+  - first:
+      4: 400022
+    second: Bow1
+  - first:
+      4: 400024
+    second: Bow1_quiver
+  - first:
+      4: 400026
+    second: EAELIDS
+  - first:
+      4: 400028
+    second: GG_RIG
+  - first:
+      4: 400030
+    second: HEAD
+  - first:
+      4: 400032
+    second: HEAD_RIG
+  - first:
+      4: 400034
+    second: HEADDRESS
+  - first:
+      4: 400036
+    second: Hummer1
+  - first:
+      4: 400038
+    second: L_1_ARM
+  - first:
+      4: 400040
+    second: L_1_ARM_armor
+  - first:
+      4: 400042
+    second: L_1_LEG
+  - first:
+      4: 400044
+    second: L_1_LEG_armor
+  - first:
+      4: 400046
+    second: L_2__RM_armor
+  - first:
+      4: 400048
+    second: L_2_ARM
+  - first:
+      4: 400050
+    second: L_2_ARM_RIG
+  - first:
+      4: 400052
+    second: L_2_LEG
+  - first:
+      4: 400054
+    second: L_2_LEG_armor
+  - first:
+      4: 400056
+    second: L_2_LEG_RIG
+  - first:
+      4: 400058
+    second: L_3_LEG
+  - first:
+      4: 400060
+    second: L_3_LEG_RIG
+  - first:
+      4: 400062
+    second: L_ARM_RIG
+  - first:
+      4: 400064
+    second: L_LEG_RIG
+  - first:
+      4: 400066
+    second: L_WEAPON_RIG
+  - first:
+      4: 400068
+    second: LARMOR_1
+  - first:
+      4: 400070
+    second: LARMOR_1_2
+  - first:
+      4: 400072
+    second: LARMOR_2
+  - first:
+      4: 400074
+    second: LARMOR_3
+  - first:
+      4: 400076
+    second: LARMOR_3_2
+  - first:
+      4: 400078
+    second: NA_WEAPON_belt
+  - first:
+      4: 400080
+    second: NA_WEAPON_belt_RIG
+  - first:
+      4: 400082
+    second: NA_WEAPON_spine
+  - first:
+      4: 400084
+    second: NA_WEAPON_spine_RIG
+  - first:
+      4: 400086
+    second: NA_WEAPON_spine_RIG_2
+  - first:
+      4: 400088
+    second: //RootNode
+  - first:
+      4: 400090
+    second: R_1_ARM
+  - first:
+      4: 400092
+    second: R_1_ARM_armor
+  - first:
+      4: 400094
+    second: R_1_LEG_lower
+  - first:
+      4: 400096
+    second: R_1_LEG_top
+  - first:
+      4: 400098
+    second: R_1_LEG_top_armor
+  - first:
+      4: 400100
+    second: R_2_ARM
+  - first:
+      4: 400102
+    second: R_2_ARM_armor
+  - first:
+      4: 400104
+    second: R_2_ARM_RIG
+  - first:
+      4: 400106
+    second: R_2_LEG
+  - first:
+      4: 400108
+    second: R_2_LEG_armor
+  - first:
+      4: 400110
+    second: R_2_LEG_RIG
+  - first:
+      4: 400112
+    second: R_3_LEG
+  - first:
+      4: 400114
+    second: R_3_LEG_RIG
+  - first:
+      4: 400116
+    second: R_ARM_RIG
+  - first:
+      4: 400118
+    second: R_LEG_RIG
+  - first:
+      4: 400120
+    second: R_WEAPON_RIG
+  - first:
+      4: 400122
+    second: R_WEAPON_RIG_2
+  - first:
+      4: 400124
+    second: RARMOR_1
+  - first:
+      4: 400126
+    second: RARMOR_2
+  - first:
+      4: 400128
+    second: RARMOR_2_2
+  - first:
+      4: 400130
+    second: RARMOR_3
+  - first:
+      4: 400132
+    second: STAFF
+  - first:
+      4: 400134
+    second: "\u0414\u043B\u044F_\u0441\u043F\u0438\u043D\u044B"
+  - first:
+      4: 400136
+    second: "\u0420\u0418\u0413"
+  - first:
+      21: 2100000
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.7"
+  - first:
+      21: 2100002
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B"
+  - first:
+      21: 2100004
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.1"
+  - first:
+      21: 2100006
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.2"
+  - first:
+      21: 2100008
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.5"
+  - first:
+      21: 2100010
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.6"
+  - first:
+      21: 2100012
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.9"
+  - first:
+      21: 2100014
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.3"
+  - first:
+      21: 2100016
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.4"
+  - first:
+      21: 2100018
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.8"
+  - first:
+      23: 2300000
+    second: 0
+  - first:
+      23: 2300002
+    second: 1
+  - first:
+      23: 2300004
+    second: 2
+  - first:
+      23: 2300006
+    second: 3
+  - first:
+      23: 2300008
+    second: 4
+  - first:
+      23: 2300010
+    second: 5
+  - first:
+      23: 2300012
+    second: 6
+  - first:
+      23: 2300014
+    second: BODY
+  - first:
+      23: 2300016
+    second: BODY_armor
+  - first:
+      23: 2300018
+    second: Bow1_quiver
+  - first:
+      23: 2300020
+    second: EAELIDS
+  - first:
+      23: 2300022
+    second: HEAD
+  - first:
+      23: 2300024
+    second: HEADDRESS
+  - first:
+      23: 2300026
+    second: Hummer1
+  - first:
+      23: 2300028
+    second: L_1_ARM
+  - first:
+      23: 2300030
+    second: L_1_ARM_armor
+  - first:
+      23: 2300032
+    second: L_1_LEG
+  - first:
+      23: 2300034
+    second: L_1_LEG_armor
+  - first:
+      23: 2300036
+    second: L_2__RM_armor
+  - first:
+      23: 2300038
+    second: L_2_ARM
+  - first:
+      23: 2300040
+    second: L_2_LEG
+  - first:
+      23: 2300042
+    second: L_2_LEG_armor
+  - first:
+      23: 2300044
+    second: L_3_LEG
+  - first:
+      23: 2300046
+    second: NA_WEAPON_belt
+  - first:
+      23: 2300048
+    second: NA_WEAPON_spine
+  - first:
+      23: 2300050
+    second: R_1_ARM
+  - first:
+      23: 2300052
+    second: R_1_ARM_armor
+  - first:
+      23: 2300054
+    second: R_1_LEG_lower
+  - first:
+      23: 2300056
+    second: R_1_LEG_top
+  - first:
+      23: 2300058
+    second: R_1_LEG_top_armor
+  - first:
+      23: 2300060
+    second: R_2_ARM
+  - first:
+      23: 2300062
+    second: R_2_ARM_armor
+  - first:
+      23: 2300064
+    second: R_2_LEG
+  - first:
+      23: 2300066
+    second: R_2_LEG_armor
+  - first:
+      23: 2300068
+    second: R_3_LEG
+  - first:
+      23: 2300070
+    second: STAFF
+  - first:
+      33: 3300000
+    second: 0
+  - first:
+      33: 3300002
+    second: 1
+  - first:
+      33: 3300004
+    second: 2
+  - first:
+      33: 3300006
+    second: 3
+  - first:
+      33: 3300008
+    second: 4
+  - first:
+      33: 3300010
+    second: 5
+  - first:
+      33: 3300012
+    second: 6
+  - first:
+      33: 3300014
+    second: BODY
+  - first:
+      33: 3300016
+    second: BODY_armor
+  - first:
+      33: 3300018
+    second: Bow1_quiver
+  - first:
+      33: 3300020
+    second: EAELIDS
+  - first:
+      33: 3300022
+    second: HEAD
+  - first:
+      33: 3300024
+    second: HEADDRESS
+  - first:
+      33: 3300026
+    second: Hummer1
+  - first:
+      33: 3300028
+    second: L_1_ARM
+  - first:
+      33: 3300030
+    second: L_1_ARM_armor
+  - first:
+      33: 3300032
+    second: L_1_LEG
+  - first:
+      33: 3300034
+    second: L_1_LEG_armor
+  - first:
+      33: 3300036
+    second: L_2__RM_armor
+  - first:
+      33: 3300038
+    second: L_2_ARM
+  - first:
+      33: 3300040
+    second: L_2_LEG
+  - first:
+      33: 3300042
+    second: L_2_LEG_armor
+  - first:
+      33: 3300044
+    second: L_3_LEG
+  - first:
+      33: 3300046
+    second: NA_WEAPON_belt
+  - first:
+      33: 3300048
+    second: NA_WEAPON_spine
+  - first:
+      33: 3300050
+    second: R_1_ARM
+  - first:
+      33: 3300052
+    second: R_1_ARM_armor
+  - first:
+      33: 3300054
+    second: R_1_LEG_lower
+  - first:
+      33: 3300056
+    second: R_1_LEG_top
+  - first:
+      33: 3300058
+    second: R_1_LEG_top_armor
+  - first:
+      33: 3300060
+    second: R_2_ARM
+  - first:
+      33: 3300062
+    second: R_2_ARM_armor
+  - first:
+      33: 3300064
+    second: R_2_LEG
+  - first:
+      33: 3300066
+    second: R_2_LEG_armor
+  - first:
+      33: 3300068
+    second: R_3_LEG
+  - first:
+      33: 3300070
+    second: STAFF
+  - first:
+      43: 4300000
+    second: NA_WEAPON_spine
+  - first:
+      43: 4300002
+    second: NA_WEAPON_belt
+  - first:
+      43: 4300004
+    second: BODY
+  - first:
+      43: 4300006
+    second: BODY_armor
+  - first:
+      43: 4300008
+    second: L_1_ARM
+  - first:
+      43: 4300010
+    second: L_1_ARM_armor
+  - first:
+      43: 4300012
+    second: L_2_ARM
+  - first:
+      43: 4300014
+    second: L_2__RM_armor
+  - first:
+      43: 4300016
+    second: STAFF
+  - first:
+      43: 4300018
+    second: Hummer1
+  - first:
+      43: 4300020
+    second: HEAD
+  - first:
+      43: 4300022
+    second: HEADDRESS
+  - first:
+      43: 4300024
+    second: EAELIDS
+  - first:
+      43: 4300026
+    second: R_1_ARM
+  - first:
+      43: 4300028
+    second: R_1_ARM_armor
+  - first:
+      43: 4300030
+    second: R_2_ARM
+  - first:
+      43: 4300032
+    second: R_2_ARM_armor
+  - first:
+      43: 4300034
+    second: 0
+  - first:
+      43: 4300036
+    second: 3
+  - first:
+      43: 4300038
+    second: 4
+  - first:
+      43: 4300040
+    second: 6
+  - first:
+      43: 4300042
+    second: 2
+  - first:
+      43: 4300044
+    second: 1
+  - first:
+      43: 4300046
+    second: 5
+  - first:
+      43: 4300048
+    second: L_1_LEG
+  - first:
+      43: 4300050
+    second: L_1_LEG_armor
+  - first:
+      43: 4300052
+    second: L_2_LEG
+  - first:
+      43: 4300054
+    second: L_2_LEG_armor
+  - first:
+      43: 4300056
+    second: L_3_LEG
+  - first:
+      43: 4300058
+    second: R_1_LEG_top
+  - first:
+      43: 4300060
+    second: R_1_LEG_top_armor
+  - first:
+      43: 4300062
+    second: R_1_LEG_lower
+  - first:
+      43: 4300064
+    second: R_2_LEG
+  - first:
+      43: 4300066
+    second: R_2_LEG_armor
+  - first:
+      43: 4300068
+    second: R_3_LEG
+  - first:
+      43: 4300070
+    second: Bow1_quiver
+  - first:
+      74: 7400000
+    second: CINEMA_4D_________ _____
+  - first:
+      74: 7400002
+    second: __
+  - first:
+      74: 7400004
+    second: ______
+  - first:
+      74: 7400006
+    second: ______.1
+  - first:
+      74: 7400008
+    second: Stand
+  - first:
+      74: 7400010
+    second: RunForward
+  - first:
+      74: 7400012
+    second: Fall
+  - first:
+      74: 7400014
+    second: Weapon_Hammer_AttackPower
+  - first:
+      74: 7400016
+    second: Weapon_Hammer_Attack0
+  - first:
+      74: 7400018
+    second: RunBack
+  - first:
+      74: 7400020
+    second: Weapon_Arrow_Attack0_S
+  - first:
+      74: 7400022
+    second: Weapon_Arrow_Attack0_B
+  - first:
+      74: 7400024
+    second: WeaponChange_S
+  - first:
+      74: 7400026
+    second: WeaponChange_B
+  - first:
+      74: 7400028
+    second: Weapon_Wand_Attack0
+  - first:
+      74: 7400030
+    second: Weapon_Wand_Attack1
+  - first:
+      74: 7400032
+    second: Weapon_Wand_Attack2
+  - first:
+      74: 7400034
+    second: Weapon_Wand_AttackPower
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
+  - first:
+      74: 9150686684125865913
+    second: Stand
+  - first:
+      74: 3898671758408027237
+    second: RunForward
+  - first:
+      74: 5917537482288442099
+    second: Fall
+  - first:
+      74: 8750911314997323284
+    second: Weapon_Hammer_AttackPower
+  - first:
+      74: -6659096934692186174
+    second: Weapon_Hammer_Attack0
+  - first:
+      74: -6063290377662573818
+    second: RunBack
+  - first:
+      74: 2176946737866442082
+    second: Weapon_Arrow_Attack0_S
+  - first:
+      74: -7301448281213461613
+    second: Weapon_Arrow_Attack0_B
+  - first:
+      74: 366993701661454332
+    second: WeaponChange_S
+  - first:
+      74: 7805656664116077850
+    second: WeaponChange_B
+  - first:
+      74: 1110433092248215354
+    second: Weapon_Wand_Attack0
+  - first:
+      74: -257734729632465342
+    second: Weapon_Wand_Attack1
+  - first:
+      74: -6055827672128949918
+    second: Weapon_Wand_Attack2
+  - first:
+      74: 5191300486443182353
+    second: Weapon_Wand_AttackPower
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -331,7 +925,7 @@ ModelImporter:
       name: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B.9"
     second: {fileID: 2100000, guid: a2c024ab975c39b4f80903596f383308, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 2
     materialLocation: 0
@@ -360,6 +954,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Stand
       takeName: __
+      internalID: 7400008
       firstFrame: 1
       lastFrame: 46
       wrapMode: 0
@@ -388,6 +983,7 @@ ModelImporter:
     - serializedVersion: 16
       name: RunForward
       takeName: __
+      internalID: 7400010
       firstFrame: 47
       lastFrame: 59
       wrapMode: 0
@@ -416,6 +1012,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Fall
       takeName: __
+      internalID: 7400012
       firstFrame: 60
       lastFrame: 74
       wrapMode: 0
@@ -444,6 +1041,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Weapon_Hammer_AttackPower
       takeName: __
+      internalID: 7400014
       firstFrame: 75
       lastFrame: 99
       wrapMode: 0
@@ -495,6 +1093,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Weapon_Hammer_Attack0
       takeName: __
+      internalID: 7400016
       firstFrame: 100
       lastFrame: 118
       wrapMode: 0
@@ -538,6 +1137,7 @@ ModelImporter:
     - serializedVersion: 16
       name: RunBack
       takeName: __
+      internalID: 7400018
       firstFrame: 119
       lastFrame: 131
       wrapMode: 0
@@ -566,6 +1166,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Weapon_Arrow_Attack0_S
       takeName: __
+      internalID: 7400020
       firstFrame: 132
       lastFrame: 169
       wrapMode: 0
@@ -594,6 +1195,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Weapon_Arrow_Attack0_B
       takeName: __
+      internalID: 7400022
       firstFrame: 170
       lastFrame: 207
       wrapMode: 0
@@ -622,6 +1224,7 @@ ModelImporter:
     - serializedVersion: 16
       name: WeaponChange_S
       takeName: __
+      internalID: 7400024
       firstFrame: 208
       lastFrame: 218
       wrapMode: 0
@@ -650,6 +1253,7 @@ ModelImporter:
     - serializedVersion: 16
       name: WeaponChange_B
       takeName: __
+      internalID: 7400026
       firstFrame: 219
       lastFrame: 226
       wrapMode: 0
@@ -678,6 +1282,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Weapon_Wand_Attack0
       takeName: __
+      internalID: 7400028
       firstFrame: 227
       lastFrame: 246
       wrapMode: 0
@@ -706,6 +1311,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Weapon_Wand_Attack1
       takeName: __
+      internalID: 7400030
       firstFrame: 247
       lastFrame: 266
       wrapMode: 0
@@ -734,6 +1340,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Weapon_Wand_Attack2
       takeName: __
+      internalID: 7400032
       firstFrame: 267
       lastFrame: 286
       wrapMode: 0
@@ -762,6 +1369,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Weapon_Wand_AttackPower
       takeName: __
+      internalID: 7400034
       firstFrame: 287
       lastFrame: 312
       wrapMode: 0
@@ -793,6 +1401,8 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -800,27 +1410,31 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -830,14 +1444,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

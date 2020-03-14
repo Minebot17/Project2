@@ -1,148 +1,488 @@
 fileFormatVersion: 2
 guid: 55e42e4aa5d846a418378554ba3842a8
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: BODY
-    100002: BODY_MixB
-    100004: BODY_MixYX
-    100006: GG_RIG
-    100008: HEAD
-    100010: HEAD_RIG_1
-    100012: Hummer
-    100014: L_1_ARM
-    100016: L_1_LEG
-    100018: L_2_ARM
-    100020: L_2_ARM_RIG
-    100022: L_2_LEG
-    100024: L_2_LEG_RIG
-    100026: L_3_LEG
-    100028: L_3_LEG_RIG
-    100030: L_ARM_RIG_1
-    100032: L_LEG_RIG_1
-    100034: L_WEAPON_RIG
-    100036: LARMOR_1
-    100038: LARMOR_2
-    100040: LARMOR_3
-    100042: R_1_ARM
-    100044: R_1_LEG_top
-    100046: R_2_ARM
-    100048: R_2_ARM_RIG
-    100050: R_2_LEG
-    100052: R_2_LEG_RIG
-    100054: R_3_LEG
-    100056: R_3_LEG_RIG
-    100058: R_ARM_RIG_1
-    100060: R_LEG_RIG_1
-    100062: R_WEAPON_RIG
-    100064: RARMOR_1
-    100066: RARMOR_2
-    100068: RARMOR_3
-    100070: "\u041B\u041E\u0413\u0418\u041A\u0410_\u0420\u0418\u0413\u0410"
-    100072: "\u041F\u0440\u0430\u0432\u0430\u044F_\u043D\u043E\u0433\u0430_2"
-    100074: //RootNode
-    100076: "\u043E2_1"
-    400000: BODY
-    400002: BODY_MixB
-    400004: BODY_MixYX
-    400006: GG_RIG
-    400008: HEAD
-    400010: HEAD_RIG_1
-    400012: Hummer
-    400014: L_1_ARM
-    400016: L_1_LEG
-    400018: L_2_ARM
-    400020: L_2_ARM_RIG
-    400022: L_2_LEG
-    400024: L_2_LEG_RIG
-    400026: L_3_LEG
-    400028: L_3_LEG_RIG
-    400030: L_ARM_RIG_1
-    400032: L_LEG_RIG_1
-    400034: L_WEAPON_RIG
-    400036: LARMOR_1
-    400038: LARMOR_2
-    400040: LARMOR_3
-    400042: R_1_ARM
-    400044: R_1_LEG_top
-    400046: R_2_ARM
-    400048: R_2_ARM_RIG
-    400050: R_2_LEG
-    400052: R_2_LEG_RIG
-    400054: R_3_LEG
-    400056: R_3_LEG_RIG
-    400058: R_ARM_RIG_1
-    400060: R_LEG_RIG_1
-    400062: R_WEAPON_RIG
-    400064: RARMOR_1
-    400066: RARMOR_2
-    400068: RARMOR_3
-    400070: "\u041B\u041E\u0413\u0418\u041A\u0410_\u0420\u0418\u0413\u0410"
-    400072: "\u041F\u0440\u0430\u0432\u0430\u044F_\u043D\u043E\u0433\u0430_2"
-    400074: //RootNode
-    400076: "\u043E2_1"
-    2100000: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B"
-    2300000: BODY
-    2300002: HEAD
-    2300004: Hummer
-    2300006: L_1_ARM
-    2300008: L_1_LEG
-    2300010: L_2_ARM
-    2300012: L_2_LEG
-    2300014: L_3_LEG
-    2300016: R_1_ARM
-    2300018: R_1_LEG_top
-    2300020: R_2_ARM
-    2300022: R_2_LEG
-    2300024: R_3_LEG
-    2300026: "\u041F\u0440\u0430\u0432\u0430\u044F_\u043D\u043E\u0433\u0430_2"
-    2300028: "\u043E2_1"
-    3300000: BODY
-    3300002: HEAD
-    3300004: Hummer
-    3300006: L_1_ARM
-    3300008: L_1_LEG
-    3300010: L_2_ARM
-    3300012: L_2_LEG
-    3300014: L_3_LEG
-    3300016: R_1_ARM
-    3300018: R_1_LEG_top
-    3300020: R_2_ARM
-    3300022: R_2_LEG
-    3300024: R_3_LEG
-    3300026: "\u041F\u0440\u0430\u0432\u0430\u044F_\u043D\u043E\u0433\u0430_2"
-    3300028: "\u043E2_1"
-    4300000: BODY
-    4300002: L_1_ARM
-    4300004: L_2_ARM
-    4300006: "\u043E2_1"
-    4300008: HEAD
-    4300010: R_1_ARM
-    4300012: R_2_ARM
-    4300014: Hummer
-    4300016: L_1_LEG
-    4300018: L_2_LEG
-    4300020: L_3_LEG
-    4300022: R_1_LEG_top
-    4300024: "\u041F\u0440\u0430\u0432\u0430\u044F_\u043D\u043E\u0433\u0430_2"
-    4300026: R_2_LEG
-    4300028: R_3_LEG
-    7400000: CINEMA_4D_________ _____
-    7400002: __
-    7400004: Attack0
-    7400006: CINEMA_4D_________ _____ (1)
-    7400008: CINEMA_4D_________ _____ (2)
-    7400010: CINEMA_4D_________ _____ (3)
-    7400012: CINEMA_4D_________ _____ (4)
-    7400014: CINEMA_4D_________ _____ (5)
-    7400016: ______
-    7400018: Run
-    7400020: Fall
-    7400022: Attack0
-    7400024: Attack1
-    7400026: Stand
-    9500000: //RootNode
-    2186277476908879412: ImportLogs
+  serializedVersion: 25
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: BODY
+  - first:
+      1: 100002
+    second: BODY_MixB
+  - first:
+      1: 100004
+    second: BODY_MixYX
+  - first:
+      1: 100006
+    second: GG_RIG
+  - first:
+      1: 100008
+    second: HEAD
+  - first:
+      1: 100010
+    second: HEAD_RIG_1
+  - first:
+      1: 100012
+    second: Hummer
+  - first:
+      1: 100014
+    second: L_1_ARM
+  - first:
+      1: 100016
+    second: L_1_LEG
+  - first:
+      1: 100018
+    second: L_2_ARM
+  - first:
+      1: 100020
+    second: L_2_ARM_RIG
+  - first:
+      1: 100022
+    second: L_2_LEG
+  - first:
+      1: 100024
+    second: L_2_LEG_RIG
+  - first:
+      1: 100026
+    second: L_3_LEG
+  - first:
+      1: 100028
+    second: L_3_LEG_RIG
+  - first:
+      1: 100030
+    second: L_ARM_RIG_1
+  - first:
+      1: 100032
+    second: L_LEG_RIG_1
+  - first:
+      1: 100034
+    second: L_WEAPON_RIG
+  - first:
+      1: 100036
+    second: LARMOR_1
+  - first:
+      1: 100038
+    second: LARMOR_2
+  - first:
+      1: 100040
+    second: LARMOR_3
+  - first:
+      1: 100042
+    second: R_1_ARM
+  - first:
+      1: 100044
+    second: R_1_LEG_top
+  - first:
+      1: 100046
+    second: R_2_ARM
+  - first:
+      1: 100048
+    second: R_2_ARM_RIG
+  - first:
+      1: 100050
+    second: R_2_LEG
+  - first:
+      1: 100052
+    second: R_2_LEG_RIG
+  - first:
+      1: 100054
+    second: R_3_LEG
+  - first:
+      1: 100056
+    second: R_3_LEG_RIG
+  - first:
+      1: 100058
+    second: R_ARM_RIG_1
+  - first:
+      1: 100060
+    second: R_LEG_RIG_1
+  - first:
+      1: 100062
+    second: R_WEAPON_RIG
+  - first:
+      1: 100064
+    second: RARMOR_1
+  - first:
+      1: 100066
+    second: RARMOR_2
+  - first:
+      1: 100068
+    second: RARMOR_3
+  - first:
+      1: 100070
+    second: "\u041B\u041E\u0413\u0418\u041A\u0410_\u0420\u0418\u0413\u0410"
+  - first:
+      1: 100072
+    second: "\u041F\u0440\u0430\u0432\u0430\u044F_\u043D\u043E\u0433\u0430_2"
+  - first:
+      1: 100074
+    second: //RootNode
+  - first:
+      1: 100076
+    second: "\u043E2_1"
+  - first:
+      4: 400000
+    second: BODY
+  - first:
+      4: 400002
+    second: BODY_MixB
+  - first:
+      4: 400004
+    second: BODY_MixYX
+  - first:
+      4: 400006
+    second: GG_RIG
+  - first:
+      4: 400008
+    second: HEAD
+  - first:
+      4: 400010
+    second: HEAD_RIG_1
+  - first:
+      4: 400012
+    second: Hummer
+  - first:
+      4: 400014
+    second: L_1_ARM
+  - first:
+      4: 400016
+    second: L_1_LEG
+  - first:
+      4: 400018
+    second: L_2_ARM
+  - first:
+      4: 400020
+    second: L_2_ARM_RIG
+  - first:
+      4: 400022
+    second: L_2_LEG
+  - first:
+      4: 400024
+    second: L_2_LEG_RIG
+  - first:
+      4: 400026
+    second: L_3_LEG
+  - first:
+      4: 400028
+    second: L_3_LEG_RIG
+  - first:
+      4: 400030
+    second: L_ARM_RIG_1
+  - first:
+      4: 400032
+    second: L_LEG_RIG_1
+  - first:
+      4: 400034
+    second: L_WEAPON_RIG
+  - first:
+      4: 400036
+    second: LARMOR_1
+  - first:
+      4: 400038
+    second: LARMOR_2
+  - first:
+      4: 400040
+    second: LARMOR_3
+  - first:
+      4: 400042
+    second: R_1_ARM
+  - first:
+      4: 400044
+    second: R_1_LEG_top
+  - first:
+      4: 400046
+    second: R_2_ARM
+  - first:
+      4: 400048
+    second: R_2_ARM_RIG
+  - first:
+      4: 400050
+    second: R_2_LEG
+  - first:
+      4: 400052
+    second: R_2_LEG_RIG
+  - first:
+      4: 400054
+    second: R_3_LEG
+  - first:
+      4: 400056
+    second: R_3_LEG_RIG
+  - first:
+      4: 400058
+    second: R_ARM_RIG_1
+  - first:
+      4: 400060
+    second: R_LEG_RIG_1
+  - first:
+      4: 400062
+    second: R_WEAPON_RIG
+  - first:
+      4: 400064
+    second: RARMOR_1
+  - first:
+      4: 400066
+    second: RARMOR_2
+  - first:
+      4: 400068
+    second: RARMOR_3
+  - first:
+      4: 400070
+    second: "\u041B\u041E\u0413\u0418\u041A\u0410_\u0420\u0418\u0413\u0410"
+  - first:
+      4: 400072
+    second: "\u041F\u0440\u0430\u0432\u0430\u044F_\u043D\u043E\u0433\u0430_2"
+  - first:
+      4: 400074
+    second: //RootNode
+  - first:
+      4: 400076
+    second: "\u043E2_1"
+  - first:
+      21: 2100000
+    second: "\u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B"
+  - first:
+      23: 2300000
+    second: BODY
+  - first:
+      23: 2300002
+    second: HEAD
+  - first:
+      23: 2300004
+    second: Hummer
+  - first:
+      23: 2300006
+    second: L_1_ARM
+  - first:
+      23: 2300008
+    second: L_1_LEG
+  - first:
+      23: 2300010
+    second: L_2_ARM
+  - first:
+      23: 2300012
+    second: L_2_LEG
+  - first:
+      23: 2300014
+    second: L_3_LEG
+  - first:
+      23: 2300016
+    second: R_1_ARM
+  - first:
+      23: 2300018
+    second: R_1_LEG_top
+  - first:
+      23: 2300020
+    second: R_2_ARM
+  - first:
+      23: 2300022
+    second: R_2_LEG
+  - first:
+      23: 2300024
+    second: R_3_LEG
+  - first:
+      23: 2300026
+    second: "\u041F\u0440\u0430\u0432\u0430\u044F_\u043D\u043E\u0433\u0430_2"
+  - first:
+      23: 2300028
+    second: "\u043E2_1"
+  - first:
+      33: 3300000
+    second: BODY
+  - first:
+      33: 3300002
+    second: HEAD
+  - first:
+      33: 3300004
+    second: Hummer
+  - first:
+      33: 3300006
+    second: L_1_ARM
+  - first:
+      33: 3300008
+    second: L_1_LEG
+  - first:
+      33: 3300010
+    second: L_2_ARM
+  - first:
+      33: 3300012
+    second: L_2_LEG
+  - first:
+      33: 3300014
+    second: L_3_LEG
+  - first:
+      33: 3300016
+    second: R_1_ARM
+  - first:
+      33: 3300018
+    second: R_1_LEG_top
+  - first:
+      33: 3300020
+    second: R_2_ARM
+  - first:
+      33: 3300022
+    second: R_2_LEG
+  - first:
+      33: 3300024
+    second: R_3_LEG
+  - first:
+      33: 3300026
+    second: "\u041F\u0440\u0430\u0432\u0430\u044F_\u043D\u043E\u0433\u0430_2"
+  - first:
+      33: 3300028
+    second: "\u043E2_1"
+  - first:
+      43: 4300000
+    second: BODY
+  - first:
+      43: 4300002
+    second: L_1_ARM
+  - first:
+      43: 4300004
+    second: L_2_ARM
+  - first:
+      43: 4300006
+    second: "\u043E2_1"
+  - first:
+      43: 4300008
+    second: HEAD
+  - first:
+      43: 4300010
+    second: R_1_ARM
+  - first:
+      43: 4300012
+    second: R_2_ARM
+  - first:
+      43: 4300014
+    second: Hummer
+  - first:
+      43: 4300016
+    second: L_1_LEG
+  - first:
+      43: 4300018
+    second: L_2_LEG
+  - first:
+      43: 4300020
+    second: L_3_LEG
+  - first:
+      43: 4300022
+    second: R_1_LEG_top
+  - first:
+      43: 4300024
+    second: "\u041F\u0440\u0430\u0432\u0430\u044F_\u043D\u043E\u0433\u0430_2"
+  - first:
+      43: 4300026
+    second: R_2_LEG
+  - first:
+      43: 4300028
+    second: R_3_LEG
+  - first:
+      74: 7400000
+    second: CINEMA_4D_________ _____
+  - first:
+      74: 7400002
+    second: __
+  - first:
+      74: 7400004
+    second: Attack0
+  - first:
+      74: 7400006
+    second: CINEMA_4D_________ _____ (1)
+  - first:
+      74: 7400008
+    second: CINEMA_4D_________ _____ (2)
+  - first:
+      74: 7400010
+    second: CINEMA_4D_________ _____ (3)
+  - first:
+      74: 7400012
+    second: CINEMA_4D_________ _____ (4)
+  - first:
+      74: 7400014
+    second: CINEMA_4D_________ _____ (5)
+  - first:
+      74: 7400016
+    second: ______
+  - first:
+      74: 7400018
+    second: Run
+  - first:
+      74: 7400020
+    second: Fall
+  - first:
+      74: 7400022
+    second: Attack0
+  - first:
+      74: 7400024
+    second: Attack1
+  - first:
+      74: 7400026
+    second: Stand
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
+  - first:
+      74: 9150686684125865913
+    second: Stand
+  - first:
+      74: 5522812681064789136
+    second: Run
+  - first:
+      74: 5917537482288442099
+    second: Fall
+  - first:
+      74: 6877459596318986385
+    second: Attack0
+  - first:
+      74: 7572344613039948371
+    second: Attack1
+  - first:
+      74: 9150686684125865913
+    second: Stand
+  - first:
+      74: 5522812681064789136
+    second: Run
+  - first:
+      74: 5917537482288442099
+    second: Fall
+  - first:
+      74: 6877459596318986385
+    second: Attack0
+  - first:
+      74: 7572344613039948371
+    second: Attack1
+  - first:
+      74: 9150686684125865913
+    second: Stand
+  - first:
+      74: 5522812681064789136
+    second: Run
+  - first:
+      74: 5917537482288442099
+    second: Fall
+  - first:
+      74: 6877459596318986385
+    second: Attack0
+  - first:
+      74: 7572344613039948371
+    second: Attack1
+  - first:
+      74: 9150686684125865913
+    second: Stand
+  - first:
+      74: 5522812681064789136
+    second: Run
+  - first:
+      74: 5917537482288442099
+    second: Fall
+  - first:
+      74: 6877459596318986385
+    second: Attack0
+  - first:
+      74: 7572344613039948371
+    second: Attack1
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -168,7 +508,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -179,6 +519,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Stand
       takeName: ______
+      internalID: 9150686684125865913
       firstFrame: 1
       lastFrame: 45
       wrapMode: 0
@@ -207,6 +548,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Run
       takeName: ______
+      internalID: 5522812681064789136
       firstFrame: 46
       lastFrame: 63
       wrapMode: 0
@@ -235,6 +577,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Fall
       takeName: ______
+      internalID: 5917537482288442099
       firstFrame: 64
       lastFrame: 78
       wrapMode: 0
@@ -263,6 +606,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Attack0
       takeName: ______
+      internalID: 6877459596318986385
       firstFrame: 79
       lastFrame: 118
       wrapMode: 0
@@ -299,6 +643,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Attack1
       takeName: ______
+      internalID: 7572344613039948371
       firstFrame: 119
       lastFrame: 132
       wrapMode: 0
@@ -345,6 +690,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -352,27 +698,32 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -382,8 +733,8 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
