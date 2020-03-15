@@ -28,7 +28,7 @@ public class CameraFollower : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		if (ReferenceEquals(room, null) || ReferenceEquals(target, null))
+		if (room == null || target == null)
 			return;
 		
 		Vector2 min = room.transform.position + new Vector3(247.5f, 138.5f);

@@ -29,9 +29,8 @@ public class HealthPanelGUI : MonoBehaviour {
 	private Text nickText;
 
 	private void FixedUpdate() {
-		if (ReferenceEquals(health, null))
+		if (health == null)
 			return;
-		
 		hpRect.sizeDelta = new Vector2((int)((health.HealthValue/health.MaxHealth.GetCalculated())*100f) , 7);
 		hpText.text = health.HealthValue + "/" + health.MaxHealth.GetCalculated() + " HP";
 		staminaRect.sizeDelta = new Vector2((int)((stamina.StaminaValue / stamina.MaxStamina.GetCalculated()) * 101f), 2);

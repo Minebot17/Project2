@@ -105,11 +105,11 @@ public class SerializationManager {
 		for(int x = 0; x < GenerationManager.currentGeneration.size.x; x++)
 			for(int y = 0; y < GenerationManager.currentGeneration.size.y; y++) {
 				GameObject room = GenerationManager.spawnedRooms[x, y];
-				if (!ReferenceEquals(room, null) && GenerationManager.currentGeneration.rooms[x, y].Position == new Vector2Int(x, y) && room.GetComponent<Room>().Initialized && room.activeSelf) {
+				if (room != null && GenerationManager.currentGeneration.rooms[x, y].Position == new Vector2Int(x, y) && room.GetComponent<Room>().Initialized && room.activeSelf) {
 					objectsToAdd[x, y] = new List<LoadedWorld.LoadedObject>();
 					Transform objs = room.transform.Find("Objects");
 					for (int j = 0; j < objs.childCount; j++)
-						if (objs.GetChild(j).GetComponent<ISerializableObject>() != null && !ReferenceEquals(objs.GetChild(j).GetComponent<NetworkIdentity>(), null))
+						if (objs.GetChild(j).GetComponent<ISerializableObject>() != null && objs.GetChild(j).GetComponent<NetworkIdentity>() != null)
 							objectsToAdd[x, y].Add(
 								new LoadedWorld.LoadedObject(
 									objs.GetChild(j).GetComponent<NetworkIdentity>().assetId.ToString(),

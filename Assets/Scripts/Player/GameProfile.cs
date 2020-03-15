@@ -50,7 +50,7 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 		
 		if (GameSettings.SettingUseItemKey.IsDown()) {
 			GameObject item = Utils.GetEntityItemOverMouse();
-			if (ReferenceEquals(item, null))
+			if (item == null)
 				return;
 			
 			float distance = Vector3.Distance(item.transform.position, transform.position);
