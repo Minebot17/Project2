@@ -17,8 +17,8 @@ public static class Utils {
 	}
 
 	public static bool IsFreeBetweenPlayer(GameObject player, Vector3 point) {
-		return Physics2D.Raycast(point, ToVector2(player.transform.position - point),
-			Vector2.Distance(point, ToVector2(player.transform.position)), LayerMask.GetMask("Flapper", "Room")).collider == null;
+		return !Physics2D.Raycast(point, ToVector2(player.transform.position - point),
+			Vector2.Distance(point, ToVector2(player.transform.position)), LayerMask.GetMask("Flapper", "Room")).collider;
 	}
 
 	public static bool IsRotatedToPlayer(GameObject player, Transform transform) {

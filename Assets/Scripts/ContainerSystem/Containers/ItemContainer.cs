@@ -42,7 +42,7 @@ public abstract class ItemContainer : MonoBehaviour {
 	/// Отпускает предмет в исходный слот
 	/// </summary>
 	public void Ungrab() {
-		if (bufferSlot == null)
+		if (!bufferSlot)
 			return;
 
 		bufferSlot.transform.localPosition = new Vector3(0, 0, -171f);
@@ -53,7 +53,7 @@ public abstract class ItemContainer : MonoBehaviour {
 	/// Взят ли в мышку какой-либо предмет?
 	/// </summary>
 	public bool IsGrabed() {
-		return bufferSlot != null;
+		return bufferSlot;
 	}
 
 	private int indexToGrab = -1;
@@ -64,7 +64,7 @@ public abstract class ItemContainer : MonoBehaviour {
 			indexToGrab = -1;
 		}
 
-		if (bufferSlot != null) {
+		if (bufferSlot) {
 			Vector3 pos = Utils.GetMouseWorldPosition();
 			bufferSlot.transform.position = new Vector3(pos.x, pos.y, 0);
 			bufferSlot.transform.localPosition = new Vector3(bufferSlot.transform.localPosition.x, bufferSlot.transform.localPosition.y, -174f);
@@ -72,11 +72,11 @@ public abstract class ItemContainer : MonoBehaviour {
 			if (!Input.GetMouseButton(0)) {
 				GameObject toSlot =
 					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.GetComponent<ItemSlot>() != null);
-				if (toSlot != null && toSlot != bufferSlot.transform.parent.gameObject)
+				if (toSlot && toSlot != bufferSlot.transform.parent.gameObject)
 					storage.SlotsInteraction(bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex, toSlot.GetComponent<ItemSlot>().SlotIndex);
 				GameObject dropArea =
 					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.name.Equals("DropArea"));
-				if (dropArea != null)
+				if (dropArea)
 					storage.DropItemStack(bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex,
 						GameManager.singleton.LocalPlayer.transform.position, Utils.RandomPoint(1000));
 				else if (!storage.IsEmpty(GetBufferIndex()))
@@ -86,7 +86,7 @@ public abstract class ItemContainer : MonoBehaviour {
 			if (GameSettings.PutStackUnitKey.IsDown()) {
 				GameObject toSlot =
 					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.GetComponent<ItemSlot>() != null);
-				if (toSlot != null && toSlot != bufferSlot.transform.parent.gameObject && (toSlot.GetComponent<ItemSlot>().Stack == null || bufferSlot.transform.parent.GetComponent<ItemSlot>().Stack.EqualsWithoutSize(toSlot.GetComponent<ItemSlot>().Stack))) {
+				if (toSlot && toSlot != bufferSlot.transform.parent.gameObject && (toSlot.GetComponent<ItemSlot>().Stack == null || bufferSlot.transform.parent.GetComponent<ItemSlot>().Stack.EqualsWithoutSize(toSlot.GetComponent<ItemSlot>().Stack))) {
 					int slotOne = bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex;
 					int slotTwo = toSlot.GetComponent<ItemSlot>().SlotIndex;
 					if (storage.IsEmpty(slotTwo))
@@ -98,7 +98,7 @@ public abstract class ItemContainer : MonoBehaviour {
 				
 				GameObject dropArea =
 					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.name.Equals("DropArea"));
-				if (dropArea != null) {
+				if (dropArea) {
 					storage.DropItemStack(bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex,
 						1, GameManager.singleton.LocalPlayer.transform.position, Utils.RandomPoint(1000));
 				}
@@ -107,7 +107,7 @@ public abstract class ItemContainer : MonoBehaviour {
 			if (GameSettings.TakeStackUnitKey.IsDown()) {
 				GameObject toSlot =
 					Utils.GetObjectOverMouse(LayerMask.GetMask("UI0"), x => x.GetComponent<ItemSlot>() != null);
-				if (toSlot != null && toSlot != bufferSlot.transform.parent.gameObject && (toSlot.GetComponent<ItemSlot>().Stack != null && bufferSlot.transform.parent.GetComponent<ItemSlot>().Stack.EqualsWithoutSize(toSlot.GetComponent<ItemSlot>().Stack))) {
+				if (toSlot && toSlot != bufferSlot.transform.parent.gameObject && (toSlot.GetComponent<ItemSlot>().Stack != null && bufferSlot.transform.parent.GetComponent<ItemSlot>().Stack.EqualsWithoutSize(toSlot.GetComponent<ItemSlot>().Stack))) {
 					int slotOne = bufferSlot.transform.parent.GetComponent<ItemSlot>().SlotIndex;
 					int slotTwo = toSlot.GetComponent<ItemSlot>().SlotIndex;
 					int count = storage.GetItemStack(slotOne).StackSize;

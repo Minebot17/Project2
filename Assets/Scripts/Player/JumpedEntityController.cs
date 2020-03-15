@@ -81,7 +81,7 @@ public class JumpedEntityController : NetworkBehaviour {
 			Collider2D[] colliders = new Collider2D[10];
 			Physics2D.OverlapCollider(info.GroundTrigger, new ContactFilter2D(), colliders);
 			foreach (Collider2D collider in colliders)
-				if (collider != null && collider.gameObject.GetComponent<PlatformEffector2D>() != null) {
+				if (collider && collider.gameObject.GetComponent<PlatformEffector2D>()) {
 					collider.gameObject.SetActive(false);
 					Timer.StartNewTimer("RemovePlatform", 0.25f, 1, gameObject,
 						x => collider.gameObject.SetActive(true));
