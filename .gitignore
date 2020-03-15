@@ -1,6 +1,10 @@
 Build/
 .idea/
 Library/
+Logs/
 obj/
 Temp/
+*.meta
 Build.rar
+PlayerStats.xlsx
+Project2 Re-Import.sln

@@ -7,11 +7,9 @@ using UnityEngine.Networking;
 /// <summary>
 /// Обработчик системы эффектов. Должен быть на объекте, если он хочет иметь на себе эффекты
 /// </summary>
-public class EffectHandler : NetworkBehaviour, IEventProvider {
+public class EffectHandler : NetworkBehaviour {
 	
-	private readonly object[] eventHandlers = {
-		new EventHandler<AddEffectEvent>()
-	};
+	public readonly EventHandler<AddEffectEvent> addEffectEvent = new EventHandler<AddEffectEvent>();
 	
 	/// <summary>
 	/// Контейнер активных эффектов
@@ -59,7 +57,7 @@ public class EffectHandler : NetworkBehaviour, IEventProvider {
 			return false;
 
 		effect.Handler = this;
-		bool result = effect.OnAdded() && !GetEventSystem<AddEffectEvent>().CallListners(new AddEffectEvent(gameObject, effect)).IsCancel;
+		bool result = effect.OnAdded() && !addEffectEvent.CallListners(new AddEffectEvent(gameObject, effect)).IsCancel;
 		if (result)
 			timeEffects.Add(effect);
 		return result;
@@ -106,9 +104,5 @@ public class EffectHandler : NetworkBehaviour, IEventProvider {
 		public AddEffectEvent(GameObject sender, TimeEffect effect) : base(sender, true) {
 			Effect = effect;
 		}
-	}
-
-	public EventHandler<T> GetEventSystem<T>() where T : EventBase {
-		return Utils.FindEventHandler<T>(eventHandlers);
 	}
 }

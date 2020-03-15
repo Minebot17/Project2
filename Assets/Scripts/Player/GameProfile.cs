@@ -18,7 +18,7 @@ public class GameProfile : NetworkBehaviour, ISerializableObject {
 	}
 
 	private void Start() {
-		GetComponent<Health>().GetEventSystem<Health.HealthChangeEvent>().SubcribeEvent(e => {
+		GetComponent<Health>().healthChangeEvent.SubcribeEvent(e => {
 			TextMesh mesh = transform.Find("NameRender").GetComponent<TextMesh>();
 			if (GetComponent<Health>().MaxHealth.GetCalculated() == 0)
 				return;

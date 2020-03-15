@@ -7,10 +7,6 @@ using UnityEngine.Networking;
 
 public static class Utils {
 
-	public static EventHandler<T> FindEventHandler<T>(object[] eventHandlers) where T : EventBase {
-		return eventHandlers.Single(x => x.GetType().GetGenericArguments()[0] == typeof(T)) as EventHandler<T>;
-	}
-
 	public static UnityEngine.Object FindResource(string folderPath, string fileName) {
 		UnityEngine.Object[] objs = Resources.LoadAll(folderPath);
 		return objs.First(x => x.name.Equals(fileName));
@@ -74,7 +70,7 @@ public static class Utils {
 		return result;
 	}
 
-	public static Mesh GetQuadMesh(Vector3 start, Vector3 end, Vector2 startUV, Vector2 endUV) {
+	public static Mesh GetQuadMesh(Vector3 start, Vector3 end, Vector2 startUv, Vector2 endUv) {
 		Mesh mesh = new Mesh();
 		mesh.vertices = new [] {
 			new Vector3(start.x, start.y, 0), 
@@ -83,10 +79,10 @@ public static class Utils {
 			new Vector3(end.x, start.y, 0),
 		};
 		mesh.uv = new [] {
-			new Vector2(startUV.x, startUV.y), 
-			new Vector2(startUV.x, endUV.y), 
-			new Vector2(endUV.x, endUV.y), 
-			new Vector2(endUV.x, startUV.y), 
+			new Vector2(startUv.x, startUv.y), 
+			new Vector2(startUv.x, endUv.y), 
+			new Vector2(endUv.x, endUv.y), 
+			new Vector2(endUv.x, startUv.y), 
 		};
 		bool xMinus = end.x - start.x < 0;
 		bool yMinus = end.y - start.y < 0;
@@ -117,7 +113,7 @@ public static class Utils {
 		return FindNearestGameObject(GameManager.singleton.Players.FindAll(player => IsFreeBetweenPlayer(player, point)), point);
 	}
 	
-	public static GameObject FindAssetID(string assetId) {
+	public static GameObject FindAssetId(string assetId) {
 		foreach (GameObject go in ((NetworkManagerCustom)NetworkManager.singleton).RegisteredPrefabs) {
 			if (go.GetComponent<NetworkIdentity>().assetId.ToString().Equals(assetId))
 				return go;

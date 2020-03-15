@@ -103,7 +103,7 @@ public static class GenerationManager {
 		spawnedRoom.transform.parent = parent;
 		List<GameObject> gates = Utils.GetComponentsRecursive<GateObject>(spawnedRoom).ConvertAll(x => x.gameObject);
 		gates.ForEach(x =>
-			x.transform.Find("trigger").GetComponent<GateTrigger>().GetEventSystem<GateTrigger.EnterGateEvent>()
+			x.transform.Find("trigger").GetComponent<GateTrigger>().enterGateEvent
 				.SubcribeEvent(y => OnGateEnter(y.Player, y.Sender, false)));
 				
 		foreach (GameObject gateObject in gates) {
@@ -276,7 +276,7 @@ public static class GenerationManager {
 
 				Transform parent = room.transform.Find("Objects");
 				foreach (SerializationManager.LoadedWorld.LoadedObject loadedObject in SerializationManager.World.Objects[pos.x, pos.y]) {
-					GameObject gameObject = ObjectsManager.SpawnGameObject(Utils.FindAssetID(loadedObject.AssetID),
+					GameObject gameObject = ObjectsManager.SpawnGameObject(Utils.FindAssetId(loadedObject.AssetID),
 						Vector2.zero, Vector3.zero, parent, true);
 					SerializationManager.DeserializeObject(gameObject, loadedObject.Data);
 					NetworkServer.Spawn(gameObject);

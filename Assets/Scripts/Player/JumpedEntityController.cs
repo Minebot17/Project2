@@ -95,14 +95,14 @@ public class JumpedEntityController : NetworkBehaviour {
 	}
 	
 	private void Jump(float power) {
-		EntityJumpedInfo.JumpEvent result = info.GetEventSystem<EntityJumpedInfo.JumpEvent>().CallListners(new EntityJumpedInfo.JumpEvent(gameObject, power));
+		EntityJumpedInfo.JumpEvent result = info.jumpEvent.CallListners(new EntityJumpedInfo.JumpEvent(gameObject, power));
 		if (!result.IsCancel)
 			rigidbody2D.AddForce(new Vector2(0, result.JumpPower));
 	}
 	
 	private void SetStand() {
 		rigidbody2D.velocity = new Vector2(0, rigidbody2D.velocity.y);
-		info.GetEventSystem<EntityMovableInfo.StandEvent>().CallListners(new EntityMovableInfo.StandEvent(gameObject));
+		info.standEvent.CallListners(new EntityMovableInfo.StandEvent(gameObject));
 		info.IsRunBack = false;
 		info.IsRunForward = false;
 	}
@@ -117,7 +117,7 @@ public class JumpedEntityController : NetworkBehaviour {
 		if (scale != direction)
 			transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
 			
-		EntityMovableInfo.RunEvent result = info.GetEventSystem<EntityMovableInfo.RunEvent>().CallListners(new EntityMovableInfo.RunEvent(gameObject, direction, speed));
+		EntityMovableInfo.RunEvent result = info.runEvent.CallListners(new EntityMovableInfo.RunEvent(gameObject, direction, speed));
 		if (!result.IsCancel)
 			rigidbody2D.velocity = new Vector2(result.Direction * result.Speed, rigidbody2D.velocity.y);
 	}

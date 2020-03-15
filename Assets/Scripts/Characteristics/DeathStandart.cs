@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
-public class DeathStandart : MonoBehaviour, IDeath, IEventProvider {
+public class DeathStandart : MonoBehaviour, IDeath {
 
-	private readonly object[] eventHandlers = {
-		new EventHandler<DeathEvent>()
-	};
+	public readonly EventHandler<DeathEvent> deathEvent = new EventHandler<DeathEvent>();
 
 	public bool Death(DamageBase lastDamage) {
-		DeathEvent result = GetEventSystem<DeathEvent>().CallListners(new DeathEvent(gameObject, lastDamage));
+		DeathEvent result = deathEvent.CallListners(new DeathEvent(gameObject, lastDamage));
 		
 		if (!result.IsCancel)
 			OnDeath(lastDamage);
@@ -21,10 +19,6 @@ public class DeathStandart : MonoBehaviour, IDeath, IEventProvider {
 		Destroy(gameObject);
 	}
 
-	public EventHandler<T> GetEventSystem<T>() where T : EventBase {
-		return Utils.FindEventHandler<T>(eventHandlers);
-	}
-	
 	public class DeathEvent : EventBase {
 
 		public DamageBase LastDamage;

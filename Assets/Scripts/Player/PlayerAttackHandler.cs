@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 [RequireComponent(typeof(EntityJumpedInfo))]
 public class PlayerAttackHandler : AttackHandler {
+	public readonly EventHandler<AttackEvent> attackEvent = new EventHandler<AttackEvent>();
 
 	[SerializeField] 
 	private float comboTimerError;
@@ -26,7 +27,6 @@ public class PlayerAttackHandler : AttackHandler {
 
 	private void Start() {
 		info = GetComponent<EntityJumpedInfo>();
-		info.addEvent(new EventHandler<AttackEvent>());
 	}
 
 	private void FixedUpdate() {
@@ -48,7 +48,7 @@ public class PlayerAttackHandler : AttackHandler {
 	}
 
 	private void Attack() {
-		AttackEvent result = info.GetEventSystem<AttackEvent>().CallListners(new AttackEvent(gameObject));
+		AttackEvent result = attackEvent.CallListners(new AttackEvent(gameObject));
 		if (result.IsCancel)
 			return;
 

@@ -20,7 +20,7 @@ public class BurnEffect : TimeEffect {
 		if (nearestObjects == null)
 			return false;
 		
-		nearestObjects.GetEventSystem<NearestObjects.OnNearestEnter>().SubcribeEvent(e => {
+		nearestObjects.onNearestEnter.SubcribeEvent(e => {
 			EffectHandler handler = e.Collider.gameObject.GetComponent<EffectHandler>();
 			if (handler != null)
 				handler.AddEffect(new BurnEffect());

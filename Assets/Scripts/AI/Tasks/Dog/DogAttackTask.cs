@@ -9,13 +9,12 @@ public class DogAttackTask : AbstractTask<DogInfo> {
 	}
 	
 	public override bool Handle() {
-		DogInfo.AttackEvent result = info.GetEventSystem<DogInfo.AttackEvent>()
-			.CallListners(new DogInfo.AttackEvent(gameObject, true));
+		DogInfo.AttackEvent result = info.attackEvent.CallListners(new DogInfo.AttackEvent(gameObject, true));
 
 		if (!result.IsCancel) {
 			Timer.StartNewTimer("AttackSkeletonCD", 0.75f, 1, gameObject,
 				timer => {
-					info.GetEventSystem<DogInfo.AttackEvent>().CallListners(new DogInfo.AttackEvent(gameObject, false));
+					info.attackEvent.CallListners(new DogInfo.AttackEvent(gameObject, false));
 					End();
 				}, (timer, f0, f1, f2) => {
 					gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-25f * gameObject.transform.localScale.x, 0);

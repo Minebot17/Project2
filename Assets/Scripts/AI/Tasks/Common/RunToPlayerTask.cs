@@ -34,7 +34,7 @@ public class RunToPlayerTask : RunForwardTask {
 		else if (forwardTouch)
 			return false;
 
-		EntityMovableInfo.RunEvent result = info.GetEventSystem<EntityMovableInfo.RunEvent>().CallListners(new EntityMovableInfo.RunEvent(gameObject, gameObject.transform.localScale.x > 0 ? 1 : -1, info.RunSpeed));
+		EntityMovableInfo.RunEvent result = info.runEvent.CallListners(new EntityMovableInfo.RunEvent(gameObject, gameObject.transform.localScale.x > 0 ? 1 : -1, info.RunSpeed));
 		if (result.IsCancel)
 			return false;
 

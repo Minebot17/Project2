@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Health), typeof(Rigidbody2D), typeof(VisibleObserver))]
 public class DogInfo : EntityJumpedInfo {
+	public readonly EventHandler<AttackEvent> attackEvent = new EventHandler<AttackEvent>();
 	public int MaxAttackDistance;
 	public VisibleObserver observer;
 
@@ -11,14 +12,12 @@ public class DogInfo : EntityJumpedInfo {
 		base.Start();
 		observer = GetComponent<VisibleObserver>();
 		Animator animator = GetComponent<Animator>();
-		
-		addEvent(new EventHandler<AttackEvent>());
 
-		GetEventSystem<RunEvent>().SubcribeEvent(x => animator.SetBool("Run", true));
-		GetEventSystem<StandEvent>().SubcribeEvent(x => animator.SetBool("Run", false));
-		GetEventSystem<FallEvent>().SubcribeEvent(x => animator.SetBool("Fall", true));
-		GetEventSystem<LandingEvent>().SubcribeEvent(x => animator.SetBool("Fall", false));
-		GetEventSystem<AttackEvent>().SubcribeEvent(x => animator.SetBool("Attack", x.Begin));
+		runEvent.SubcribeEvent(x => animator.SetBool("Run", true));
+		standEvent.SubcribeEvent(x => animator.SetBool("Run", false));
+		fallEvent.SubcribeEvent(x => animator.SetBool("Fall", true));
+		landingEvent.SubcribeEvent(x => animator.SetBool("Fall", false));
+		attackEvent.SubcribeEvent(x => animator.SetBool("Attack", x.Begin));
 	}
 	
 	public class AttackEvent : EventBase {

@@ -9,7 +9,7 @@ public class HiddenEntryObject : NetworkBehaviour {
 	private void Awake() {
 		if (NetworkManagerCustom.IsServer) {
 			GameObject hitBox = transform.Find("HitBox").gameObject;
-			hitBox.GetComponent<DeathDisableColliderHealth>().GetEventSystem<DeathStandart.DeathEvent>().SubcribeEvent(e => {
+			hitBox.GetComponent<DeathDisableColliderHealth>().deathEvent.SubcribeEvent(e => {
 				RpcDeadBorder();
 			});
 		}

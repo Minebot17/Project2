@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ServerEvents : IEventProvider {
+public class ServerEvents {
+	public readonly EventHandler<OnServerPlayerAdd> onServerPlayerAdd = new EventHandler<OnServerPlayerAdd>();
+	
 	public static ServerEvents singleton;
 	public List<string> StartAgrs;
 	public string SeedToGenerate;
@@ -18,15 +20,7 @@ public class ServerEvents : IEventProvider {
 		if (singleton == null)
 			singleton = new ServerEvents();
 	}
-
-	private readonly object[] eventHandlers = {
-		new EventHandler<OnServerPlayerAdd>(), 
-	};
-
-	public EventHandler<T> GetEventSystem<T>() where T : EventBase {
-		return Utils.FindEventHandler<T>(eventHandlers);
-	}
-
+	
 	public class OnServerPlayerAdd : EventBase {
 		public NetworkConnection PlayersConnection;
 		public GameObject Player;

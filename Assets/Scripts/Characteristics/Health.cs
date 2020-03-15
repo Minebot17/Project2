@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Health : NetworkBehaviour, IEventProvider {
-
-	private readonly object[] eventHandlers = {
-		new EventHandler<DamageEvent>(),
-		new EventHandler<HealEvent>(),
-		new EventHandler<HealthChangeEvent>() 
-	};
+public class Health : NetworkBehaviour {
+	
+	public readonly EventHandler<DamageEvent> damageEvent = new EventHandler<DamageEvent>();
+	public readonly EventHandler<HealEvent> healEvent = new EventHandler<HealEvent>();
+	public readonly EventHandler<HealthChangeEvent> healthChangeEvent = new EventHandler<HealthChangeEvent>();
 
 	[SyncVar(hook = nameof(OnHealthChange))]
 	private int healthValue;
@@ -24,8 +22,7 @@ public class Health : NetworkBehaviour, IEventProvider {
 	public Attribute MaxHealth = new Attribute("MaxHealth", 100);
 
 	public void OnHealthChange(int newHealth) {
-		HealthChangeEvent e = GetEventSystem<HealthChangeEvent>()
-			.CallListners(new HealthChangeEvent(gameObject, healthValue, newHealth));
+		HealthChangeEvent e = healthChangeEvent.CallListners(new HealthChangeEvent(gameObject, healthValue, newHealth));
 		if (e.IsCancel)
 			return;
 		healthValue = e.NewHealth;
@@ -35,7 +32,7 @@ public class Health : NetworkBehaviour, IEventProvider {
 		if (!isServer)
 			return 0;
 			
-		HealEvent e = GetEventSystem<HealEvent>().CallListners(new HealEvent(gameObject, heal));
+		HealEvent e = healEvent.CallListners(new HealEvent(gameObject, heal));
 		if (e.IsCancel)
 			return 0;
 
@@ -50,7 +47,7 @@ public class Health : NetworkBehaviour, IEventProvider {
 		if (!NetworkManagerCustom.IsServer)
 			return 0;
 		
-		DamageEvent e = GetEventSystem<DamageEvent>().CallListners(new DamageEvent(gameObject, damage));
+		DamageEvent e = damageEvent.CallListners(new DamageEvent(gameObject, damage));
 		if (e.IsCancel)
 			return 0;
 
@@ -64,10 +61,6 @@ public class Health : NetworkBehaviour, IEventProvider {
 			}
 		}
 		return HealthValue - preDamage;
-	}
-
-	public EventHandler<T> GetEventSystem<T>() where T : EventBase {
-		return Utils.FindEventHandler<T>(eventHandlers);
 	}
 
 	public class HealEvent : EventBase {

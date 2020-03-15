@@ -7,7 +7,7 @@ public class BarrelOfBananas : MonoBehaviour {
 	public GameObject Banana;
 	
 	private void Start() {
-		GetComponent<DeathStandart>().GetEventSystem<DeathStandart.DeathEvent>().SubcribeEvent(e => {
+		GetComponent<DeathStandart>().deathEvent.SubcribeEvent(e => {
 			int count = GameManager.rnd.Next(3) + 3;
 
 			for (int i = 0; i < count; i++) {

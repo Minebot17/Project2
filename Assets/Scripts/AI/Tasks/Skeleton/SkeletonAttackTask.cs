@@ -9,8 +9,7 @@ public class SkeletonAttackTask : AbstractTask<SkeletonInfo> {
 	}
 	
 	public override bool Handle() {
-		SkeletonInfo.AttackEvent result = info.GetEventSystem<SkeletonInfo.AttackEvent>()
-			.CallListners(new SkeletonInfo.AttackEvent(gameObject, true));
+		SkeletonInfo.AttackEvent result = info.attackEvent.CallListners(new SkeletonInfo.AttackEvent(gameObject, true));
 
 		if (!result.IsCancel) 
 			AddAnimation(new HeadAnimationTask(gameObject, 20));

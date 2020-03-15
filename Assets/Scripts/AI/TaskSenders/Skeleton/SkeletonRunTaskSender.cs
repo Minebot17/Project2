@@ -6,10 +6,10 @@ public class SkeletonRunTaskSender : AbstractTaskSender<SkeletonTaskHandler, Ske
 
 	void Start () {
 		base.Start();
-		GetComponent<PlayerObserver>().GetEventSystem<PlayerObserver.AllTargetsEnd>().SubcribeEvent(e => {
+		GetComponent<PlayerObserver>().allTargetsEnd.SubcribeEvent(e => {
 			handler.ReceiveEvent(e);
 		});
-		GetComponent<PlayerObserver>().GetEventSystem<PlayerObserver.FirstTarget>().SubcribeEvent(e => {
+		GetComponent<PlayerObserver>().firstTarget.SubcribeEvent(e => {
 			handler.ReceiveEvent(e);
 		});
 	}

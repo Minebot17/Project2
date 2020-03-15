@@ -165,7 +165,7 @@ public class GameManager : NetworkBehaviour {
 		if (position.x == 0 && position.y == 0)
 			return null;
 			
-		GameObject spawned = Instantiate(Utils.FindAssetID(assetId.ToString()));
+		GameObject spawned = Instantiate(Utils.FindAssetId(assetId.ToString()));
 		Room room = Utils.GetRoomFromPosition(position).GetComponent<Room>();
 		spawned.transform.parent = room.gameObject.transform.Find("Objects");
 		spawned.transform.position = position;

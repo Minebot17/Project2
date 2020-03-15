@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EntityMovableInfo : EntityGroundInfo {
+	public readonly EventHandler<RunEvent> runEvent = new EventHandler<RunEvent>();
+	public readonly EventHandler<StandEvent> standEvent = new EventHandler<StandEvent>();
+
 	public Collider2D ForwardCollider;
 	public Collider2D ForwarDownCollider;
 	public Collider2D BackCollider;
@@ -11,14 +14,7 @@ public class EntityMovableInfo : EntityGroundInfo {
 	public bool IsRunBack;
 	public bool BlockControl;
 	public float RunSpeed;
-	
-	public override void Start() {
-		base.Start();
-		
-		addEvent(new EventHandler<RunEvent>());
-		addEvent(new EventHandler<StandEvent>());
-	}
-	
+
 	/// <summary>
 	/// Вызывается в начале перемещения
 	/// </summary>

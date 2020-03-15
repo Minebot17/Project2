@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityGroundInfo : EntityInfo, IEventProvider{
+public class EntityGroundInfo : EntityInfo {
+
+	public readonly EventHandler<FallEvent> fallEvent = new EventHandler<FallEvent>();
+	public readonly EventHandler<LandingEvent> landingEvent = new EventHandler<LandingEvent>();
 	
 	// Settings
 	public Collider2D GroundTrigger;
@@ -10,12 +13,7 @@ public class EntityGroundInfo : EntityInfo, IEventProvider{
 	public float MaxFallVelocity;
 
 	protected Rigidbody2D rigidbody2D;
-
-	protected virtual void Awake() {
-		addEvent(new EventHandler<FallEvent>());
-		addEvent(new EventHandler<LandingEvent>());
-	}
-
+	
 	public override void Start() {	
 		base.Start();
 		rigidbody2D = GetComponent<Rigidbody2D>();
@@ -27,9 +25,9 @@ public class EntityGroundInfo : EntityInfo, IEventProvider{
 		OnGround = Utils.IsTouchRoom(GroundTrigger) && rigidbody2D.velocity.y <= 10;
 		
 		if (!oldGroundCheck && OnGround)
-			GetEventSystem<LandingEvent>().CallListners(new LandingEvent(gameObject));
+			landingEvent.CallListners(new LandingEvent(gameObject));
 		else if (oldGroundCheck && !OnGround)
-			GetEventSystem<FallEvent>().CallListners(new FallEvent(gameObject));
+			fallEvent.CallListners(new FallEvent(gameObject));
 
 		/*if (rigidbody2D.velocity.y > MaxFallVelocity)
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, MaxFallVelocity);*/

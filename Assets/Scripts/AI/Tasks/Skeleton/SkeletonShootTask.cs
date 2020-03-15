@@ -27,8 +27,7 @@ public class SkeletonShootTask : AbstractTask<SkeletonInfo> {
 			return false;
 		}
 
-		SkeletonInfo.ShootEvent result = info.GetEventSystem<SkeletonInfo.ShootEvent>()
-			.CallListners(new SkeletonInfo.ShootEvent(gameObject, true));
+		SkeletonInfo.ShootEvent result = info.shootEvent.CallListners(new SkeletonInfo.ShootEvent(gameObject, true));
 
 		if (!result.IsCancel) {
 			AddAnimation(new HeadAnimationTask(gameObject, 70));
@@ -43,7 +42,7 @@ public class SkeletonShootTask : AbstractTask<SkeletonInfo> {
 				Timer.StartNewTimer("ShootBoneRenderPost", 0.68f, 1, gameObject,
 					timer1 => {
 						info.BoneRender.GetComponent<MeshRenderer>().enabled = true;
-						info.GetEventSystem<SkeletonInfo.ShootEvent>().CallListners(new SkeletonInfo.ShootEvent(gameObject, false));
+						info.shootEvent.CallListners(new SkeletonInfo.ShootEvent(gameObject, false));
 						Timer.StartNewTimer("ShootEnd", 0.48f, 1, gameObject, timer2 => {
 							End();
 						});

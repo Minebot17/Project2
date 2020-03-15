@@ -4,23 +4,17 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Kickable : NetworkBehaviour, IEventProvider {
+public class Kickable : NetworkBehaviour {
 	
-	private readonly object[] eventHandlers = {
-		new EventHandler<KickEvent>()
-	};
+	public readonly EventHandler<KickEvent> kickEvent = new EventHandler<KickEvent>();
 
 	public virtual bool Kick(Vector2 vector) {
-		KickEvent result = GetEventSystem<KickEvent>().CallListners(new KickEvent(gameObject, vector));
+		KickEvent result = kickEvent.CallListners(new KickEvent(gameObject, vector));
 		if (result.IsCancel || result.Vector.Equals(Vector2.zero))
 			return false;
 
 		GetComponent<Rigidbody2D>().AddForce(vector);
 		return true;
-	}
-
-	public EventHandler<T> GetEventSystem<T>() where T : EventBase {
-		return Utils.FindEventHandler<T>(eventHandlers);
 	}
 
 	public class KickEvent : EventBase {

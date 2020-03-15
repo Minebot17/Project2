@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NearestObjects : MonoBehaviour, IEventProvider {
+public class NearestObjects : MonoBehaviour {
 	
-	private readonly object[] eventHandlers = {
-		new EventHandler<OnNearestEnter>(),
-		new EventHandler<OnNearestExit>()
-	};
+	public readonly EventHandler<OnNearestEnter> onNearestEnter = new EventHandler<OnNearestEnter>();
+	public readonly EventHandler<OnNearestExit> onNearestExit = new EventHandler<OnNearestExit>();
 
 	public List<Collider2D> NearestColliders = new List<Collider2D>();
 
@@ -27,13 +25,11 @@ public class NearestObjects : MonoBehaviour, IEventProvider {
 
 	private void OnTriggerEnter2D(Collider2D other) {
 		NearestColliders.Add(other);
-
-		GetEventSystem<OnNearestEnter>().CallListners(new OnNearestEnter(gameObject, other));
+		onNearestEnter.CallListners(new OnNearestEnter(gameObject, other));
 	}
 	private void OnTriggerExit2D(Collider2D other) {
 		NearestColliders.Remove(other);
-		
-		GetEventSystem<OnNearestExit>().CallListners(new OnNearestExit(gameObject, other));
+		onNearestExit.CallListners(new OnNearestExit(gameObject, other));
 	}
 
 	public class OnNearestEnter : EventBase {
@@ -50,8 +46,5 @@ public class NearestObjects : MonoBehaviour, IEventProvider {
 		public OnNearestExit(GameObject sender, Collider2D collider) : base(sender, false) {
 			Collider = collider;
 		}
-	}
-	public EventHandler<T> GetEventSystem<T>() where T : EventBase {
-		return Utils.FindEventHandler<T>(eventHandlers);
 	}
 }

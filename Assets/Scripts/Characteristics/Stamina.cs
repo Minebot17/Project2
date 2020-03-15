@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Stamina : NetworkBehaviour, IEventProvider {
+public class Stamina : NetworkBehaviour {
 	
-	private readonly object[] eventHandlers = {
-		new EventHandler<SpendStaminaEvent>()
-	};
-
+	public readonly EventHandler<SpendStaminaEvent> spendStaminaEvent = new EventHandler<SpendStaminaEvent>();
+	
 	[SyncVar]
 	public int StaminaValue;
 	
@@ -24,7 +22,7 @@ public class Stamina : NetworkBehaviour, IEventProvider {
 	}
 
 	public int Spend(int value) {
-		SpendStaminaEvent e = GetEventSystem<SpendStaminaEvent>().CallListners(new SpendStaminaEvent(gameObject, value));
+		SpendStaminaEvent e = spendStaminaEvent.CallListners(new SpendStaminaEvent(gameObject, value));
 		if (e.IsCancel)
 			return 0;
 		
@@ -36,10 +34,6 @@ public class Stamina : NetworkBehaviour, IEventProvider {
 		return this.StaminaValue - preValue;
 	}
 
-	public EventHandler<T> GetEventSystem<T>() where T : EventBase {
-		return Utils.FindEventHandler<T>(eventHandlers);
-	}
-	
 	public class SpendStaminaEvent : EventBase {
 		public int Value;
 		

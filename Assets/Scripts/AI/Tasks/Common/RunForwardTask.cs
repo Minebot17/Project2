@@ -30,7 +30,7 @@ public class RunForwardTask : AbstractTask<EntityMovableInfo> {
 		if (forwardTouch || !downTouch || distance <= 0)
 			return false;
 		
-		EntityMovableInfo.RunEvent result = info.GetEventSystem<EntityMovableInfo.RunEvent>().CallListners(new EntityMovableInfo.RunEvent(gameObject, gameObject.transform.localScale.x > 0 ? 1 : -1, info.RunSpeed));
+		EntityMovableInfo.RunEvent result = info.runEvent.CallListners(new EntityMovableInfo.RunEvent(gameObject, gameObject.transform.localScale.x > 0 ? 1 : -1, info.RunSpeed));
 		if (result.IsCancel)
 			return false;
 		
@@ -52,7 +52,7 @@ public class RunForwardTask : AbstractTask<EntityMovableInfo> {
 	
 	public override void End() {
 		base.End();
-		info.GetEventSystem<EntityMovableInfo.StandEvent>().CallListners(new EntityMovableInfo.StandEvent(gameObject));
+		info.standEvent.CallListners(new EntityMovableInfo.StandEvent(gameObject));
 		info.IsRunForward = false;
 		info.IsRunBack = false;
 	}

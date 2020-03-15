@@ -78,7 +78,7 @@ public class Stair : MonoBehaviour {
 		childs.Add(center);
 
 		foreach (GameObject player in GameManager.singleton.Players) {
-			player.GetComponent<EntityGroundInfo>().GetEventSystem<EntityGroundInfo.LandingEvent>()
+			player.GetComponent<EntityGroundInfo>().landingEvent
 				.SubcribeEvent(
 					@event => {
 						SetupForPlayer(player);
@@ -87,8 +87,8 @@ public class Stair : MonoBehaviour {
 		}
 
 		if (NetworkManagerCustom.IsServer)
-			ServerEvents.singleton.GetEventSystem<ServerEvents.OnServerPlayerAdd>().SubcribeEvent(x => {
-				x.Player.GetComponent<EntityGroundInfo>().GetEventSystem<EntityGroundInfo.LandingEvent>()
+			ServerEvents.singleton.onServerPlayerAdd.SubcribeEvent(x => {
+				x.Player.GetComponent<EntityGroundInfo>().landingEvent
 					.SubcribeEvent(
 						@event => {
 							SetupForPlayer(x.Player);

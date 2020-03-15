@@ -4,6 +4,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(Health), typeof(Rigidbody2D), typeof(VisibleObserver))]
 public class SkeletonInfo : EntityJumpedInfo {
+	public readonly EventHandler<AttackEvent> attackEvent = new EventHandler<AttackEvent>();
+	public readonly EventHandler<ShootEvent> shootEvent = new EventHandler<ShootEvent>();
+	
 	public GameObject Head;
 	public GameObject Body;
 	public GameObject Projectile;
@@ -29,16 +32,13 @@ public class SkeletonInfo : EntityJumpedInfo {
 		observer = GetComponent<VisibleObserver>();
 		health = GetComponent<Health>();
 		Animator animator = GetComponent<Animator>();
-		
-		addEvent(new EventHandler<AttackEvent>());
-		addEvent(new EventHandler<ShootEvent>());
 
-		GetEventSystem<RunEvent>().SubcribeEvent(x => animator.SetBool("Run", true));
-		GetEventSystem<StandEvent>().SubcribeEvent(x => animator.SetBool("Run", false));
-		GetEventSystem<FallEvent>().SubcribeEvent(x => animator.SetBool("Fall", true));
-		GetEventSystem<LandingEvent>().SubcribeEvent(x => animator.SetBool("Fall", false));
-		GetEventSystem<AttackEvent>().SubcribeEvent(x => animator.SetInteger("Attack", x.Begin ? 1 : -1));
-		GetEventSystem<ShootEvent>().SubcribeEvent(x => animator.SetInteger("Attack", x.Begin ? 0 : -1));
+		runEvent.SubcribeEvent(x => animator.SetBool("Run", true));
+		standEvent.SubcribeEvent(x => animator.SetBool("Run", false));
+		fallEvent.SubcribeEvent(x => animator.SetBool("Fall", true));
+		landingEvent.SubcribeEvent(x => animator.SetBool("Fall", false));
+		attackEvent.SubcribeEvent(x => animator.SetInteger("Attack", x.Begin ? 1 : -1));
+		shootEvent.SubcribeEvent(x => animator.SetInteger("Attack", x.Begin ? 0 : -1));
 	}
 
 	public class AttackEvent : EventBase {
