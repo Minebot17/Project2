@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class AbstractFSM<T> : MonoBehaviour where T : EntityInfo {
     protected T info;
-    private List<MachineState<T>> allStates = new List<MachineState<T>>(); 
-    private MachineState<T> defaultState = null;
-    private Stack<MachineState<T>> currentStates = new Stack<MachineState<T>>();
+    private List<AbstractState<T>> allStates = new List<AbstractState<T>>(); 
+    private AbstractState<T> defaultState = null;
+    private Stack<AbstractState<T>> currentStates = new Stack<AbstractState<T>>();
 
-    public List<MachineState<T>> AllStates => allStates;// Для визуализации состояний
+    public List<AbstractState<T>> AllStates => allStates; // Для визуализации состояний
 
     protected virtual void Start() {
         info = (T) GetComponent<EntityInfo>();
@@ -26,11 +26,11 @@ public abstract class AbstractFSM<T> : MonoBehaviour where T : EntityInfo {
         currentStates.Peek().OnTick();
     }
 
-    public void PushTransition(MachineTransition<T> transition) {
+    public void PushTransition(AbstractTransition<T> transition) {
         if (currentStates.Count != 0)
             currentStates.Peek().OnOut();
 
-        MachineState<T> newState = transition.StateTransition;
+        AbstractState<T> newState = transition.StateTransition;
         newState.OnEnter();
         currentStates.Push(newState);
     }
@@ -40,6 +40,6 @@ public abstract class AbstractFSM<T> : MonoBehaviour where T : EntityInfo {
             currentStates.Pop().OnOut();
     }
 
-    protected abstract MachineState<T>[] InitializeAllStates();
+    protected abstract AbstractState<T>[] InitializeAllStates();
     protected abstract string GetDefaultStateName();
 }

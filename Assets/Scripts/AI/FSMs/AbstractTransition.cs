@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MachineTransition<T> where T : EntityInfo {
+public class AbstractTransition<T> where T : EntityInfo {
     
-    private MachineState<T> stateTransition;
+    private AbstractState<T> stateTransition;
     private string description;
 
-    public MachineState<T> StateTransition => stateTransition;
+    public AbstractState<T> StateTransition => stateTransition;
     public string Description => description;
 
-    public MachineTransition(MachineState<T> stateTransition, string description) {
+    public AbstractTransition(AbstractState<T> stateTransition, string description) {
         this.stateTransition = stateTransition;
         this.description = description;
     }
